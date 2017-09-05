@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "outFile": "bin/d5bitmapui/d5bitmapui.js",
+        "declaration": true
+    },
+    "files": [
+        "libs/egret.d.ts",
+        "libs/res.d.ts",
+		"libs/d5sdk.d.ts",
+		"src/ui/IProBindingContainer.ts",
+		"src/ui/IProBindingSupport.ts",
+		"src/D5Component.ts",
+		"src/D5Loop.ts",
+		"src/D5Bitmap.ts",
+		"src/D5BitmapNumber.ts",
+		"src/D5Button.ts",
+		"src/D5CDdisplayer.ts",
+		"src/D5FlyBox.ts",
+		"src/D5ButtonGroup.ts",
+		"src/D5HBox.ts",
+		"src/D5List.ts",
+		"src/D5MirrorBox.ts",
+		"src/D5ImageBox.ts",
+		"src/D5MirrorLoop.ts",
+		"src/D5RadioBtn.ts",
+		"src/D5Shape.ts",
+		"src/D5SliderButton.ts",
+		"src/D5Style.ts",
+		"src/D5Swf.ts",
+		"src/D5Text.ts",
+		"src/D5HoverText.ts",
+		"src/D5UILoader.ts",
+		"src/D5VBox.ts",
+		"src/D5Window.ts",
+		"src/ListCell.ts"
+    ]
+}

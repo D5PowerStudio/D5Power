@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "outFile": "bin/d5sdk/d5sdk.js",
+        "declaration": true
+    },
+    "files": [
+        "libs/egret.d.ts",
+        "libs/res.d.ts",
+		"src/D5EffectSpriteSheet.ts",
+        "src/D5Power.ts",
+		"src/D5SpriteSheet.ts",
+		"src/IDisplayer.ts",
+		"src/ISpriteSheetWaiter.ts",
+		"src/IUserInfoContainer.ts",
+		"src/IUserInfoDisplayer.ts",
+		"src/UVData.ts",
+		"src/ByteArray.ts",
+		"src/D5UIResourceData.ts",
+		"src/net/D5LoadData.ts",
+		"src/net/StepLoader.ts",
+		"src/net/URLLoader.ts"
+    ]
+}

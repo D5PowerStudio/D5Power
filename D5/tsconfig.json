@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "outFile": "bin/d5/d5.js",
+        "declaration": true
+    },
+    "files": [
+		"libs/egret.d.ts",
+		"libs/d5sdk.d.ts",
+		"libs/dragonBones.d.ts",
+		"libs/res.d.ts",
+		"src/ID5Power.ts",
+		"src/com/d5power/utils/IMissionManager.ts",
+		"src/com/d5power/utils/ThreeBase.ts",
+		"src/com/d5power/utils/DisplayPluginData.ts",
+		"src/com/d5power/utils/ItemData.ts",
+		"src/com/d5power/utils/MissionNR.ts",
+		"src/com/d5power/utils/PackageItemData.ts",
+		"src/com/d5power/utils/MissionData.ts",
+		"src/com/d5power/events/D5Event.ts",
+		"src/com/d5power/core/Actions.ts",
+		"src/com/d5power/core/BaseMap.ts",
+		"src/com/d5power/core/Camera.ts",
+		"src/com/d5power/core/Direction.ts",
+		"src/com/d5power/core/GameObject.ts",
+		"src/com/d5power/core/GMath.ts",
+		"src/com/d5power/core/IGD.ts",
+		"src/com/d5power/core/IMap.ts",
+		"src/com/d5power/core/PlayerData.ts",
+		"src/com/d5power/core/SilzAstar.ts",
+		"src/com/d5power/objects/BonesCharacter.ts",
+		"src/com/d5power/objects/FrameCharacter.ts",
+		"src/com/d5power/D5Game.ts",
+		"src/com/d5power/D5World.ts"
+    ]
+}
