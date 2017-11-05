@@ -185,8 +185,8 @@ module d5power {
 				default:
 					var length:number = MissionNR.COSTOM_DEFINE.length;
 					for(var i:number = 0;i < length;i++){
-						var data:Array<any> = MissionNR.COSTOM_DEFINE[i];
-						if(data[0]==id) return data[1];
+						var data:ThreeBase = MissionNR.COSTOM_DEFINE[i];
+						if(data.type==id) return data.key;
 					}
 					break;
 			}
