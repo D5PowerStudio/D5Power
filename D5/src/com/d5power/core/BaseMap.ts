@@ -372,9 +372,7 @@ module d5power
             {
                 this.resetRoad();
             }else {
-                var data:egret.ByteArray = new egret.ByteArray();
-                //data.setArrayBuffer(res);
-                data['_setArrayBuffer'](res);
+                var data:egret.ByteArray = new egret.ByteArray(res);
 
                 var sign:string = data.readUTFBytes(5);
                 var value:number;
