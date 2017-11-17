@@ -111,8 +111,11 @@ module d5power
             }
 
             this._lable.setText(lab);
-            this._lable.setWidth(lab.length * d5power.D5Style.default_btn_lable_size);
-            this._lable.setHeight(d5power.D5Style.default_btn_lable_size);
+            this._lable.autoGrow();
+            //this._lable.setWidth(lab.length * d5power.D5Style.default_btn_lable_size);
+            //this._lable.setHeight(d5power.D5Style.default_btn_lable_size);
+
+            this.autoLableSize();
         }
 
         private autoLableSize():void
