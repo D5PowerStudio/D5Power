@@ -119,6 +119,8 @@ module d5power
            this._data_renderTime = data.renderTime;
            this._data_totalFrame = data.totalFrame;
            this._data_totalDir = data.totalDirection;
+
+           this.render(egret.getTimer());
         }
 
         public run(t:number):void
@@ -159,7 +161,7 @@ module d5power
                 }
             }
 
-            this.updatePos(this._offX,this._offY);
+            
         }
 
         public render(t:number):void
@@ -229,7 +231,7 @@ module d5power
                 }
             }
             this._playFrame++;
-            
+            this.updatePos(this._offX,this._offY);
             /*
             if(this._data.action == d5power.Actions.Attack)
             {
