@@ -9,6 +9,10 @@ module d5power
         private static BIN_ALPHA_VALUE:number = 2;
         private static BIN_CAN_VALUE:number = 1;
         private static BIN_NO_VALUE:number = 0;
+
+        /**
+         * 地砖池，用于地砖重用
+         */
         private static _tilePool:Array<egret.Bitmap>=new Array<egret.Bitmap>();
         private static rebuildPool(num:number):void
         {
@@ -22,12 +26,19 @@ module d5power
             //console.log("[BaseMap] there are ",num,"tiles in pool.");
         }
 
+        /**
+         * 将地砖回收至地砖池
+         * @param data 需要回收的地砖
+         */
         private static back2pool(data:egret.Bitmap):void
         {
             if(BaseMap._tilePool.indexOf(data)==-1) BaseMap._tilePool.push(data);
             //console.log("[BaseMap] 1 tiles get home.there are ",BaseMap._tilePool.length,"tiles in pool.");
         }
 
+        /**
+         * 获取一个地砖
+         */
         private static getTile():egret.Bitmap
         {
             var data:egret.Bitmap;
@@ -37,33 +48,88 @@ module d5power
             return data;
         }
 
+        /**
+         * 地图编号
+         */
         private _mapid:number;
+        /**
+         * 地图宽度
+         */
         private _mapWidth:number;
+        /**
+         * 地图高度
+         */
         private _mapHeight:number;
+        /**
+         * 地砖宽度
+         */
         private _tileW:number;
+        /**
+         * 地砖高度
+         */
         private _tileH:number;
+        /**
+         * 地图加载完成后的处理
+         */
         private _onReady:Function;
+        /**
+         * 地图准备完成后的处理目标对象
+         */
         private _onReadyThis:any;
+        /**
+         * 
+         */
         private _mapResource:any;
+        /**
+         * 区块文件格式
+         */
         private _tileFormat:string='.jpg';
+        /**
+         * 临时点数据处理，用于输出
+         */
         private _tempPoint:egret.Point;
+        /**
+         * 循环贴图
+         */
         private _loopBg:egret.Texture;
 
+        /**
+         * 路点宽度
+         */
         private _roadW:number = 60;
+        /**
+         * 路点高度
+         */
         private _roadH:number = 30;
 
-
+        /**
+         * 小地图
+         */
         private _smallMap:egret.SpriteSheet;
+        /**
+         * 路点序列
+         */
         private _roadArr:Array<any>;
+        /**
+         * 透视序列
+         */
         private _alphaArr:Array<any>;
 
         /**
-         * 显示区域区块数量
+         * 显示区域区块数量x方向
          */
         private _areaX:number;
+        /**
+         * 显示区域区块数量y方向
+         */
         private _areaY:number;
-
+        /**
+         * 当前渲染的起始区块x
+         */
         private _nowStartX:number=-1;
+        /**
+         * 当前渲染的起始区块y
+         */
         private _nowStartY:number=-1;
         /**
          * 当前屏幕正在渲染的坐标记录
@@ -75,14 +141,34 @@ module d5power
          */
         private _dbuffer:egret.DisplayObjectContainer;
 
+        /**
+         * 二叉堆优化的a*寻路
+         */
         private _astar:SilzAstar;
 
-
+        /**
+         * 游戏对象管理器
+         */
+        private _gameObjectManager:IGameObjectManager;
+        
+        /**
+         * 当前地图的配置
+         */
+        private _data:any;
 
         public constructor() {
             this._tempPoint = new egret.Point();
         }
 
+        /**
+         * 临时创建一个循环地砖的地图
+         * @param id 地图编号
+         * @param bg 循环地砖素材
+         * @param callback 准备完成后的触发函数
+         * @param thisobj 触发函数的对象引用
+         * @param blockw 区块宽度
+         * @param blockh 区块高度
+         */
         public createLoop(id:number,bg:string,callback:Function,thisobj:any,blockw:number = 10,blockh:number=10):void
         {
             var that:BaseMap = this;
@@ -105,10 +191,17 @@ module d5power
             },this);
         }
 
+        /**
+         * 进入一个地图
+         * @param id 地图编号
+         * @param callback 地图准备完成后的触发函数
+         * @param thisobj 地图准备完成后的触发函数的处理对象
+         */
         public enter(id:number,callback:Function,thisobj:any):void{
 
             var that:BaseMap = this;
             RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + "/tiles/" + id + "/mapconf.json", function(data:any){
+                this._data = data;
                 that.setup(
                     parseInt(data.id),
                     parseInt(data.mapW),
@@ -121,10 +214,17 @@ module d5power
             }, this);
         }
 
+        /**
+         * 地图编号
+         */
         public get id():number {
             return this._mapid;
         }
 
+        /**
+         * 设置主容器
+         * @param container 主容器
+         */
         public setContainer(container:egret.DisplayObjectContainer):void
         {
             if(container==this._dbuffer) return;
@@ -135,13 +235,26 @@ module d5power
             }
             this._dbuffer = container;
         }
-
+        /**
+         * 设置区块格式
+         * @param s 区块格式
+         */
         public setTileFormat(s:string):void
         {
             if(s.substr(0,1)!='.') s = "."+s;
             this._tileFormat = s;
         }
 
+        /**
+         * 构建一个新的地图
+         * @param id 地图编号
+         * @param w 地图尺寸宽
+         * @param h 地图尺寸高
+         * @param tw 区块尺寸高
+         * @param th 区块尺寸宽
+         * @param onReady 地图准备完成后的回叫函数
+         * @param onReadyThis this
+         */
         public setup(id:number, w:number, h:number, tw:number, th:number, onReady:Function, onReadyThis:any):void {
             this._mapid = id;
             this._mapHeight = h;
@@ -164,6 +277,11 @@ module d5power
             RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/s.jpg', onSmallMapLoaded, this);
         }
 
+        /**
+         * 
+         * @param smallW 
+         * @param smallH 
+         */
         private createSmallData(smallW:number,smallH:number):void
         {
             var smallWidth:number = smallW/(this._mapWidth/this._tileW);
@@ -428,6 +546,13 @@ module d5power
 
 
             this._astar = new SilzAstar(this._roadArr);
+
+            var length:number = this._data.npc.length;
+            for(var i:number = 0;i < length;i++) {
+                var npconf:NPConf = new NPConf();
+                npconf.format(this._data.npc[i]);
+                this._gameObjectManager.addNPC(npconf);
+            }
 
             if (this._onReady != null) {
                 this._onReady.apply(this._onReadyThis);

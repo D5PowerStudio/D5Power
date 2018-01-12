@@ -33,8 +33,17 @@ module d5power
      */
     export class ThreeBase
     {
+        /**
+         * 三元数据的含义
+         */
         public type:number;
+        /**
+         * 三元数据的数据根
+         */
         public key:string;
+        /**
+         * 三元数据的数据量
+         */
         public count:number;
         
     }
