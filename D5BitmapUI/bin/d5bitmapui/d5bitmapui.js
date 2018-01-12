@@ -1,8 +1,16 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2014-2015, MicroGame Technology Inc.
@@ -497,19 +505,20 @@ var d5power;
             this.removeEventListener(egret.Event.ENTER_FRAME, this.onAutoCache, this);
             this.cacheAsBitmap = true;
         };
+        D5Component.MOVE_NUMBER = 10;
+        D5Component.MOVE_NONE = 0;
+        D5Component.MOVE_LEFT = 1;
+        D5Component.MOVE_RIGHT = 2;
+        D5Component.MOVE_DOWN = 3;
+        D5Component.MOVE_UP = 4;
+        D5Component.MOVE_ALPHA = 5;
+        D5Component.autoRelease = false;
+        D5Component._preloadList = {};
+        D5Component._moveList = [];
         return D5Component;
     }(egret.Sprite));
-    D5Component.MOVE_NUMBER = 10;
-    D5Component.MOVE_NONE = 0;
-    D5Component.MOVE_LEFT = 1;
-    D5Component.MOVE_RIGHT = 2;
-    D5Component.MOVE_DOWN = 3;
-    D5Component.MOVE_UP = 4;
-    D5Component.MOVE_ALPHA = 5;
-    D5Component.autoRelease = false;
-    D5Component._preloadList = {};
-    D5Component._moveList = [];
     d5power.D5Component = D5Component;
+    __reflect(D5Component.prototype, "d5power.D5Component");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -665,11 +674,12 @@ var d5power;
             this._editorBG.graphics.drawRect(0, 0, this._maxWidth, this._usedHeight < 20 ? 20 : this._usedHeight);
             this._editorBG.graphics.endFill();
         };
+        D5FlyBox.LEFT = 0;
+        D5FlyBox.CENTER = 1;
         return D5FlyBox;
     }(d5power.D5Component));
-    D5FlyBox.LEFT = 0;
-    D5FlyBox.CENTER = 1;
     d5power.D5FlyBox = D5FlyBox;
+    __reflect(D5FlyBox.prototype, "d5power.D5FlyBox");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -903,6 +913,7 @@ var d5power;
         return D5MirrorBox;
     }(d5power.D5Component));
     d5power.D5MirrorBox = D5MirrorBox;
+    __reflect(D5MirrorBox.prototype, "d5power.D5MirrorBox");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1377,16 +1388,17 @@ var d5power;
                 this._textField = null;
             }
         };
+        D5Text.LEFT = 0;
+        D5Text.CENTER = 1;
+        D5Text.RIGHT = 2;
+        D5Text.TOP = 0;
+        D5Text.MIDDLE = 1;
+        D5Text.BOTTOM = 2;
+        D5Text.AUTO_PADDING = 3;
         return D5Text;
     }(d5power.D5Component));
-    D5Text.LEFT = 0;
-    D5Text.CENTER = 1;
-    D5Text.RIGHT = 2;
-    D5Text.TOP = 0;
-    D5Text.MIDDLE = 1;
-    D5Text.BOTTOM = 2;
-    D5Text.AUTO_PADDING = 3;
     d5power.D5Text = D5Text;
+    __reflect(D5Text.prototype, "d5power.D5Text", ["d5power.IProBindingSupport"]);
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1457,11 +1469,13 @@ var d5power;
             if (url != "") {
                 this._url = url;
                 this.addParticle();
+                //this.addEventListener(egret.Event.COMPLETE,this.over,this);
             }
         };
         D5ImageBox.prototype.removeLogo = function () {
             if (this._logo && this.contains(this._logo)) {
                 this.removeChild(this._logo);
+                //this._logo = null;
             }
         };
         D5ImageBox.prototype.draw = function () {
@@ -1557,10 +1571,11 @@ var d5power;
                 this.numShower = null;
             }
         };
+        D5ImageBox._resourceLib = {};
         return D5ImageBox;
     }(d5power.D5MirrorBox));
-    D5ImageBox._resourceLib = {};
     d5power.D5ImageBox = D5ImageBox;
+    __reflect(D5ImageBox.prototype, "d5power.D5ImageBox");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1732,10 +1747,11 @@ var d5power;
                 return;
             this.drawNumber(Math.floor(this._nowValue) + '');
         };
+        D5BitmapNumber._pool = [];
         return D5BitmapNumber;
     }(d5power.D5Component));
-    D5BitmapNumber._pool = [];
     d5power.D5BitmapNumber = D5BitmapNumber;
+    __reflect(D5BitmapNumber.prototype, "d5power.D5BitmapNumber");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1831,8 +1847,10 @@ var d5power;
                 this.addChild(this._lable);
             }
             this._lable.setText(lab);
-            this._lable.setWidth(lab.length * d5power.D5Style.default_btn_lable_size);
-            this._lable.setHeight(d5power.D5Style.default_btn_lable_size);
+            this._lable.autoGrow();
+            //this._lable.setWidth(lab.length * d5power.D5Style.default_btn_lable_size);
+            //this._lable.setHeight(d5power.D5Style.default_btn_lable_size);
+            this.autoLableSize();
         };
         D5Button.prototype.autoLableSize = function () {
             if (this._lable == null || this.a == null)
@@ -2018,6 +2036,7 @@ var d5power;
         return D5Button;
     }(d5power.D5Component));
     d5power.D5Button = D5Button;
+    __reflect(D5Button.prototype, "d5power.D5Button");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2217,11 +2236,12 @@ var d5power;
             this.graphics.endFill();
             this._lastRender = t;
         };
+        D5CDdisplayer.CIRCLE = 0;
+        D5CDdisplayer.RECT = 1;
         return D5CDdisplayer;
     }(d5power.D5Component));
-    D5CDdisplayer.CIRCLE = 0;
-    D5CDdisplayer.RECT = 1;
     d5power.D5CDdisplayer = D5CDdisplayer;
+    __reflect(D5CDdisplayer.prototype, "d5power.D5CDdisplayer");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2390,6 +2410,7 @@ var d5power;
         return D5ButtonGroup;
     }(d5power.D5FlyBox));
     d5power.D5ButtonGroup = D5ButtonGroup;
+    __reflect(D5ButtonGroup.prototype, "d5power.D5ButtonGroup");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2521,6 +2542,7 @@ var d5power;
         return D5HBox;
     }(d5power.D5Component));
     d5power.D5HBox = D5HBox;
+    __reflect(D5HBox.prototype, "d5power.D5HBox");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2769,6 +2791,7 @@ var d5power;
         return D5List;
     }(d5power.D5Component));
     d5power.D5List = D5List;
+    __reflect(D5List.prototype, "d5power.D5List");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -2853,6 +2876,7 @@ var d5power;
         return D5Loop;
     }(d5power.D5Component));
     d5power.D5Loop = D5Loop;
+    __reflect(D5Loop.prototype, "d5power.D5Loop");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3033,6 +3057,7 @@ var d5power;
         return D5MirrorLoop;
     }(d5power.D5Component));
     d5power.D5MirrorLoop = D5MirrorLoop;
+    __reflect(D5MirrorLoop.prototype, "d5power.D5MirrorLoop");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3207,10 +3232,11 @@ var d5power;
                 D5RadioBtn.disposeLib(this._groupName);
             }
         };
+        D5RadioBtn._radioLib = [];
         return D5RadioBtn;
     }(d5power.D5Component));
-    D5RadioBtn._radioLib = [];
     d5power.D5RadioBtn = D5RadioBtn;
+    __reflect(D5RadioBtn.prototype, "d5power.D5RadioBtn");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3491,21 +3517,22 @@ var d5power;
                 this._shape = null;
             }
         };
+        /**
+         * 工作模式矩形
+         */
+        D5Shape.RECT = 0;
+        /**
+         * 工作模式圆
+         */
+        D5Shape.CIRCLE = 1;
+        /**
+         * 自定义填充
+         */
+        D5Shape.CUSTOM = 2;
         return D5Shape;
     }(d5power.D5Component));
-    /**
-     * 工作模式矩形
-     */
-    D5Shape.RECT = 0;
-    /**
-     * 工作模式圆
-     */
-    D5Shape.CIRCLE = 1;
-    /**
-     * 自定义填充
-     */
-    D5Shape.CUSTOM = 2;
     d5power.D5Shape = D5Shape;
+    __reflect(D5Shape.prototype, "d5power.D5Shape");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3667,6 +3694,7 @@ var d5power;
         return D5SliderButton;
     }(d5power.D5Component));
     d5power.D5SliderButton = D5SliderButton;
+    __reflect(D5SliderButton.prototype, "d5power.D5SliderButton");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3701,29 +3729,30 @@ var d5power;
     var D5Style = (function () {
         function D5Style() {
         }
+        /**
+         * 默认Lable颜色
+         */
+        D5Style.default_lable_color = 0xffffff;
+        /**
+         * 默认按钮文字描边颜色
+         */
+        D5Style.default_btn_lable_border = -1;
+        /**
+         * 默认按钮文字大小
+         */
+        D5Style.default_btn_lable_size = 18;
+        /**
+         * 默认按钮文字是否加粗
+         */
+        D5Style.default_btn_lable_bold = false;
+        /**
+         * UI控件是否自动释放
+         */
+        D5Style.autoRelease = false;
         return D5Style;
     }());
-    /**
-     * 默认Lable颜色
-     */
-    D5Style.default_lable_color = 0xffffff;
-    /**
-     * 默认按钮文字描边颜色
-     */
-    D5Style.default_btn_lable_border = -1;
-    /**
-     * 默认按钮文字大小
-     */
-    D5Style.default_btn_lable_size = 18;
-    /**
-     * 默认按钮文字是否加粗
-     */
-    D5Style.default_btn_lable_bold = false;
-    /**
-     * UI控件是否自动释放
-     */
-    D5Style.autoRelease = false;
     d5power.D5Style = D5Style;
+    __reflect(D5Style.prototype, "d5power.D5Style");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3850,6 +3879,7 @@ var d5power;
         return D5Swf;
     }(d5power.D5Component));
     d5power.D5Swf = D5Swf;
+    __reflect(D5Swf.prototype, "d5power.D5Swf", ["d5power.ISpriteSheetWaiter"]);
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3982,6 +4012,7 @@ var d5power;
         return D5Bitmap;
     }(d5power.D5Component));
     d5power.D5Bitmap = D5Bitmap;
+    __reflect(D5Bitmap.prototype, "d5power.D5Bitmap");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4111,6 +4142,7 @@ var d5power;
         return D5HoverText;
     }(d5power.D5Text));
     d5power.D5HoverText = D5HoverText;
+    __reflect(D5HoverText.prototype, "d5power.D5HoverText");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4233,6 +4265,7 @@ var d5power;
         return D5UILoader;
     }(egret.Sprite));
     d5power.D5UILoader = D5UILoader;
+    __reflect(D5UILoader.prototype, "d5power.D5UILoader", ["d5power.IUserInfoDisplayer", "d5power.IProBindingContainer"]);
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4335,6 +4368,7 @@ var d5power;
                 ypos += this._padding;
                 this._h += child.height;
                 this._w = Math.max(this._w, child.width);
+                //console.info("[D5VBOX]"+child.x+"||"+child.y);
             }
             this._h += this._padding * (this.numChildren - 1);
             this.dispatchEvent(new egret.Event(egret.Event.RESIZE));
@@ -4356,6 +4390,7 @@ var d5power;
         return D5VBox;
     }(d5power.D5Component));
     d5power.D5VBox = D5VBox;
+    __reflect(D5VBox.prototype, "d5power.D5VBox");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4557,6 +4592,7 @@ var d5power;
         return D5Window;
     }(d5power.D5Component));
     d5power.D5Window = D5Window;
+    __reflect(D5Window.prototype, "d5power.D5Window");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4627,4 +4663,5 @@ var d5power;
         return ListCell;
     }(egret.Sprite));
     d5power.ListCell = ListCell;
+    __reflect(ListCell.prototype, "d5power.ListCell");
 })(d5power || (d5power = {}));

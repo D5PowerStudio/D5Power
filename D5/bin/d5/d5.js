@@ -1,7 +1,12 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
 };
 var d5power;
 (function (d5power) {
@@ -78,619 +83,7 @@ var d5power;
         return GameObject;
     }());
     d5power.GameObject = GameObject;
-})(d5power || (d5power = {}));
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-2015, MicroGame Technology Inc.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
-var d5power;
-(function (d5power) {
-    var GMath = (function () {
-        function GMath() {
-        }
-        /**
-         * 获取某点的夹角
-         * 返回为弧度值
-         */
-        GMath.getPointAngle = function (x, y) {
-            return Math.atan2(y, x);
-        };
-        /**
-         * 弧度转角度
-         */
-        GMath.R2A = function (r) {
-            return r * GMath.K_R2A;
-        };
-        /**
-         * 角度转弧度
-         */
-        GMath.A2R = function (a) {
-            if (a === void 0) { a = 0; }
-            return a * GMath.K_A2R;
-        };
-        return GMath;
-    }());
-    GMath.K_R2A = 180 / Math.PI;
-    GMath.K_A2R = Math.PI / 180;
-    d5power.GMath = GMath;
-})(d5power || (d5power = {}));
-var d5power;
-(function (d5power) {
-    var D5Event = (function () {
-        function D5Event() {
-        }
-        return D5Event;
-    }());
-    d5power.D5Event = D5Event;
-})(d5power || (d5power = {}));
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-2015, MicroGame Technology Inc.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
-var d5power;
-(function (d5power) {
-    var Actions = (function () {
-        function Actions() {
-        }
-        return Actions;
-    }());
-    /**
-     * 特殊状态：复活
-     */
-    Actions.RELIVE = -1;
-    /**
-     * Stop 停止
-     * */
-    Actions.Stop = 8;
-    /**
-     * Run 跑动
-     * */
-    Actions.Run = 1;
-    /**
-     * Sing 施法攻击
-     * */
-    Actions.Sing = 2;
-    /**
-     * Attack 物理攻击
-     * */
-    Actions.Attack = 2;
-    /**
-     * 弓箭攻击
-     * */
-    Actions.BowAtk = 3;
-    /**
-     * 坐下
-     */
-    Actions.Sit = 4;
-    /**
-     * 死亡
-     */
-    Actions.Die = 5;
-    /**
-     * 拾取
-     */
-    Actions.Pickup = 6;
-    /**
-     * 被攻击
-     */
-    Actions.BeAtk = 7;
-    /**
-     * 等待（备战）
-     */
-    Actions.Wait = 8;
-    d5power.Actions = Actions;
-})(d5power || (d5power = {}));
-var d5power;
-(function (d5power) {
-    var BaseMap = (function () {
-        function BaseMap() {
-            this._tileFormat = '.jpg';
-            this._roadW = 60;
-            this._roadH = 30;
-            this._nowStartX = -1;
-            this._nowStartY = -1;
-            this._nowName = '';
-            this._tempPoint = new egret.Point();
-        }
-        BaseMap.rebuildPool = function (num) {
-            if (BaseMap._tilePool.length > num) {
-                while (BaseMap._tilePool.length > num)
-                    BaseMap._tilePool.pop();
-            }
-            else {
-                while (BaseMap._tilePool.length < num)
-                    BaseMap._tilePool.push(new egret.Bitmap());
-            }
-            //console.log("[BaseMap] there are ",num,"tiles in pool.");
-        };
-        BaseMap.back2pool = function (data) {
-            if (BaseMap._tilePool.indexOf(data) == -1)
-                BaseMap._tilePool.push(data);
-            //console.log("[BaseMap] 1 tiles get home.there are ",BaseMap._tilePool.length,"tiles in pool.");
-        };
-        BaseMap.getTile = function () {
-            var data;
-            data = BaseMap._tilePool.length ? BaseMap._tilePool.pop() : new egret.Bitmap();
-            //console.log("[BaseMap] pop 1 tiles.there are ",BaseMap._tilePool.length,"tiles in pool.");
-            data.texture = null;
-            return data;
-        };
-        BaseMap.prototype.createLoop = function (id, bg, callback, thisobj, blockw, blockh) {
-            if (blockw === void 0) { blockw = 10; }
-            if (blockh === void 0) { blockh = 10; }
-            var that = this;
-            RES.getResByUrl(bg, function (data) {
-                that._mapid = id;
-                that._tileW = data.textureWidth;
-                that._tileH = data.textureHeight;
-                that._mapHeight = this._tileH * blockh;
-                that._mapWidth = this._tileW * blockw;
-                that._onReady = callback;
-                that._onReadyThis = thisobj;
-                that._nowStartX = -1;
-                that._nowStartY = -1;
-                that._loopBg = data;
-                that.setupRoad(null);
-            }, this);
-        };
-        BaseMap.prototype.enter = function (id, callback, thisobj) {
-            var that = this;
-            RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + "/tiles/" + id + "/mapconf.json", function (data) {
-                that.setup(parseInt(data.id), parseInt(data.mapW), parseInt(data.mapH), parseInt(data.tileX), parseInt(data.tileY), callback, thisobj);
-            }, this);
-        };
-        Object.defineProperty(BaseMap.prototype, "id", {
-            get: function () {
-                return this._mapid;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        BaseMap.prototype.setContainer = function (container) {
-            if (container == this._dbuffer)
-                return;
-            if (this._dbuffer != null) {
-                this._dbuffer.removeChildren();
-                if (this._dbuffer.parent)
-                    this._dbuffer.parent.removeChild(this._dbuffer);
-            }
-            this._dbuffer = container;
-        };
-        BaseMap.prototype.setTileFormat = function (s) {
-            if (s.substr(0, 1) != '.')
-                s = "." + s;
-            this._tileFormat = s;
-        };
-        BaseMap.prototype.setup = function (id, w, h, tw, th, onReady, onReadyThis) {
-            this._mapid = id;
-            this._mapHeight = h;
-            this._mapWidth = w;
-            this._tileW = tw;
-            this._tileH = th;
-            this._onReady = onReady;
-            this._onReadyThis = onReadyThis;
-            this._nowStartX = -1;
-            this._nowStartY = -1;
-            var that = this;
-            var onSmallMapLoaded = function (data) {
-                that._smallMap = new egret.SpriteSheet(data);
-                that.createSmallData(data.textureWidth, data.textureHeight);
-                RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/roadmap.bin', this.setupRoad, this, RES.ResourceItem.TYPE_BIN);
-            };
-            RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/s.jpg', onSmallMapLoaded, this);
-        };
-        BaseMap.prototype.createSmallData = function (smallW, smallH) {
-            var smallWidth = smallW / (this._mapWidth / this._tileW);
-            var smallHeight = smallH / (this._mapHeight / this._tileH);
-            var i;
-            var l;
-            for (l = 0; l < this._mapWidth / this._tileW; l++) {
-                for (i = 0; i < this._mapHeight / this._tileH; i++) {
-                    this._smallMap.createTexture('small' + l + '_' + i, i * smallWidth, l * smallHeight, smallWidth, smallHeight, 0, 0);
-                }
-            }
-        };
-        Object.defineProperty(BaseMap.prototype, "width", {
-            get: function () {
-                return this._mapWidth;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(BaseMap.prototype, "height", {
-            get: function () {
-                return this._mapHeight;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(BaseMap.prototype, "tileWidth", {
-            get: function () {
-                return this._tileW;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(BaseMap.prototype, "tileHeight", {
-            get: function () {
-                return this._tileH;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(BaseMap.prototype, "roadWidth", {
-            get: function () {
-                return this._roadW;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(BaseMap.prototype, "roadHeight", {
-            get: function () {
-                return this._roadH;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        BaseMap.prototype.render = function (flush) {
-            if (flush === void 0) { flush = false; }
-            if (this.mod_buffer) {
-                this.mod_buffer = false;
-                this._dbuffer.cacheAsBitmap = true;
-            }
-            var startx = parseInt((d5power.Camera.zeroX / this._tileW));
-            var starty = parseInt((d5power.Camera.zeroY / this._tileH));
-            this.makeData(startx, starty, flush); // 只有在采用大地图背景的前提下才不断修正数据
-            if (this._nowStartX == startx && this._nowStartY == starty && this._posFlush != null) {
-                var zero_x = d5power.Camera.zeroX % this._tileW;
-                var zero_y = d5power.Camera.zeroY % this._tileH;
-                this._dbuffer.x = -zero_x;
-                this._dbuffer.y = -zero_y;
-            }
-        };
-        BaseMap.prototype.resize = function () {
-            this._areaX = Math.ceil(d5power.D5Game.screenWidth / this._tileW) + 1;
-            this._areaY = Math.ceil(d5power.D5Game.screenHeight / this._tileH) + 1;
-            console.log("[D5Game] max tiles number ", this._areaX, this._areaY);
-            BaseMap.rebuildPool(this._areaX * this._areaY + this._areaX + this._areaY);
-        };
-        /**
-         * 重置地图数据
-         */
-        BaseMap.prototype.resetRoad = function () {
-            this._roadArr = [];
-            this._alphaArr = [];
-            // 定义临时地图数据
-            var h = Math.floor(this._mapHeight / this._roadH);
-            var w = Math.floor(this._mapWidth / this._roadW);
-            for (var y = 0; y < h; y++) {
-                var arr = new Array();
-                var arr2 = new Array();
-                for (var x = 0; x < w; x++) {
-                    arr.push(0);
-                    arr2.push(0);
-                }
-                this._roadArr.push(arr);
-                this._alphaArr.push(arr2);
-            }
-        };
-        /**
-         * 设置地图数据
-         * @param data
-         */
-        BaseMap.prototype.setRoad = function (data) {
-            this._roadArr = data;
-        };
-        BaseMap.prototype.isInAlphaArea = function (px, py) {
-            var tile = this.Postion2Tile(px, py);
-            return this._alphaArr[tile.y] && this._alphaArr[tile.y][tile.x] == BaseMap.BIN_ALPHA_VALUE;
-        };
-        /**
-         * 尝试寻找周围可以通过的位置
-         * 进行若干次尝试，如果没有发现，则返回null，请注意容错判断
-         */
-        BaseMap.prototype.getPointAround = function (center, from, r) {
-            if (!center || !from)
-                return null;
-            var i = 0;
-            var max = 5;
-            var step = Math.PI * 2 / max;
-            var gotoP = new egret.Point();
-            var angle = d5power.GMath.getPointAngle(center.x - from.x, center.y - from.y) + (Math.random() > .5 ? 1 : -1) * Math.PI / 8;
-            while (i < max) {
-                var n = step * i + angle;
-                gotoP.x = Math.round(center.x - r * Math.cos(n));
-                gotoP.y = Math.round(center.y - r * Math.sin(n));
-                if (this.PointCanMove(gotoP, from)) {
-                    return gotoP;
-                }
-                i++;
-            }
-            return null;
-        };
-        BaseMap.prototype.PointCanMove = function (p, n) {
-            if (this._astar == null)
-                return true;
-            var nodeArr = this._astar.find(n.x, n.y, p.x, p.y);
-            return nodeArr != null;
-        };
-        BaseMap.prototype.getRoadPass = function (px, py) {
-            if (this._roadArr[py] == null || this._roadArr[py][px] != 0)
-                return false;
-            return true;
-        };
-        BaseMap.prototype.findPath = function (fromx, fromy, tox, toy) {
-            return this._astar == null ? null : this._astar.find(fromx, fromy, tox, toy);
-        };
-        /**
-         * 根据屏幕某点坐标获取其在世界（全地图）内的坐标
-         */
-        BaseMap.prototype.getWorldPostion = function (x, y) {
-            this._tempPoint.x = d5power.Camera.zeroX + x;
-            this._tempPoint.y = d5power.Camera.zeroY + y;
-            return this._tempPoint;
-        };
-        /**
-         * 根据世界坐标获取在屏幕内的坐标
-         */
-        BaseMap.prototype.getScreenPostion = function (x, y) {
-            this._tempPoint.x = x - d5power.Camera.zeroX;
-            this._tempPoint.y = y - d5power.Camera.zeroY;
-            return this._tempPoint;
-        };
-        /**
-         * 根据路点获得世界（全地图）内的坐标
-         */
-        BaseMap.prototype.tile2WorldPostion = function (x, y) {
-            this._tempPoint.x = x * this._roadW + this._roadW * .5;
-            this._tempPoint.y = y * this._roadH + this._roadH * .5;
-            return this._tempPoint;
-        };
-        /**
-         * 世界地图到路点的转换
-         */
-        BaseMap.prototype.Postion2Tile = function (px, py) {
-            this._tempPoint.x = Math.floor(px / this._roadW);
-            this._tempPoint.y = Math.floor(py / this._roadH);
-            return this._tempPoint;
-        };
-        BaseMap.prototype.reset = function () {
-            this._tempPoint = new egret.Point();
-            this._mapResource = { tiles: new Object() };
-            if (this._dbuffer)
-                this._dbuffer.removeChildren();
-            //            this._tiledResource = {};
-        };
-        /**
-         * 设置路点。至此，地图准备完毕，通知主程序开始渲染
-         * @param data
-         */
-        BaseMap.prototype.setupRoad = function (res) {
-            if (res == null || res == undefined) {
-                this.resetRoad();
-            }
-            else {
-                var data = new egret.ByteArray();
-                //data.setArrayBuffer(res);
-                data['_setArrayBuffer'](res);
-                var sign = data.readUTFBytes(5);
-                var value;
-                var px = 0;
-                var py = 0;
-                if (sign == 'D5Map') {
-                    py = data.readShort();
-                    px = data.readShort();
-                    var resmap = [];
-                    for (var y = 0; y < py; y++) {
-                        var temp = [];
-                        for (var x = 0; x < px; x++) {
-                            temp.push(data.readByte());
-                        }
-                        resmap.push(temp);
-                    }
-                    this.resetRoad();
-                    if (px > 1) {
-                        var h = Math.floor(this._mapHeight / this._roadH);
-                        var w = Math.floor(this._mapWidth / this._roadW);
-                        var k = w == px && h == py ? 1 : py / h;
-                        for (y = 0; y < h; y++) {
-                            for (x = 0; x < w; x++) {
-                                try {
-                                    py = Math.floor(y * k);
-                                    px = Math.floor(x * k);
-                                    value = resmap[py][px];
-                                    this._roadArr[y][x] = value == BaseMap.BIN_NO_VALUE ? 1 : 0;
-                                    this._alphaArr[y][x] = value;
-                                }
-                                catch (e) {
-                                    trace("［BaseMap］路点超出范围Y:X(" + y + ":" + x + ")", py, px);
-                                    this._roadArr[y][x] = BaseMap.BIN_NO_VALUE;
-                                    this._alphaArr[y][x] = BaseMap.BIN_NO_VALUE;
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    console.log("[BaseMap]非法的地图配置文件");
-                }
-            }
-            this.reset();
-            this.resize();
-            this._astar = new d5power.SilzAstar(this._roadArr);
-            if (this._onReady != null) {
-                this._onReady.apply(this._onReadyThis);
-            }
-        };
-        BaseMap.prototype.makeData = function (startx, starty, flush) {
-            if (this._nowStartX == startx && this._nowStartY == starty)
-                return;
-            this._nowStartX = startx;
-            this._nowStartY = starty;
-            this._posFlush = [];
-            for (var i = 0, j = this._dbuffer.numChildren; i < j; i++) {
-                this._dbuffer.getChildAt(i).texture = null;
-            }
-            //this.fillSmallMap(startx, starty);
-            var maxY = Math.min(starty + this._areaY, Math.floor(this._mapHeight / this._tileH));
-            var maxX = Math.min(startx + this._areaX, Math.floor(this._mapWidth / this._tileW));
-            var key;
-            for (var y = starty; y < maxY; y++) {
-                for (var x = startx; x < maxX; x++) {
-                    key = y + '_' + x;
-                    if (x < 0 || y < 0) {
-                        continue;
-                    }
-                    else if (this._mapResource.tiles[key] == null) {
-                        if (this._loopBg) {
-                            this.fillTile((x - this._nowStartX), (y - this._nowStartY), this._loopBg);
-                        }
-                        else {
-                            this._posFlush.push(y + '_' + x + '_' + this._nowStartX + '_' + this._nowStartY + '_' + this._mapid);
-                            this.fillSmallMap(y, x, (x - this._nowStartX), (y - this._nowStartY));
-                        }
-                    }
-                    else {
-                        this.fillTile((x - this._nowStartX), (y - this._nowStartY), this._mapResource.tiles[key]);
-                    }
-                }
-            }
-            if (this._loopBg == null)
-                this.loadTiles();
-        };
-        BaseMap.prototype.clear = function () {
-            this._mapResource = { tiles: new Object() };
-            var loop;
-            while (this._dbuffer.numChildren) {
-                loop = this._dbuffer.removeChildAt(0);
-                loop.texture = null;
-                BaseMap.back2pool(loop);
-            }
-            this._nowName = '';
-            this._tileFormat = '.jpg';
-        };
-        BaseMap.prototype.loadTiles = function (data) {
-            if (data === void 0) { data = null; }
-            if (data != null) {
-                var pos = this._nowName.split('_');
-                if (parseInt(pos[4]) != this._mapid) {
-                    console.log("[BaseMap] 读取了已切换了的地图资源");
-                    return;
-                }
-                var tileName = pos[0] + "_" + pos[1];
-                if (this._mapResource.tiles[tileName] == null)
-                    this._mapResource.tiles[tileName] = data;
-                // 若加载后位置已变更，则只存储不渲染
-                var tx = parseInt(pos[1]) - this._nowStartX;
-                var ty = parseInt(pos[0]) - this._nowStartY;
-                if (parseInt(pos[2]) == this._nowStartX && parseInt(pos[3]) == this._nowStartY) {
-                    this.fillTile(tx, ty, data);
-                }
-                this._nowName = '';
-            }
-            if (this._posFlush.length == 0) {
-                this._dbuffer.cacheAsBitmap = false;
-                this.mod_buffer = true;
-            }
-            else if (this._nowName == '') {
-                this._nowName = this._posFlush.pop();
-                var pos = this._nowName.split('_');
-                var name = d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + "/tiles/" + this._mapid + "/" + pos[0] + "_" + pos[1] + this._tileFormat;
-                RES.getResByUrl(name, this.loadTiles, this);
-            }
-        };
-        BaseMap.prototype.fillTile = function (tx, ty, data) {
-            var bitmap = this._dbuffer.getChildByName(tx + "_" + ty);
-            if (bitmap == null) {
-                bitmap = BaseMap.getTile();
-                bitmap.x = tx * this._tileW;
-                bitmap.y = ty * this._tileH;
-                bitmap.name = tx + "_" + ty;
-                this._dbuffer.addChild(bitmap);
-            }
-            bitmap.texture = data;
-            this._dbuffer.cacheAsBitmap = true;
-        };
-        /**
-         * 绘制小地图
-         */
-        BaseMap.prototype.fillSmallMap = function (startX, startY, tx, ty) {
-            if (this._smallMap) {
-                var data = this._smallMap.getTexture('small' + startX + '_' + startY);
-                var bitmap = this._dbuffer.getChildByName(tx + "_" + ty);
-                if (bitmap == null) {
-                    bitmap = BaseMap.getTile();
-                    bitmap.x = tx * this._tileW;
-                    bitmap.y = ty * this._tileH;
-                    bitmap.fillMode = egret.BitmapFillMode.SCALE;
-                    bitmap.name = tx + "_" + ty;
-                    this._dbuffer.addChild(bitmap);
-                }
-                bitmap.texture = data;
-                bitmap.width = this._tileW;
-                bitmap.height = this._tileH;
-                this._dbuffer.cacheAsBitmap = true;
-            }
-        };
-        return BaseMap;
-    }());
-    /**
-     * 在二进制文件中，由于需要1个字节表示多个状态。因此采用大于0的值表示可通过
-     * 在导入后进行了转义
-     */
-    BaseMap.BIN_ALPHA_VALUE = 2;
-    BaseMap.BIN_CAN_VALUE = 1;
-    BaseMap.BIN_NO_VALUE = 0;
-    BaseMap._tilePool = new Array();
-    d5power.BaseMap = BaseMap;
+    __reflect(GameObject.prototype, "d5power.GameObject", ["d5power.IGD"]);
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -912,15 +305,1112 @@ var d5power;
             }
             */
         };
+        Camera.zeroX = 0;
+        Camera.zeroY = 0;
+        /**
+         * 分布渲染时间限制。每次渲染的最大允许占用时间，单位毫秒
+         */
+        Camera.RenderMaxTime = 10;
         return Camera;
     }());
-    Camera.zeroX = 0;
-    Camera.zeroY = 0;
-    /**
-     * 分布渲染时间限制。每次渲染的最大允许占用时间，单位毫秒
-     */
-    Camera.RenderMaxTime = 10;
     d5power.Camera = Camera;
+    __reflect(Camera.prototype, "d5power.Camera");
+})(d5power || (d5power = {}));
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-2015, MicroGame Technology Inc.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
+var d5power;
+(function (d5power) {
+    /**
+     * 三元数据
+     */
+    var ThreeBase = (function () {
+        function ThreeBase() {
+        }
+        return ThreeBase;
+    }());
+    d5power.ThreeBase = ThreeBase;
+    __reflect(ThreeBase.prototype, "d5power.ThreeBase");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    /**
+     * 地图中的NPC配置
+     */
+    var NPConf = (function () {
+        function NPConf() {
+        }
+        NPConf.prototype.format = function (obj) {
+            this.id = obj.uid;
+            this.name = obj.name;
+            this.posx = obj.posx;
+            this.posy = obj.posy;
+            this.say = obj.say;
+            this.script = obj.script;
+            if (obj.job != null) {
+                this.job = new d5power.ThreeBase();
+                this.job.type = obj.job.type;
+                this.job.key = obj.job.value;
+                this.job.count = obj.job.num;
+            }
+        };
+        return NPConf;
+    }());
+    d5power.NPConf = NPConf;
+    __reflect(NPConf.prototype, "d5power.NPConf");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    var DisplayPluginData = (function () {
+        function DisplayPluginData() {
+        }
+        return DisplayPluginData;
+    }());
+    d5power.DisplayPluginData = DisplayPluginData;
+    __reflect(DisplayPluginData.prototype, "d5power.DisplayPluginData");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    var ItemData = (function () {
+        function ItemData() {
+            this.id = 0;
+            this.name = '';
+            this.info = '';
+            this.buy = 0;
+            this.sale = 0;
+            this.canAdd = true;
+        }
+        ItemData.prototype.format = function (obj) {
+            this.id = parseInt(obj.id);
+            this.name = obj.name;
+            this.info = obj.info;
+            this.buy = obj.buy;
+            this.sale = obj.sale;
+            this.canAdd = obj.canAdd;
+        };
+        return ItemData;
+    }());
+    d5power.ItemData = ItemData;
+    __reflect(ItemData.prototype, "d5power.ItemData");
+})(d5power || (d5power = {}));
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-2015, MicroGame Technology Inc.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
+var d5power;
+(function (d5power) {
+    var MissionNR = (function () {
+        function MissionNR() {
+        }
+        /**
+         * 增加用户处理配置
+         */
+        MissionNR.addCostomDefine = function (data) {
+            if (parseInt(data.key) <= MissionNR.SAVE_KEY) {
+                return false;
+            }
+            MissionNR.COSTOM_DEFINE.push(data);
+            return true;
+        };
+        MissionNR.getChinese = function (id) {
+            if (id === void 0) { id = 0; }
+            switch (id) {
+                case MissionNR.N_MONSTER_KILLED:
+                    return '杀死怪物';
+                case MissionNR.N_ITEM_NEED:
+                    return '拥有道具（扣除）';
+                case MissionNR.N_ITEM_TACKED:
+                    return '拥有道具（不扣除）';
+                case MissionNR.N_MISSION:
+                    return '拥有任务';
+                case MissionNR.N_PLAYER_PROP:
+                    return '玩家属性达到';
+                case MissionNR.N_TALK_NPC:
+                    return '与NPC对话';
+                case MissionNR.N_SKILL_LV:
+                    return '技能等级达到';
+                case MissionNR.N_EQU:
+                    return '需要装备';
+                case MissionNR.N_SKIN:
+                    return '需要皮肤';
+                case MissionNR.N_SKILL:
+                    return '需要学会技能';
+                case MissionNR.N_BUFF:
+                    return '需要BUFF状态';
+                case MissionNR.R_ITEM:
+                    return '奖励道具';
+                case MissionNR.R_MONEY:
+                    return '奖励游戏币';
+                case MissionNR.R_EXP:
+                    return '奖励经验';
+                case MissionNR.R_MISSION:
+                    return '奖励任务';
+                default:
+                    var length = MissionNR.COSTOM_DEFINE.length;
+                    for (var i = 0; i < length; i++) {
+                        var data = MissionNR.COSTOM_DEFINE[i];
+                        if (data.type == id)
+                            return data.key;
+                    }
+                    break;
+            }
+            return null;
+        };
+        /**
+         * 系统保存的处理模式
+         */
+        MissionNR.SAVE_KEY = 200;
+        /**
+         * 需求与奖励分割线
+         */
+        MissionNR.N_R_LINE = 100;
+        /**
+         * 杀死怪物
+         */
+        MissionNR.N_MONSTER_KILLED = 0;
+        /**
+         * 拥有物品（不扣除）
+         */
+        MissionNR.N_ITEM_TACKED = 1;
+        /**
+         * 拥有物品（扣除）
+         */
+        MissionNR.N_ITEM_NEED = 2;
+        /**
+         * 拥有任务
+         */
+        MissionNR.N_MISSION = 3;
+        /**
+         * 玩家属性
+         */
+        MissionNR.N_PLAYER_PROP = 4;
+        /**
+         * 与NPC对话
+         */
+        MissionNR.N_TALK_NPC = 5;
+        /**
+         * 需要技能
+         */
+        MissionNR.N_SKILL_LV = 6;
+        /**
+         * 需要主角皮肤
+         */
+        MissionNR.N_SKIN = 7;
+        /**
+         * 需要装备某类型道具
+         */
+        //public static const N_EQU_TYPE:uint = 8;
+        /**
+         * 需要装备某个特定道具
+         */
+        MissionNR.N_EQU = 9;
+        /**
+         * 需要学会技能
+         */
+        MissionNR.N_SKILL = 10;
+        /**
+         * 需要增益
+         */
+        MissionNR.N_BUFF = 11;
+        /**
+         *需要游戏币
+         */
+        MissionNR.N_MONEY = 12;
+        /**
+         *需要标记
+         */
+        MissionNR.N_MARK = 13;
+        /**
+         *拥有游戏币
+         */
+        MissionNR.N_MONEY_KEEP = 14;
+        /**
+         * 奖励道具
+         */
+        MissionNR.R_ITEM = 100;
+        /**
+         * 奖励游戏币
+         */
+        MissionNR.R_MONEY = 101;
+        /**
+         * 奖励经验
+         */
+        MissionNR.R_EXP = 102;
+        /**
+         * 奖励任务
+         */
+        MissionNR.R_MISSION = 103;
+        /**
+         * 奖励属性
+         */
+        MissionNR.R_PLAYER_PROP = 104;
+        /**
+         * 获得技能
+         */
+        MissionNR.R_SKILL = 105;
+        /* !!! 以上内容为D5Rpg内部定义，非必要请不要修改，会影响较多代码 !!! */
+        MissionNR.COSTOM_DEFINE = [];
+        return MissionNR;
+    }());
+    d5power.MissionNR = MissionNR;
+    __reflect(MissionNR.prototype, "d5power.MissionNR");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    /**
+     * 背包道具映射
+     */
+    var PackageItemData = (function () {
+        function PackageItemData() {
+            this.itemid = 0;
+            this.number = 0;
+            this.packageid = 0;
+        }
+        return PackageItemData;
+    }());
+    d5power.PackageItemData = PackageItemData;
+    __reflect(PackageItemData.prototype, "d5power.PackageItemData");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    /**
+     * 单个任务数据
+     */
+    var MissionData = (function () {
+        function MissionData(id) {
+            /**
+             * 是否完成
+             */
+            this.iscomplate = false;
+            this.id = id;
+            this.need = [];
+            this.give = [];
+        }
+        MissionData.prototype.formatFromJSON = function (data) {
+            this.type = data.type;
+            this.name = data.name;
+            this.info = data.info;
+            this.npc_id = data.say;
+            this.npc_id = data.npc;
+            this.uncompDialog = data.uncomp;
+            this.complate_script = data.complateScript;
+            this.complate_script = this.complate_script == null || this.complate_script == 'null' ? '' : this.complate_script;
+            var block;
+            if (this.need == null) {
+                this.need = [];
+                this.give = [];
+            }
+            for (var k in data.need) {
+                var obj = data.need[k];
+                block = new d5power.ThreeBase();
+                block.type = obj.type;
+                block.key = obj.key;
+                block.count = obj.count;
+                this.need.push(block);
+            }
+            for (k in data.give) {
+                obj = data.give[k];
+                block = new d5power.ThreeBase();
+                block.type = obj.type;
+                block.key = obj.key;
+                block.count = obj.count;
+                this.give.push(block);
+            }
+        };
+        Object.defineProperty(MissionData.prototype, "needstring", {
+            get: function () {
+                var needstr = '';
+                for (var k in this.need) {
+                    var need = this.need[k];
+                    needstr += d5power.MissionNR.getChinese(need.type) + "()";
+                }
+                return needstr;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(MissionData.prototype, "isComplate", {
+            /**
+             * 任务是否完成
+             */
+            get: function () {
+                return this.iscomplate;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * 增加完成条件
+         */
+        MissionData.prototype.addNeed = function (need) {
+            if (this.need.indexOf(need) == -1)
+                this.need.push(need);
+        };
+        /**
+         * 增加奖励内容
+         */
+        MissionData.prototype.addGive = function (give) {
+            if (this.give.indexOf(give) == -1)
+                this.give.push(give);
+        };
+        /**
+         * 检查当前任务是否完成
+         */
+        MissionData.prototype.check = function (checker) {
+            this.iscomplate = true;
+            if (this.need != null) {
+                for (var k in this.need) {
+                    var need = this.need[k];
+                    switch (need.type) {
+                        case d5power.MissionNR.N_ITEM_NEED:
+                        case d5power.MissionNR.N_ITEM_TACKED:
+                            this.iscomplate = this.iscomplate && checker.hasItemNum(need.key) >= need.count;
+                            break;
+                        case d5power.MissionNR.N_MONEY:
+                        case d5power.MissionNR.N_MONEY_KEEP:
+                            this.iscomplate = this.iscomplate && checker.hasMoney(need.key);
+                            break;
+                        case d5power.MissionNR.N_MARK:
+                            this.iscomplate = this.iscomplate && checker.hasMark(need.key);
+                            break;
+                        case d5power.MissionNR.N_MONSTER_KILLED:
+                            this.iscomplate = this.iscomplate && checker.killMonseterNum(need.key) >= need.count;
+                            break;
+                        case d5power.MissionNR.N_PLAYER_PROP:
+                            this.iscomplate = this.iscomplate && checker.userPro(need.key, need.count);
+                            break;
+                        case d5power.MissionNR.N_MISSION:
+                            this.iscomplate = this.iscomplate && checker.hasMission(need.key);
+                            break;
+                        case d5power.MissionNR.N_TALK_NPC:
+                            this.iscomplate = this.iscomplate && checker.hasTalkedWith(need.key);
+                            break;
+                        default:
+                            if (checker.hasChecker(need.type))
+                                this.iscomplate = this.iscomplate && checker.custormCheck(need);
+                            break;
+                    }
+                }
+            }
+            return this.iscomplate;
+        };
+        /**
+         * 完成任务
+         */
+        MissionData.prototype.complate = function (checker) {
+            if (!this.check(checker))
+                return false;
+            checker.deleteMission(this);
+            if (this.give != null) {
+                for (var k in this.give) {
+                    var give = this.give[k];
+                    switch (give.type) {
+                        case d5power.MissionNR.R_ITEM:
+                            checker.getItem((give.key), give.count);
+                            break;
+                        case d5power.MissionNR.R_MONEY:
+                            checker.getMoney(give.count);
+                            break;
+                        case d5power.MissionNR.R_EXP:
+                            checker.getExp(give.count);
+                            break;
+                        case d5power.MissionNR.R_MISSION:
+                            checker.addMission(give.key);
+                            break;
+                    }
+                }
+            }
+            return true;
+        };
+        /**
+         * 承接类任务 ！
+         */
+        MissionData.TYPE_GET = 0;
+        /**
+         * 交付类任务 ？
+         */
+        MissionData.TYPE_COMPLATE = 1;
+        return MissionData;
+    }());
+    d5power.MissionData = MissionData;
+    __reflect(MissionData.prototype, "d5power.MissionData");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    var D5Event = (function () {
+        function D5Event() {
+        }
+        return D5Event;
+    }());
+    d5power.D5Event = D5Event;
+    __reflect(D5Event.prototype, "d5power.D5Event");
+})(d5power || (d5power = {}));
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-2015, MicroGame Technology Inc.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
+var d5power;
+(function (d5power) {
+    var Actions = (function () {
+        function Actions() {
+        }
+        /**
+         * 特殊状态：复活
+         */
+        Actions.RELIVE = -1;
+        /**
+         * Stop 停止
+         * */
+        Actions.Stop = 8;
+        /**
+         * Run 跑动
+         * */
+        Actions.Run = 1;
+        /**
+         * Sing 施法攻击
+         * */
+        Actions.Sing = 2;
+        /**
+         * Attack 物理攻击
+         * */
+        Actions.Attack = 2;
+        /**
+         * 弓箭攻击
+         * */
+        Actions.BowAtk = 3;
+        /**
+         * 坐下
+         */
+        Actions.Sit = 4;
+        /**
+         * 死亡
+         */
+        Actions.Die = 5;
+        /**
+         * 拾取
+         */
+        Actions.Pickup = 6;
+        /**
+         * 被攻击
+         */
+        Actions.BeAtk = 7;
+        /**
+         * 等待（备战）
+         */
+        Actions.Wait = 8;
+        return Actions;
+    }());
+    d5power.Actions = Actions;
+    __reflect(Actions.prototype, "d5power.Actions");
+})(d5power || (d5power = {}));
+var d5power;
+(function (d5power) {
+    var BaseMap = (function () {
+        function BaseMap() {
+            /**
+             * 区块文件格式
+             */
+            this._tileFormat = '.jpg';
+            /**
+             * 路点宽度
+             */
+            this._roadW = 60;
+            /**
+             * 路点高度
+             */
+            this._roadH = 30;
+            /**
+             * 当前渲染的起始区块x
+             */
+            this._nowStartX = -1;
+            /**
+             * 当前渲染的起始区块y
+             */
+            this._nowStartY = -1;
+            this._nowName = '';
+            this._tempPoint = new egret.Point();
+        }
+        BaseMap.rebuildPool = function (num) {
+            if (BaseMap._tilePool.length > num) {
+                while (BaseMap._tilePool.length > num)
+                    BaseMap._tilePool.pop();
+            }
+            else {
+                while (BaseMap._tilePool.length < num)
+                    BaseMap._tilePool.push(new egret.Bitmap());
+            }
+            //console.log("[BaseMap] there are ",num,"tiles in pool.");
+        };
+        /**
+         * 将地砖回收至地砖池
+         * @param data 需要回收的地砖
+         */
+        BaseMap.back2pool = function (data) {
+            if (BaseMap._tilePool.indexOf(data) == -1)
+                BaseMap._tilePool.push(data);
+            //console.log("[BaseMap] 1 tiles get home.there are ",BaseMap._tilePool.length,"tiles in pool.");
+        };
+        /**
+         * 获取一个地砖
+         */
+        BaseMap.getTile = function () {
+            var data;
+            data = BaseMap._tilePool.length ? BaseMap._tilePool.pop() : new egret.Bitmap();
+            //console.log("[BaseMap] pop 1 tiles.there are ",BaseMap._tilePool.length,"tiles in pool.");
+            data.texture = null;
+            return data;
+        };
+        /**
+         * 临时创建一个循环地砖的地图
+         * @param id 地图编号
+         * @param bg 循环地砖素材
+         * @param callback 准备完成后的触发函数
+         * @param thisobj 触发函数的对象引用
+         * @param blockw 区块宽度
+         * @param blockh 区块高度
+         */
+        BaseMap.prototype.createLoop = function (id, bg, callback, thisobj, blockw, blockh) {
+            if (blockw === void 0) { blockw = 10; }
+            if (blockh === void 0) { blockh = 10; }
+            var that = this;
+            RES.getResByUrl(bg, function (data) {
+                that._mapid = id;
+                that._tileW = data.textureWidth;
+                that._tileH = data.textureHeight;
+                that._mapHeight = this._tileH * blockh;
+                that._mapWidth = this._tileW * blockw;
+                that._onReady = callback;
+                that._onReadyThis = thisobj;
+                that._nowStartX = -1;
+                that._nowStartY = -1;
+                that._loopBg = data;
+                that.setupRoad(null);
+            }, this);
+        };
+        /**
+         * 进入一个地图
+         * @param id 地图编号
+         * @param callback 地图准备完成后的触发函数
+         * @param thisobj 地图准备完成后的触发函数的处理对象
+         */
+        BaseMap.prototype.enter = function (id, callback, thisobj) {
+            var that = this;
+            RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + "/tiles/" + id + "/mapconf.json", function (data) {
+                this._data = data;
+                that.setup(parseInt(data.id), parseInt(data.mapW), parseInt(data.mapH), parseInt(data.tileX), parseInt(data.tileY), callback, thisobj);
+            }, this);
+        };
+        Object.defineProperty(BaseMap.prototype, "id", {
+            /**
+             * 地图编号
+             */
+            get: function () {
+                return this._mapid;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * 设置主容器
+         * @param container 主容器
+         */
+        BaseMap.prototype.setContainer = function (container) {
+            if (container == this._dbuffer)
+                return;
+            if (this._dbuffer != null) {
+                this._dbuffer.removeChildren();
+                if (this._dbuffer.parent)
+                    this._dbuffer.parent.removeChild(this._dbuffer);
+            }
+            this._dbuffer = container;
+        };
+        /**
+         * 设置区块格式
+         * @param s 区块格式
+         */
+        BaseMap.prototype.setTileFormat = function (s) {
+            if (s.substr(0, 1) != '.')
+                s = "." + s;
+            this._tileFormat = s;
+        };
+        /**
+         * 构建一个新的地图
+         * @param id 地图编号
+         * @param w 地图尺寸宽
+         * @param h 地图尺寸高
+         * @param tw 区块尺寸高
+         * @param th 区块尺寸宽
+         * @param onReady 地图准备完成后的回叫函数
+         * @param onReadyThis this
+         */
+        BaseMap.prototype.setup = function (id, w, h, tw, th, onReady, onReadyThis) {
+            this._mapid = id;
+            this._mapHeight = h;
+            this._mapWidth = w;
+            this._tileW = tw;
+            this._tileH = th;
+            this._onReady = onReady;
+            this._onReadyThis = onReadyThis;
+            this._nowStartX = -1;
+            this._nowStartY = -1;
+            var that = this;
+            var onSmallMapLoaded = function (data) {
+                that._smallMap = new egret.SpriteSheet(data);
+                that.createSmallData(data.textureWidth, data.textureHeight);
+                RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/roadmap.bin', this.setupRoad, this, RES.ResourceItem.TYPE_BIN);
+            };
+            RES.getResByUrl(d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/s.jpg', onSmallMapLoaded, this);
+        };
+        /**
+         *
+         * @param smallW
+         * @param smallH
+         */
+        BaseMap.prototype.createSmallData = function (smallW, smallH) {
+            var smallWidth = smallW / (this._mapWidth / this._tileW);
+            var smallHeight = smallH / (this._mapHeight / this._tileH);
+            var i;
+            var l;
+            for (l = 0; l < this._mapWidth / this._tileW; l++) {
+                for (i = 0; i < this._mapHeight / this._tileH; i++) {
+                    this._smallMap.createTexture('small' + l + '_' + i, i * smallWidth, l * smallHeight, smallWidth, smallHeight, 0, 0);
+                }
+            }
+        };
+        Object.defineProperty(BaseMap.prototype, "width", {
+            get: function () {
+                return this._mapWidth;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BaseMap.prototype, "height", {
+            get: function () {
+                return this._mapHeight;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BaseMap.prototype, "tileWidth", {
+            get: function () {
+                return this._tileW;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BaseMap.prototype, "tileHeight", {
+            get: function () {
+                return this._tileH;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BaseMap.prototype, "roadWidth", {
+            get: function () {
+                return this._roadW;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BaseMap.prototype, "roadHeight", {
+            get: function () {
+                return this._roadH;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        BaseMap.prototype.render = function (flush) {
+            if (flush === void 0) { flush = false; }
+            if (this.mod_buffer) {
+                this.mod_buffer = false;
+                this._dbuffer.cacheAsBitmap = true;
+            }
+            var startx = parseInt((d5power.Camera.zeroX / this._tileW));
+            var starty = parseInt((d5power.Camera.zeroY / this._tileH));
+            this.makeData(startx, starty, flush); // 只有在采用大地图背景的前提下才不断修正数据
+            if (this._nowStartX == startx && this._nowStartY == starty && this._posFlush != null) {
+                var zero_x = d5power.Camera.zeroX % this._tileW;
+                var zero_y = d5power.Camera.zeroY % this._tileH;
+                this._dbuffer.x = -zero_x;
+                this._dbuffer.y = -zero_y;
+            }
+        };
+        BaseMap.prototype.resize = function () {
+            this._areaX = Math.ceil(d5power.D5Game.screenWidth / this._tileW) + 1;
+            this._areaY = Math.ceil(d5power.D5Game.screenHeight / this._tileH) + 1;
+            console.log("[D5Game] max tiles number ", this._areaX, this._areaY);
+            BaseMap.rebuildPool(this._areaX * this._areaY + this._areaX + this._areaY);
+        };
+        /**
+         * 重置地图数据
+         */
+        BaseMap.prototype.resetRoad = function () {
+            this._roadArr = [];
+            this._alphaArr = [];
+            // 定义临时地图数据
+            var h = Math.floor(this._mapHeight / this._roadH);
+            var w = Math.floor(this._mapWidth / this._roadW);
+            for (var y = 0; y < h; y++) {
+                var arr = new Array();
+                var arr2 = new Array();
+                for (var x = 0; x < w; x++) {
+                    arr.push(0);
+                    arr2.push(0);
+                }
+                this._roadArr.push(arr);
+                this._alphaArr.push(arr2);
+            }
+        };
+        /**
+         * 设置地图数据
+         * @param data
+         */
+        BaseMap.prototype.setRoad = function (data) {
+            this._roadArr = data;
+        };
+        BaseMap.prototype.isInAlphaArea = function (px, py) {
+            var tile = this.Postion2Tile(px, py);
+            return this._alphaArr[tile.y] && this._alphaArr[tile.y][tile.x] == BaseMap.BIN_ALPHA_VALUE;
+        };
+        /**
+         * 尝试寻找周围可以通过的位置
+         * 进行若干次尝试，如果没有发现，则返回null，请注意容错判断
+         */
+        BaseMap.prototype.getPointAround = function (center, from, r) {
+            if (!center || !from)
+                return null;
+            var i = 0;
+            var max = 5;
+            var step = Math.PI * 2 / max;
+            var gotoP = new egret.Point();
+            var angle = d5power.GMath.getPointAngle(center.x - from.x, center.y - from.y) + (Math.random() > .5 ? 1 : -1) * Math.PI / 8;
+            while (i < max) {
+                var n = step * i + angle;
+                gotoP.x = Math.round(center.x - r * Math.cos(n));
+                gotoP.y = Math.round(center.y - r * Math.sin(n));
+                if (this.PointCanMove(gotoP, from)) {
+                    return gotoP;
+                }
+                i++;
+            }
+            return null;
+        };
+        BaseMap.prototype.PointCanMove = function (p, n) {
+            if (this._astar == null)
+                return true;
+            var nodeArr = this._astar.find(n.x, n.y, p.x, p.y);
+            return nodeArr != null;
+        };
+        BaseMap.prototype.getRoadPass = function (px, py) {
+            if (this._roadArr[py] == null || this._roadArr[py][px] != 0)
+                return false;
+            return true;
+        };
+        BaseMap.prototype.findPath = function (fromx, fromy, tox, toy) {
+            return this._astar == null ? null : this._astar.find(fromx, fromy, tox, toy);
+        };
+        /**
+         * 根据屏幕某点坐标获取其在世界（全地图）内的坐标
+         */
+        BaseMap.prototype.getWorldPostion = function (x, y) {
+            this._tempPoint.x = d5power.Camera.zeroX + x;
+            this._tempPoint.y = d5power.Camera.zeroY + y;
+            return this._tempPoint;
+        };
+        /**
+         * 根据世界坐标获取在屏幕内的坐标
+         */
+        BaseMap.prototype.getScreenPostion = function (x, y) {
+            this._tempPoint.x = x - d5power.Camera.zeroX;
+            this._tempPoint.y = y - d5power.Camera.zeroY;
+            return this._tempPoint;
+        };
+        /**
+         * 根据路点获得世界（全地图）内的坐标
+         */
+        BaseMap.prototype.tile2WorldPostion = function (x, y) {
+            this._tempPoint.x = x * this._roadW + this._roadW * .5;
+            this._tempPoint.y = y * this._roadH + this._roadH * .5;
+            return this._tempPoint;
+        };
+        /**
+         * 世界地图到路点的转换
+         */
+        BaseMap.prototype.Postion2Tile = function (px, py) {
+            this._tempPoint.x = Math.floor(px / this._roadW);
+            this._tempPoint.y = Math.floor(py / this._roadH);
+            return this._tempPoint;
+        };
+        BaseMap.prototype.reset = function () {
+            this._tempPoint = new egret.Point();
+            this._mapResource = { tiles: new Object() };
+            if (this._dbuffer)
+                this._dbuffer.removeChildren();
+            //            this._tiledResource = {};
+        };
+        /**
+         * 设置路点。至此，地图准备完毕，通知主程序开始渲染
+         * @param data
+         */
+        BaseMap.prototype.setupRoad = function (res) {
+            if (res == null || res == undefined) {
+                this.resetRoad();
+            }
+            else {
+                var data = new egret.ByteArray(res);
+                var sign = data.readUTFBytes(5);
+                var value;
+                var px = 0;
+                var py = 0;
+                if (sign == 'D5Map') {
+                    py = data.readShort();
+                    px = data.readShort();
+                    var resmap = [];
+                    for (var y = 0; y < py; y++) {
+                        var temp = [];
+                        for (var x = 0; x < px; x++) {
+                            temp.push(data.readByte());
+                        }
+                        resmap.push(temp);
+                    }
+                    this.resetRoad();
+                    if (px > 1) {
+                        var h = Math.floor(this._mapHeight / this._roadH);
+                        var w = Math.floor(this._mapWidth / this._roadW);
+                        var k = w == px && h == py ? 1 : py / h;
+                        for (y = 0; y < h; y++) {
+                            for (x = 0; x < w; x++) {
+                                try {
+                                    py = Math.floor(y * k);
+                                    px = Math.floor(x * k);
+                                    value = resmap[py][px];
+                                    this._roadArr[y][x] = value == BaseMap.BIN_NO_VALUE ? 1 : 0;
+                                    this._alphaArr[y][x] = value;
+                                }
+                                catch (e) {
+                                    trace("［BaseMap］路点超出范围Y:X(" + y + ":" + x + ")", py, px);
+                                    this._roadArr[y][x] = BaseMap.BIN_NO_VALUE;
+                                    this._alphaArr[y][x] = BaseMap.BIN_NO_VALUE;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    console.log("[BaseMap]非法的地图配置文件");
+                }
+            }
+            this.reset();
+            this.resize();
+            this._astar = new d5power.SilzAstar(this._roadArr);
+            var length = this._data.npc.length;
+            for (var i = 0; i < length; i++) {
+                var npconf = new d5power.NPConf();
+                npconf.format(this._data.npc[i]);
+                this._gameObjectManager.addNPC(npconf);
+            }
+            if (this._onReady != null) {
+                this._onReady.apply(this._onReadyThis);
+            }
+        };
+        BaseMap.prototype.makeData = function (startx, starty, flush) {
+            if (this._nowStartX == startx && this._nowStartY == starty)
+                return;
+            this._nowStartX = startx;
+            this._nowStartY = starty;
+            this._posFlush = [];
+            for (var i = 0, j = this._dbuffer.numChildren; i < j; i++) {
+                this._dbuffer.getChildAt(i).texture = null;
+            }
+            //this.fillSmallMap(startx, starty);
+            var maxY = Math.min(starty + this._areaY, Math.floor(this._mapHeight / this._tileH));
+            var maxX = Math.min(startx + this._areaX, Math.floor(this._mapWidth / this._tileW));
+            var key;
+            for (var y = starty; y < maxY; y++) {
+                for (var x = startx; x < maxX; x++) {
+                    key = y + '_' + x;
+                    if (x < 0 || y < 0) {
+                        continue;
+                    }
+                    else if (this._mapResource.tiles[key] == null) {
+                        if (this._loopBg) {
+                            this.fillTile((x - this._nowStartX), (y - this._nowStartY), this._loopBg);
+                        }
+                        else {
+                            this._posFlush.push(y + '_' + x + '_' + this._nowStartX + '_' + this._nowStartY + '_' + this._mapid);
+                            this.fillSmallMap(y, x, (x - this._nowStartX), (y - this._nowStartY));
+                        }
+                    }
+                    else {
+                        this.fillTile((x - this._nowStartX), (y - this._nowStartY), this._mapResource.tiles[key]);
+                    }
+                }
+            }
+            if (this._loopBg == null)
+                this.loadTiles();
+        };
+        BaseMap.prototype.clear = function () {
+            this._mapResource = { tiles: new Object() };
+            var loop;
+            while (this._dbuffer.numChildren) {
+                loop = this._dbuffer.removeChildAt(0);
+                loop.texture = null;
+                BaseMap.back2pool(loop);
+            }
+            this._nowName = '';
+            this._tileFormat = '.jpg';
+        };
+        BaseMap.prototype.loadTiles = function (data) {
+            if (data === void 0) { data = null; }
+            if (data != null) {
+                var pos = this._nowName.split('_');
+                if (parseInt(pos[4]) != this._mapid) {
+                    console.log("[BaseMap] 读取了已切换了的地图资源");
+                    return;
+                }
+                var tileName = pos[0] + "_" + pos[1];
+                if (this._mapResource.tiles[tileName] == null)
+                    this._mapResource.tiles[tileName] = data;
+                // 若加载后位置已变更，则只存储不渲染
+                var tx = parseInt(pos[1]) - this._nowStartX;
+                var ty = parseInt(pos[0]) - this._nowStartY;
+                if (parseInt(pos[2]) == this._nowStartX && parseInt(pos[3]) == this._nowStartY) {
+                    this.fillTile(tx, ty, data);
+                }
+                this._nowName = '';
+            }
+            if (this._posFlush.length == 0) {
+                this._dbuffer.cacheAsBitmap = false;
+                this.mod_buffer = true;
+            }
+            else if (this._nowName == '') {
+                this._nowName = this._posFlush.pop();
+                var pos = this._nowName.split('_');
+                var name = d5power.D5Game.RES_SERVER + d5power.D5Game.ASSET_PATH + "/tiles/" + this._mapid + "/" + pos[0] + "_" + pos[1] + this._tileFormat;
+                RES.getResByUrl(name, this.loadTiles, this);
+            }
+        };
+        BaseMap.prototype.fillTile = function (tx, ty, data) {
+            var bitmap = this._dbuffer.getChildByName(tx + "_" + ty);
+            if (bitmap == null) {
+                bitmap = BaseMap.getTile();
+                bitmap.x = tx * this._tileW;
+                bitmap.y = ty * this._tileH;
+                bitmap.name = tx + "_" + ty;
+                this._dbuffer.addChild(bitmap);
+            }
+            bitmap.texture = data;
+            this._dbuffer.cacheAsBitmap = true;
+        };
+        /**
+         * 绘制小地图
+         */
+        BaseMap.prototype.fillSmallMap = function (startX, startY, tx, ty) {
+            if (this._smallMap) {
+                var data = this._smallMap.getTexture('small' + startX + '_' + startY);
+                var bitmap = this._dbuffer.getChildByName(tx + "_" + ty);
+                if (bitmap == null) {
+                    bitmap = BaseMap.getTile();
+                    bitmap.x = tx * this._tileW;
+                    bitmap.y = ty * this._tileH;
+                    bitmap.fillMode = egret.BitmapFillMode.SCALE;
+                    bitmap.name = tx + "_" + ty;
+                    this._dbuffer.addChild(bitmap);
+                }
+                bitmap.texture = data;
+                bitmap.width = this._tileW;
+                bitmap.height = this._tileH;
+                this._dbuffer.cacheAsBitmap = true;
+            }
+        };
+        /**
+         * 在二进制文件中，由于需要1个字节表示多个状态。因此采用大于0的值表示可通过
+         * 在导入后进行了转义
+         */
+        BaseMap.BIN_ALPHA_VALUE = 2;
+        BaseMap.BIN_CAN_VALUE = 1;
+        BaseMap.BIN_NO_VALUE = 0;
+        /**
+         * 地砖池，用于地砖重用
+         */
+        BaseMap._tilePool = new Array();
+        return BaseMap;
+    }());
+    d5power.BaseMap = BaseMap;
+    __reflect(BaseMap.prototype, "d5power.BaseMap", ["d5power.IMap"]);
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -976,32 +1466,88 @@ var d5power;
         //		public var WAIT_RU:int = -3;
         function Direction() {
         }
+        Direction.Down = 0;
+        Direction.LeftDown = 1;
+        Direction.Left = 2;
+        Direction.LeftUp = 3;
+        Direction.Up = 4;
+        Direction.RightUp = 5;
+        Direction.Right = 6;
+        Direction.RightDown = 7;
         return Direction;
     }());
-    Direction.Down = 0;
-    Direction.LeftDown = 1;
-    Direction.Left = 2;
-    Direction.LeftUp = 3;
-    Direction.Up = 4;
-    Direction.RightUp = 5;
-    Direction.Right = 6;
-    Direction.RightDown = 7;
     d5power.Direction = Direction;
+    __reflect(Direction.prototype, "d5power.Direction");
 })(d5power || (d5power = {}));
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-2015, MicroGame Technology Inc.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
 var d5power;
 (function (d5power) {
-    var DisplayPluginData = (function () {
-        function DisplayPluginData() {
+    var GMath = (function () {
+        function GMath() {
         }
-        return DisplayPluginData;
+        /**
+         * 获取某点的夹角
+         * 返回为弧度值
+         */
+        GMath.getPointAngle = function (x, y) {
+            return Math.atan2(y, x);
+        };
+        /**
+         * 弧度转角度
+         */
+        GMath.R2A = function (r) {
+            return r * GMath.K_R2A;
+        };
+        /**
+         * 角度转弧度
+         */
+        GMath.A2R = function (a) {
+            if (a === void 0) { a = 0; }
+            return a * GMath.K_A2R;
+        };
+        GMath.K_R2A = 180 / Math.PI;
+        GMath.K_A2R = Math.PI / 180;
+        return GMath;
     }());
-    d5power.DisplayPluginData = DisplayPluginData;
+    d5power.GMath = GMath;
+    __reflect(GMath.prototype, "d5power.GMath");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
+    /**
+     * 玩家数据
+     */
     var PlayerData = (function () {
         function PlayerData() {
             this._missionList = [];
+            this._itemList = [];
         }
         PlayerData.prototype.getMission = function (id) {
             if (this._missionList.indexOf(id) == -1) {
@@ -1011,6 +1557,7 @@ var d5power;
         return PlayerData;
     }());
     d5power.PlayerData = PlayerData;
+    __reflect(PlayerData.prototype, "d5power.PlayerData");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1181,13 +1728,14 @@ var d5power;
                 return 0xcccccc;
             return 0xffffff;
         };
+        /**
+         * 寻路方式，8方向和4方向，有效值为8和4
+         */
+        SilzAstar.WorkMode = 8;
         return SilzAstar;
     }());
-    /**
-     * 寻路方式，8方向和4方向，有效值为8和4
-     */
-    SilzAstar.WorkMode = 8;
     d5power.SilzAstar = SilzAstar;
+    __reflect(SilzAstar.prototype, "d5power.SilzAstar");
     var AStar = (function () {
         function AStar(grid) {
             this._straightCost = 1.0;
@@ -1403,6 +1951,7 @@ var d5power;
         return AStar;
     }());
     d5power.AStar = AStar;
+    __reflect(AStar.prototype, "d5power.AStar");
     var BinaryHeap = (function () {
         function BinaryHeap(justMinFun) {
             if (justMinFun === void 0) { justMinFun = null; }
@@ -1458,6 +2007,7 @@ var d5power;
         return BinaryHeap;
     }());
     d5power.BinaryHeap = BinaryHeap;
+    __reflect(BinaryHeap.prototype, "d5power.BinaryHeap");
     var Grid = (function () {
         function Grid(numCols, numRows) {
             this._straightCost = 1.0;
@@ -1582,6 +2132,7 @@ var d5power;
         return Grid;
     }());
     d5power.Grid = Grid;
+    __reflect(Grid.prototype, "d5power.Grid");
     var Link = (function () {
         function Link(node, cost) {
             this.node = node;
@@ -1590,6 +2141,7 @@ var d5power;
         return Link;
     }());
     d5power.Link = Link;
+    __reflect(Link.prototype, "d5power.Link");
     var SilzAstarNode = (function () {
         //public var index:int;
         function SilzAstarNode(x, y) {
@@ -1605,6 +2157,7 @@ var d5power;
         return SilzAstarNode;
     }());
     d5power.SilzAstarNode = SilzAstarNode;
+    __reflect(SilzAstarNode.prototype, "d5power.SilzAstarNode");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -1764,6 +2317,7 @@ var d5power;
         return BoneCharacter;
     }(d5power.GameObject));
     d5power.BoneCharacter = BoneCharacter;
+    __reflect(BoneCharacter.prototype, "d5power.BoneCharacter");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -1862,6 +2416,7 @@ var d5power;
             this._data_renderTime = data.renderTime;
             this._data_totalFrame = data.totalFrame;
             this._data_totalDir = data.totalDirection;
+            this.render(egret.getTimer());
         };
         FrameCharacter.prototype.run = function (t) {
             _super.prototype.run.call(this, t);
@@ -1890,7 +2445,6 @@ var d5power;
                     this.action = d5power.Actions.Wait;
                 }
             }
-            this.updatePos(this._offX, this._offY);
         };
         FrameCharacter.prototype.render = function (t) {
             if (!this._sheet || t - this._lastTimer < this._sheet.renderTime)
@@ -1947,6 +2501,7 @@ var d5power;
                 }
             }
             this._playFrame++;
+            this.updatePos(this._offX, this._offY);
             /*
             if(this._data.action == d5power.Actions.Attack)
             {
@@ -2003,31 +2558,33 @@ var d5power;
         return FrameCharacter;
     }(d5power.GameObject));
     d5power.FrameCharacter = FrameCharacter;
+    __reflect(FrameCharacter.prototype, "d5power.FrameCharacter", ["d5power.ISpriteSheetWaiter"]);
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
     var D5Game = (function () {
         function D5Game() {
         }
+        /**
+         * 游戏中的每“米”对应程序中的像素值
+         */
+        D5Game.MI = 50;
+        /**
+         * 游戏资源服务器，留空则为本地素材相对路径
+         */
+        D5Game.RES_SERVER = '';
+        /**
+         * 游戏资源的保存目录
+         */
+        D5Game.ASSET_PATH = 'resource/';
+        D5Game.screenWidth = 1280;
+        D5Game.screenHeight = 800;
+        D5Game.timer = 0;
+        D5Game.FPS = 45;
         return D5Game;
     }());
-    /**
-     * 游戏中的每“米”对应程序中的像素值
-     */
-    D5Game.MI = 50;
-    /**
-     * 游戏资源服务器，留空则为本地素材相对路径
-     */
-    D5Game.RES_SERVER = '';
-    /**
-     * 游戏资源的保存目录
-     */
-    D5Game.ASSET_PATH = 'resource/';
-    D5Game.screenWidth = 1280;
-    D5Game.screenHeight = 800;
-    D5Game.timer = 0;
-    D5Game.FPS = 45;
     d5power.D5Game = D5Game;
+    __reflect(D5Game.prototype, "d5power.D5Game");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -2098,4 +2655,5 @@ var d5power;
         return D5World;
     }());
     d5power.D5World = D5World;
+    __reflect(D5World.prototype, "d5power.D5World");
 })(d5power || (d5power = {}));

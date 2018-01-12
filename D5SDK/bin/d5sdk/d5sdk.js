@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2014-2015, MicroGame Technology Inc.
@@ -272,6 +275,7 @@ var d5power;
                                 uv.offY += 0.01;
                             //this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth, l * data.FrameHeight, uv.width, uv.height,l<5 ? uv.offX : -uv.width-uv.offX, uv.offY);
                             this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth + uv.x, l * data.FrameHeight + uv.y, uv.width, uv.height, 0, 0);
+                            //this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth, l * data.FrameHeight, uv.width, uv.height,l<5 ? uv.offX : -uv.width-uv.offX, uv.offY);
                         }
                     }
                 }
@@ -292,21 +296,22 @@ var d5power;
                 }
             }
         };
+        /**
+         * 最大允许回收对象池容量
+         */
+        D5EffectSpriteSheet.MAX_IN_JALE = 200;
+        /**
+         * 正在使用中的对象
+         */
+        D5EffectSpriteSheet._pool_inuse = {};
+        /**
+         * 待重用的对象
+         */
+        D5EffectSpriteSheet._pool_jale = new Array();
         return D5EffectSpriteSheet;
     }());
-    /**
-     * 最大允许回收对象池容量
-     */
-    D5EffectSpriteSheet.MAX_IN_JALE = 200;
-    /**
-     * 正在使用中的对象
-     */
-    D5EffectSpriteSheet._pool_inuse = {};
-    /**
-     * 待重用的对象
-     */
-    D5EffectSpriteSheet._pool_jale = new Array();
     d5power.D5EffectSpriteSheet = D5EffectSpriteSheet;
+    __reflect(D5EffectSpriteSheet.prototype, "d5power.D5EffectSpriteSheet", ["d5power.IDisplayer"]);
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -370,9 +375,11 @@ var d5power;
             }
             if (data._sheet == null) {
                 data.addWaiter(getObj);
+                //console.log("[D5SpriteSheet] please wait.");
             }
             else {
                 getObj.onSpriteSheepReady(data);
+                //console.log("[D5SpriteSheet] res is ready.");
             }
             data.loadID = getObj.loadID;
             return data;
@@ -547,6 +554,7 @@ var d5power;
                                 uv.offY += 0.01;
                             //this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth, l * data.FrameHeight, uv.width, uv.height,l<5 ? uv.offX : -uv.width-uv.offX, uv.offY);
                             this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth + uv.x, l * data.FrameHeight + uv.y, uv.width, uv.height, 0, 0);
+                            //this._sheet.createTexture('frame' + l + '_' + i, i * data.FrameWidth, l * data.FrameHeight, uv.width, uv.height,l<5 ? uv.offX : -uv.width-uv.offX, uv.offY);
                         }
                     }
                 }
@@ -564,16 +572,17 @@ var d5power;
                     poper.onSpriteSheepReady(this);
             }
         };
+        /**
+         * 对象池最大容量
+         * @type {number}
+         */
+        D5SpriteSheet.MAX_IN_JALE = 200;
+        D5SpriteSheet._pool_inuse = {};
+        D5SpriteSheet._pool_jale = new Array();
         return D5SpriteSheet;
     }());
-    /**
-     * 对象池最大容量
-     * @type {number}
-     */
-    D5SpriteSheet.MAX_IN_JALE = 200;
-    D5SpriteSheet._pool_inuse = {};
-    D5SpriteSheet._pool_jale = new Array();
     d5power.D5SpriteSheet = D5SpriteSheet;
+    __reflect(D5SpriteSheet.prototype, "d5power.D5SpriteSheet", ["d5power.IDisplayer"]);
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -714,6 +723,7 @@ var d5power;
         return UVData;
     }());
     d5power.UVData = UVData;
+    __reflect(UVData.prototype, "d5power.UVData");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -762,39 +772,40 @@ var d5power;
     var Endian = (function () {
         function Endian() {
         }
+        /**
+         * @language en_US
+         * Indicates the least significant byte of the multibyte number appears first in the sequence of bytes.
+         * The hexadecimal number 0x12345678 has 4 bytes (2 hexadecimal digits per byte). The most significant byte is 0x12. The least significant byte is 0x78. (For the equivalent decimal number, 305419896, the most significant digit is 3, and the least significant digit is 6).
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        /**
+         * @language zh_CN
+         * 表示多字节数字的最低有效字节位于字节序列的最前面。
+         * 十六进制数字 0x12345678 包含 4 个字节（每个字节包含 2 个十六进制数字）。最高有效字节为 0x12。最低有效字节为 0x78。（对于等效的十进制数字 305419896，最高有效数字是 3，最低有效数字是 6）。
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        Endian.LITTLE_ENDIAN = "littleEndian";
+        /**
+         * @language en_US
+         * Indicates the most significant byte of the multibyte number appears first in the sequence of bytes.
+         * The hexadecimal number 0x12345678 has 4 bytes (2 hexadecimal digits per byte).  The most significant byte is 0x12. The least significant byte is 0x78. (For the equivalent decimal number, 305419896, the most significant digit is 3, and the least significant digit is 6).
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        /**
+         * @language zh_CN
+         * 表示多字节数字的最高有效字节位于字节序列的最前面。
+         * 十六进制数字 0x12345678 包含 4 个字节（每个字节包含 2 个十六进制数字）。最高有效字节为 0x12。最低有效字节为 0x78。（对于等效的十进制数字 305419896，最高有效数字是 3，最低有效数字是 6）。
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        Endian.BIG_ENDIAN = "bigEndian";
         return Endian;
     }());
-    /**
-     * @language en_US
-     * Indicates the least significant byte of the multibyte number appears first in the sequence of bytes.
-     * The hexadecimal number 0x12345678 has 4 bytes (2 hexadecimal digits per byte). The most significant byte is 0x12. The least significant byte is 0x78. (For the equivalent decimal number, 305419896, the most significant digit is 3, and the least significant digit is 6).
-     * @version Egret 2.4
-     * @platform Web,Native
-     */
-    /**
-     * @language zh_CN
-     * 表示多字节数字的最低有效字节位于字节序列的最前面。
-     * 十六进制数字 0x12345678 包含 4 个字节（每个字节包含 2 个十六进制数字）。最高有效字节为 0x12。最低有效字节为 0x78。（对于等效的十进制数字 305419896，最高有效数字是 3，最低有效数字是 6）。
-     * @version Egret 2.4
-     * @platform Web,Native
-     */
-    Endian.LITTLE_ENDIAN = "littleEndian";
-    /**
-     * @language en_US
-     * Indicates the most significant byte of the multibyte number appears first in the sequence of bytes.
-     * The hexadecimal number 0x12345678 has 4 bytes (2 hexadecimal digits per byte).  The most significant byte is 0x12. The least significant byte is 0x78. (For the equivalent decimal number, 305419896, the most significant digit is 3, and the least significant digit is 6).
-     * @version Egret 2.4
-     * @platform Web,Native
-     */
-    /**
-     * @language zh_CN
-     * 表示多字节数字的最高有效字节位于字节序列的最前面。
-     * 十六进制数字 0x12345678 包含 4 个字节（每个字节包含 2 个十六进制数字）。最高有效字节为 0x12。最低有效字节为 0x78。（对于等效的十进制数字 305419896，最高有效数字是 3，最低有效数字是 6）。
-     * @version Egret 2.4
-     * @platform Web,Native
-     */
-    Endian.BIG_ENDIAN = "bigEndian";
     d5power.Endian = Endian;
+    __reflect(Endian.prototype, "d5power.Endian");
     /**
      * @language en_US
      * The ByteArray class provides methods and attributes for optimized reading and writing as well as dealing with binary data.
@@ -1795,45 +1806,46 @@ var d5power;
             }
             return cps;
         };
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_BOOLEAN = 1;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_INT8 = 1;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_INT16 = 2;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_INT32 = 4;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_UINT8 = 1;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_UINT16 = 2;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_UINT32 = 4;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_FLOAT32 = 4;
+        /**
+         * @private
+         */
+        ByteArray.SIZE_OF_FLOAT64 = 8;
         return ByteArray;
     }());
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_BOOLEAN = 1;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_INT8 = 1;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_INT16 = 2;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_INT32 = 4;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_UINT8 = 1;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_UINT16 = 2;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_UINT32 = 4;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_FLOAT32 = 4;
-    /**
-     * @private
-     */
-    ByteArray.SIZE_OF_FLOAT64 = 8;
     d5power.ByteArray = ByteArray;
+    __reflect(ByteArray.prototype, "d5power.ByteArray");
 })(d5power || (d5power = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2258,12 +2270,13 @@ var d5power;
             if (name === void 0) { name = ''; }
             D5UIResourceData._resource[name + id] = texture;
         };
+        D5UIResourceData._resource = {};
+        D5UIResourceData._resourceLib = {};
+        D5UIResourceData._typeLoop = 0;
         return D5UIResourceData;
     }());
-    D5UIResourceData._resource = {};
-    D5UIResourceData._resourceLib = {};
-    D5UIResourceData._typeLoop = 0;
     d5power.D5UIResourceData = D5UIResourceData;
+    __reflect(D5UIResourceData.prototype, "d5power.D5UIResourceData");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -2273,6 +2286,7 @@ var d5power;
         return D5LoadData;
     }());
     d5power.D5LoadData = D5LoadData;
+    __reflect(D5LoadData.prototype, "d5power.D5LoadData");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -2394,6 +2408,7 @@ var d5power;
                     this._allComplate.apply(this._allComplateObj);
                 }
                 catch (e) {
+                    //trace("[StepLoader] 尝试呼叫结束函数失败",e.getStackTrace());
                 }
                 this._allComplate = null;
             }
@@ -2435,10 +2450,11 @@ var d5power;
             var res = StepLoader._pool[url];
             delete StepLoader._pool[url];
         };
+        StepLoader._isLoading = '';
         return StepLoader;
     }());
-    StepLoader._isLoading = '';
     d5power.StepLoader = StepLoader;
+    __reflect(StepLoader.prototype, "d5power.StepLoader");
 })(d5power || (d5power = {}));
 var d5power;
 (function (d5power) {
@@ -2659,30 +2675,31 @@ var d5power;
             }
             return xhr;
         };
+        /**
+         * 以二进制方式接收加载的数据
+         */
+        URLLoader.DATAFORMAT_BINARY = "binary";
+        /**
+         * 以文本的方式接收加载的数据
+         * 默认方式
+         */
+        URLLoader.DATAFORMAT_TEXT = "text";
+        /**
+         * 以音频的方式接收加载的数据
+         */
+        URLLoader.DATAFORMAT_SOUND = "sound";
+        /**
+         * 以图像的方式接收加载的数据
+         * 支持jpg.png.等格式
+         */
+        URLLoader.DATAFORMAT_BITMAP = "bitmap";
+        /**
+         * 以JSON的方式接收加载的数据
+         *
+         */
+        URLLoader.DATAFORMAT_JSON = "json";
         return URLLoader;
     }());
-    /**
-     * 以二进制方式接收加载的数据
-     */
-    URLLoader.DATAFORMAT_BINARY = "binary";
-    /**
-     * 以文本的方式接收加载的数据
-     * 默认方式
-     */
-    URLLoader.DATAFORMAT_TEXT = "text";
-    /**
-     * 以音频的方式接收加载的数据
-     */
-    URLLoader.DATAFORMAT_SOUND = "sound";
-    /**
-     * 以图像的方式接收加载的数据
-     * 支持jpg.png.等格式
-     */
-    URLLoader.DATAFORMAT_BITMAP = "bitmap";
-    /**
-     * 以JSON的方式接收加载的数据
-     *
-     */
-    URLLoader.DATAFORMAT_JSON = "json";
     d5power.URLLoader = URLLoader;
+    __reflect(URLLoader.prototype, "d5power.URLLoader");
 })(d5power || (d5power = {}));
