@@ -547,7 +547,7 @@ module d5power
 
             this._astar = new SilzAstar(this._roadArr);
 
-            var length:number = this._data.npc.length;
+            var length:number = this._data && this._data.npc ? this._data.npc.length : 0;
             for(var i:number = 0;i < length;i++) {
                 var npconf:NPConf = new NPConf();
                 npconf.format(this._data.npc[i]);
