@@ -11,7 +11,7 @@ module d5power {
         /**
          * 游戏资源的保存目录
          */ 
-        public static ASSET_PATH:string = 'resource/';
+        public static ASSET_PATH:string = 'resource/assets/';
 
         public static screenWidth:number = 1280;
 

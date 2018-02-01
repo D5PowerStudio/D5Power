@@ -33,7 +33,6 @@ module d5power
          * NPC特殊功能
          */
         public job:ThreeBase;
-
         public format(obj:any)
         {
             this.id = obj.uid;

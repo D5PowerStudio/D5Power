@@ -156,8 +156,13 @@ module d5power
          */
         private _data:any;
 
-        public constructor() {
+        /**
+         * 
+         * @param goManager 用来维护和管理地图场景中的各种游戏对象的管理器
+         */
+        public constructor(goManager:IGameObjectManager=null) {
             this._tempPoint = new egret.Point();
+            this._gameObjectManager = goManager;
         }
 
         /**
@@ -201,7 +206,7 @@ module d5power
 
             var that:BaseMap = this;
             RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + "/tiles/" + id + "/mapconf.json", function(data:any){
-                this._data = data;
+                that._data = data;
                 that.setup(
                     parseInt(data.id),
                     parseInt(data.mapW),
@@ -271,7 +276,7 @@ module d5power
             var onSmallMapLoaded:Function = function (data:egret.Texture):void {
                 that._smallMap = new egret.SpriteSheet(data);
                 that.createSmallData(data.textureWidth,data.textureHeight);
-                RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/roadmap.bin',this.setupRoad,this,RES.ResourceItem.TYPE_BIN);
+                RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + '/tiles/' + that._mapid + '/roadmap.bin',that.setupRoad,that,RES.ResourceItem.TYPE_BIN);
             };
 
             RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + '/tiles/' + this._mapid + '/s.jpg', onSmallMapLoaded, this);
@@ -548,11 +553,15 @@ module d5power
             this._astar = new SilzAstar(this._roadArr);
 
             var length:number = this._data && this._data.npc ? this._data.npc.length : 0;
-            for(var i:number = 0;i < length;i++) {
-                var npconf:NPConf = new NPConf();
-                npconf.format(this._data.npc[i]);
-                this._gameObjectManager.addNPC(npconf);
+            if(this._gameObjectManager!=null)
+            {
+                for(var i:number = 0;i < length;i++) {
+                    var npconf:NPConf = new NPConf();
+                    npconf.format(this._data.npc[i]);
+                    this._gameObjectManager.addNPC(npconf);
+                }
             }
+            
 
             if (this._onReady != null) {
                 this._onReady.apply(this._onReadyThis);
