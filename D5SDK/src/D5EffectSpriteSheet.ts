@@ -238,9 +238,9 @@ module d5power
             
             if(res.substr(-4,4)=='.png')
             {
-                RES.getResByUrl(res, this.onTextureComplete, this);
+                RES.getResByUrl(res, this.onTextureComplete, this, RES.ResourceItem.TYPE_IMAGE);
             }else if(res.substr(-4,4)=='json'){
-                RES.getResByUrl(res, this.onDataComplate, this);
+                RES.getResByUrl(res, this.onDataComplate, this, RES.ResourceItem.TYPE_JSON);
             }else{
                 trace("[D5EffectSpriteSheet] can not support this format.");
                 
@@ -261,7 +261,7 @@ module d5power
 
             this._sheet = new egret.SpriteSheet(data);
             
-            RES.getResByUrl(this._name+'.json', this.onDataComplate, this);
+            RES.getResByUrl(this._name+'.json', this.onDataComplate, this, RES.ResourceItem.TYPE_JSON);
         }
         
         private onConfigComplate(data:any):void
@@ -269,7 +269,7 @@ module d5power
             if(this._link==0) return;
             
             this._conf = data;
-            RES.getResByUrl(this._name.substr(0,-5)+".png", this.onDataComplate, this);
+            RES.getResByUrl(this._name.substr(0,-5)+".png", this.onDataComplate, this, RES.ResourceItem.TYPE_IMAGE);
         }
         
         private onDataComplate(texture:egret.Texture):void

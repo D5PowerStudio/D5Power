@@ -1,0 +1,37 @@
+{
+	"tags":
+	{
+		"allowUnknownTags" : true
+	},
+	"plugins":[
+		 "plugins/markdown"
+		,"/Users/Howard/AppData/Roaming/npm/node_modules/tsdoc/template/plugins/TSDoc.js"
+	],
+	"opts":
+	{
+		"template"	:"/Users/Howard/AppData/Roaming/npm/node_modules/tsdoc/template",
+		"recurse"	:"true"
+	},
+	"templates" : {
+		"cleverLinks"     : false,
+		"monospaceLinks"  : false
+	},
+	"source":
+	{
+		"includePattern": "(\\.d)?\\.ts$"
+	},
+	"markdown"  : {
+		"parser"   : "gfm",
+		"hardwrap" : true
+	},
+	"tsdoc":{
+		"source"		:"/H5/d5gg/D5Power/D5BitmapUI/src/",
+		"destination"	:"/H5/d5gg/D5Power/D5BitmapUI/docs",
+		"tutorials"		:"",
+		"systemName"	: "D5BitmapUI",
+		"footer"		: "",
+		"copyright"		: "D5BitmapUI Copyright © 2017 Howard.",
+		"outputSourceFiles" : true,
+		"commentsOnly": true
+	}
+}

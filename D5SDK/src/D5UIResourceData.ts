@@ -49,7 +49,7 @@ module d5power
                     callback.apply(thisobj,[-1]);
                 }else{
                     texture = data;
-                    RES.getResByUrl(path+'uiresource.json',onJson,this);
+                    RES.getResByUrl(path+'uiresource.json',onJson,this,RES.ResourceItem.TYPE_JSON);
                 }
             }
 
@@ -64,7 +64,7 @@ module d5power
                 }
             }
 
-            RES.getResByUrl(path+'uiresource.png',onBitmap,this);
+            RES.getResByUrl(path+'uiresource.png',onBitmap,this,RES.ResourceItem.TYPE_IMAGE);
 
         }
 

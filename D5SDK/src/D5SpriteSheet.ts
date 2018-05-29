@@ -17,7 +17,7 @@ module d5power
                 if(ready!=null) ready.apply(readyObj);
             }
 
-            RES.getResByUrl(res, onUnkown, null);
+            RES.getResByUrl(res, onUnkown, null, RES.ResourceItem.TYPE_IMAGE);
         }
 
         private static _shadow:egret.Texture;
@@ -31,7 +31,7 @@ module d5power
                 if(ready!=null) ready.apply(readyObj);
             }
 
-            RES.getResByUrl(res, onShadow, null);
+            RES.getResByUrl(res, onShadow, null, RES.ResourceItem.TYPE_IMAGE);
         }
 
         public static get shadow():egret.Texture
@@ -183,7 +183,7 @@ module d5power
 
             D5SpriteSheet._pool_inuse[this._name] = this;
             //console.log("[D5SpriteSheet] Res is load."+res);
-            RES.getResByUrl(res, this.onTextureComplete, this);
+            RES.getResByUrl(res, this.onTextureComplete, this, RES.ResourceItem.TYPE_IMAGE);
         }
 
         public unlink():void
@@ -208,7 +208,7 @@ module d5power
             if(this._link==0) return;
 
             this._sheet = new egret.SpriteSheet(data);
-            RES.getResByUrl(this._name+'.json', this.onDataComplate, this);
+            RES.getResByUrl(this._name+'.json', this.onDataComplate, this, RES.ResourceItem.TYPE_JSON);
         }
 
         public getTexture(dir:number,frame:number):egret.Texture

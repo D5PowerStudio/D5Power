@@ -38,6 +38,11 @@ module d5power
 
         private _onComplateObj:any;
 
+        /**
+         * 默认贴图
+         */
+        private static _defaultTexture:egret.Texture = new egret.Texture();
+
         public constructor()
         {
             super();
@@ -86,7 +91,7 @@ module d5power
                 this.bit.texture = null;
                 return;
             }
-            this.changeParticle();
+            this.loadResource(this._url,this.onComplate,this);
         }
         
         public clone():D5Bitmap
@@ -97,25 +102,20 @@ module d5power
             return b;
         }
 
-        private changeParticle():void
-        {
-            //RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onGroupComplete, this);
-            //RES.loadConfig("resource/resource.json",  "resource/");
-            //RES.loadGroup("preload");
-            RES.getResByUrl(this._url, this.onComplete, this);
-        }
+
         public setRes(data:egret.Texture):void
         {
-            this.onComplete(data);
+            this.onComplate(data);
         }
-        private onComplete(data:any):void
+        
+        protected onComplate(data:any):void
         {
             if(this.bit == null) this.bit = new egret.Bitmap();
             this.addChild(this.bit);
             if(data==null)
             {
                 trace(this.name,'resource hot found ==============');
-                return;
+                data = D5Bitmap._defaultTexture;
             }
              this.bit.texture = data;
             this.setSize(this.bit.$getWidth(),this.bit.$getHeight());

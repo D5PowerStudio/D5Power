@@ -59,11 +59,7 @@ module d5power {
 
         }
 
-        private addParticle(): void {
-            //外部加载icon，url为全路径，如：resource/..
-            RES.getResByUrl(this._url,this.onGroupComplete,this)
-        }
-        public onGroupComplete(data: egret.Texture): void {
+        protected onComplate(data: egret.Texture): void {
             if(this._logo == null) {
                 this._logo = new egret.Bitmap();
             }
@@ -88,7 +84,7 @@ module d5power {
             }
             if(url != "") {
                 this._url = url;
-                this.addParticle();
+                this.loadResource(this._url,this.onComplate,this);
                 //this.addEventListener(egret.Event.COMPLETE,this.over,this);
             }
         }
@@ -109,7 +105,7 @@ module d5power {
         }
 
         private over(evt: egret.Event): void {
-            this.addParticle();
+            this.loadResource(this._url,this.onComplate,this);
         }
 
         /**

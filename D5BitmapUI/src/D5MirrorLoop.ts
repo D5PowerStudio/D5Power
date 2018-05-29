@@ -44,15 +44,13 @@ module d5power
         {
             super();
         }
-        private loadResource(name:string):void
-        {
-            RES.getResByUrl(name,this.onComplate,this);
-        }
+
         public setRes(data:egret.Texture):void
         {
             this.onComplate(data);
         }
-        private onComplate(data:egret.Texture):void
+
+        protected onComplate(data:egret.Texture):void
         {
             var sheet:egret.SpriteSheet = new egret.SpriteSheet(data);
             if(this._mode==0)
@@ -95,7 +93,7 @@ module d5power
             if(data==null)
             {
                 trace("[D5MirrorLoop]No Resource"+name);
-                this.loadResource(name);
+                this.loadResource(name,this.onComplate,this);
                 return;
             }
 
@@ -156,6 +154,7 @@ module d5power
                 this.after.y = this._h;
             }
 
+            this.autoCache();
             super.draw();
 
         }

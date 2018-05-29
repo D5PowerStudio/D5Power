@@ -40,7 +40,7 @@ module d5power
             if(data==null)
             {
                 trace("[D5Loop]No Resource"+name);
-                RES.getResByUrl(name,this.onComplate,this);
+                this.loadResource(name,this.onComplate,this);
             }else{
                 this.buildPart();
                 this._partI.texture = data.getResource(0);
@@ -50,7 +50,7 @@ module d5power
             }
         }
         
-        private onComplate(data:egret.Texture):void
+        protected onComplate(data:egret.Texture):void
         {
             var sheet:egret.SpriteSheet = new egret.SpriteSheet(data);
             if(this._workmode==0)

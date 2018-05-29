@@ -108,7 +108,7 @@ module d5power {
 			
 			this._targetValue = parseInt(<string><any>v);
             
-			
+			this.cacheAsBitmap=false;
             if(!this._autoAdd)
 			{
     			this.drawNumber(str);
@@ -193,6 +193,7 @@ module d5power {
 				this._nowValue = this._targetValue;
 				this.removeEventListener(egret.Event.ENTER_FRAME,this.autoAddRender,this);
 				this.dispatchEvent(new egret.Event(egret.Event.COMPLETE));
+				this.autoCache();
 			}
 			
 			// 避免小数转整后相同而导致的渲染

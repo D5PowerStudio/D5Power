@@ -165,15 +165,12 @@ module d5power
             }
             this.invalidate();
         }
-         private loadResource(name:string):void
-        {
-            RES.getResByUrl(name,this.onComplate,this);
-        }
+
         public setRes(data:egret.Texture):void
         {
             this.onComplate(data);
         }
-        private onComplate(data:egret.Texture):void
+        protected onComplate(data:egret.Texture):void
         {
             this._sheet = new egret.SpriteSheet(data);
             if(this.type = 4)
@@ -218,7 +215,7 @@ module d5power
             if(this.data==null)
             {
                 trace("[D5Button]No Resource"+name);
-                this.loadResource(name);
+                this.loadResource(name,this.onComplate,this);
                 return;
             }
             

@@ -262,8 +262,14 @@ module d5power
                 
             }
             
-            RES.getResByUrl(res,onLoaded,null);
+            RES.getResByUrl(res,onLoaded,null,RES.ResourceItem.TYPE_JSON);
         }
+
+        protected loadResource(name:string,callback:Function,thisobj:any):void
+        {
+            RES.getResByUrl(name,callback,thisobj,RES.ResourceItem.TYPE_IMAGE);
+        }
+
         public static getCompoentByJson(value:any,container:egret.DisplayObjectContainer):any
         {
             var com:D5Component;
@@ -494,13 +500,7 @@ module d5power
 
         protected invalidate():void
         {
-            this.addEventListener(egret.Event.ENTER_FRAME, this.onInvalidate,this);
-        }
-
-        private onInvalidate(event:egret.Event):void
-        {
-            this.removeEventListener(egret.Event.ENTER_FRAME, this.onInvalidate,this);
-            this.draw();
+            this.once(egret.Event.ENTER_FRAME, this.draw,this);
         }
 
         public draw():void
@@ -529,12 +529,11 @@ module d5power
         protected autoCache():void
         {
             this.cacheAsBitmap=false;
-            this.addEventListener(egret.Event.ENTER_FRAME, this.onAutoCache,this);
+            this.once(egret.Event.ENTER_FRAME, this.onAutoCache,this);
         }
 
         private onAutoCache(event:Event):void
         {
-            this.removeEventListener(egret.Event.ENTER_FRAME, this.onAutoCache,this);
             this.cacheAsBitmap=true;
         }
 
