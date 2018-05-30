@@ -98,13 +98,13 @@ module d5power
                         uv = new UVData();
                         uv.offX = obj.x+cut.x;
                         uv.offY = obj.y;
-                        uv.width = obj.w-cut.x;
+                        uv.width = obj.w - cut.x - 1;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
                         uv.offX = obj.x;
-                        uv.offY = obj.y+cut.y;
+                        uv.offY = obj.y + cut.y - 1;
                         uv.width = cut.x;
                         uv.height = obj.h-cut.y;
                         uvList.push(uv);
@@ -112,8 +112,8 @@ module d5power
                         uv = new UVData();
                         uv.offX = obj.x+cut.x;
                         uv.offY = obj.y+cut.y;
-                        uv.width = obj.w-cut.x;
-                        uv.height = obj.h-cut.y;
+                        uv.width = obj.w - cut.x - 1;
+                        uv.height = obj.h - cut.y - 1;
                         uvList.push(uv);
 
                         data.setupResource(sp,k,uvList);
@@ -296,7 +296,7 @@ module d5power
                             uv = new UVData();
                             uv.offX = obj.x + cut.x;
                             uv.offY = obj.y;
-                            uv.width = obj.w - cut.x;
+                            uv.width = obj.w - cut.x - 1;
                             uv.height = obj.h;
                             uvList.push(uv);
 
@@ -316,7 +316,7 @@ module d5power
                             uv.offX = obj.x;
                             uv.offY = obj.y + cut.y;
                             uv.width = obj.w;
-                            uv.height = obj.h - cut.y;
+                            uv.height = obj.h - cut.y - 1;
                             uvList.push(uv);
 
                             D5UIResourceData._typeLoop = 1;
@@ -449,7 +449,7 @@ module d5power
                             uv = new UVData();
                             uv.offX = obj.x + cut.x;
                             uv.offY = obj.y;
-                            uv.width = cut1.x - cut.x;
+                            uv.width = cut1.x - cut.x - 1;
                             uv.height = obj.h;
                             uvList.push(uv);
                             
@@ -472,7 +472,7 @@ module d5power
                             uv.offX = obj.x;
                             uv.offY = obj.y + cut.y;
                             uv.width = obj.w;
-                            uv.height = cut1.y - cut.y;
+                            uv.height = cut1.y - cut.y - 1;
                             uvList.push(uv);
 
                             uv = new UVData();
