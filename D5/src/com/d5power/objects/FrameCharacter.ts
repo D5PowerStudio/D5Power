@@ -80,6 +80,11 @@ module d5power
             this._dir = v;
         }
 
+        public get dir():number
+        {
+            return this._dir;
+        }
+
         public get monitor():egret.DisplayObject
         {
             return this._monitor;
