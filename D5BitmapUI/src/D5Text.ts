@@ -87,7 +87,7 @@ module d5power
 			super();
 			
 			this._textField = new egret.TextField();
-            this._textField.verticalAlign = egret.VerticalAlign.TOP;
+            this._textField.verticalAlign = egret.VerticalAlign.MIDDLE;
             this._textField.textAlign = egret.HorizontalAlign.LEFT; //egret.VerticalAlign.MIDDLE;
 			if (fontcolor>=0) this._textField.textColor = fontcolor;
 			if (bgcolor>=0) this.setBgColor(bgcolor);
@@ -393,6 +393,7 @@ module d5power
             if(flg == 1) b = true;
             else if(flg == 0) b = false;
             this._textField.multiline = b;
+            if(b) this._textField.verticalAlign = egret.VerticalAlign.TOP;
         }
 
         public get wrapFlg():number

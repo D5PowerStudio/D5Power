@@ -143,8 +143,9 @@ module d5power
 		 * 
 		 * @param   e   
 		 * @param   skip    不进行合并的对象
+         * @param   contain 必然进行合并的对象
 		 */
-		public add2Me(e:egret.Event=null,skip:Array<any>=null):void
+		public add2Me(e:egret.Event=null,skip:Array<any>=null,contain:Array<any>=null):void
 		{
 			if(parent==null)
 			{
@@ -157,10 +158,11 @@ module d5power
 			var _root:egret.DisplayObjectContainer = this.parent;
 			for(var i:number=_root.numChildren-1;i>=0;i--)
 			{
-				var obj:any = _root.getChildAt(i);
-				if(obj!=this && skip && skip.indexOf(obj)==-1)
+                var obj:any = _root.getChildAt(i);
+                if(skip && skip.indexOf(obj)==-1) continue;
+				if(obj!=this)
 				{
-					if(rect.contains(obj.x,obj.y))
+					if(rect.contains(obj.x,obj.y) || (contain!=null && contain.indexOf(obj)!=-1))
 					{
 						obj.x = obj.x-this.x;
 						obj.y = obj.y-this.y;
@@ -396,7 +398,7 @@ module d5power
                     if(container) container[com.name] = com;
                     break;
                 case "D5Text":
-                    com = new d5power.D5Text(value.textValue,value.fontColor,-1,value.filterColor,value.fontSize);
+                    com = new d5power.D5Text(value.textValue=='文字' ? '' : value.textValue,value.fontColor,-1,value.filterColor,value.fontSize);
                     com.name = value.name;
                     com.x = value.x;
                     com.y = value.y;
