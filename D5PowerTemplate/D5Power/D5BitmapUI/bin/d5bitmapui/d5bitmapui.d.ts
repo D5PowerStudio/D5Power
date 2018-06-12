@@ -31,8 +31,9 @@ declare module d5power {
          *
          * @param   e
          * @param   skip    不进行合并的对象
+         * @param   contain 必然进行合并的对象
          */
-        add2Me(e?: egret.Event, skip?: Array<any>): void;
+        add2Me(e?: egret.Event, skip?: Array<any>, contain?: Array<any>): void;
         setSkin(name: string): void;
         protected static _pro_binding_source: IUserInfoContainer;
         /**

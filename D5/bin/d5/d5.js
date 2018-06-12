@@ -2381,6 +2381,9 @@ var d5power;
             this.action = d5power.Actions.Run;
         };
         Object.defineProperty(FrameCharacter.prototype, "dir", {
+            get: function () {
+                return this._dir;
+            },
             set: function (v) {
                 if (v == this._dir)
                     return;

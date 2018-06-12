@@ -126,10 +126,12 @@ var d5power;
          *
          * @param   e
          * @param   skip    不进行合并的对象
+         * @param   contain 必然进行合并的对象
          */
-        D5Component.prototype.add2Me = function (e, skip) {
+        D5Component.prototype.add2Me = function (e, skip, contain) {
             if (e === void 0) { e = null; }
             if (skip === void 0) { skip = null; }
+            if (contain === void 0) { contain = null; }
             if (parent == null) {
                 this.addEventListener(egret.Event.ADDED_TO_STAGE, this.add2Me, this);
                 return;
@@ -141,8 +143,10 @@ var d5power;
             var _root = this.parent;
             for (var i = _root.numChildren - 1; i >= 0; i--) {
                 var obj = _root.getChildAt(i);
-                if (obj != this && skip && skip.indexOf(obj) == -1) {
-                    if (rect.contains(obj.x, obj.y)) {
+                if (skip && skip.indexOf(obj) == -1)
+                    continue;
+                if (obj != this) {
+                    if (rect.contains(obj.x, obj.y) || (contain != null && contain.indexOf(obj) != -1)) {
                         obj.x = obj.x - this.x;
                         obj.y = obj.y - this.y;
                         arr.push(obj);
@@ -368,7 +372,7 @@ var d5power;
                         container[com.name] = com;
                     break;
                 case "D5Text":
-                    com = new d5power.D5Text(value.textValue, value.fontColor, -1, value.filterColor, value.fontSize);
+                    com = new d5power.D5Text(value.textValue == '文字' ? '' : value.textValue, value.fontColor, -1, value.filterColor, value.fontSize);
                     com.name = value.name;
                     com.x = value.x;
                     com.y = value.y;
@@ -979,7 +983,7 @@ var d5power;
              */
             _this._maxWidth = 200;
             _this._textField = new egret.TextField();
-            _this._textField.verticalAlign = egret.VerticalAlign.TOP;
+            _this._textField.verticalAlign = egret.VerticalAlign.MIDDLE;
             _this._textField.textAlign = egret.HorizontalAlign.LEFT; //egret.VerticalAlign.MIDDLE;
             if (fontcolor >= 0)
                 _this._textField.textColor = fontcolor;
@@ -1270,6 +1274,8 @@ var d5power;
             else if (flg == 0)
                 b = false;
             this._textField.multiline = b;
+            if (b)
+                this._textField.verticalAlign = egret.VerticalAlign.TOP;
         };
         Object.defineProperty(D5Text.prototype, "wrapFlg", {
             get: function () {
