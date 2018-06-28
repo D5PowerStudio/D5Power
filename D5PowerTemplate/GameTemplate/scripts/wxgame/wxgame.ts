@@ -7,6 +7,14 @@ export class WxgamePlugin implements plugins.Command {
     async onFile(file: plugins.File) {
         if (file.extname == '.js') {
             const filename = file.origin;
+			if(filename == 'lib/modules/d5sdk/d5sdk.js' || filename=='libs/modules/d5sdk/d5sdk.min.js')
+            {
+                let content = file.contents.toString();
+                content += `;window.d5power = d5power;`;
+                content = content.replace(/definition = __global/, "definition = window");
+                file.contents = new Buffer(content);
+            }
+			
             if (filename == "libs/modules/promise/promise.js" || filename == 'libs/modules/promise/promise.min.js') {
                 return null;
             }
@@ -32,6 +40,11 @@ export class WxgamePlugin implements plugins.Command {
                 if (filename == 'libs/modules/dragonBones/dragonBones.js' || filename == 'libs/modules/dragonBones/dragonBones.min.js') {
                     content += ';window.dragonBones = dragonBones';
                 }
+				if (filename == 'libs/modules/d5/d5.js' || filename == 'libs/modules/d5/d5.min.js' || filename == 'libs/modules/d5bitmapui/d5bitmapui.js' || filename == 'libs/modules/d5bitmapui/d5bitmapui.min.js')
+                {
+                    content = "var d5power = window.d5power;" + content;
+                }
+				content = content.replace(/var d5power;/gi,'');
                 content = "var egret = window.egret;" + content;
                 if (filename == 'main.js') {
                     content += ";window.Main = Main;"
