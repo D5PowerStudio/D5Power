@@ -10,7 +10,20 @@ class Main extends egret.DisplayObjectContainer {
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
-    private onAddToStage(event: egret.Event) {
+    /**
+     * 舞台初始化后运行
+     * @param event 
+     */
+    private onAddToStage(event: egret.Event):void {
+        // 请从这里开始编写游戏逻辑
         
+    }
+
+    /**
+     * 当界面主题加载完成后运行本方法
+     */
+    private onUIReady():void
+    {
+
     }
 }
