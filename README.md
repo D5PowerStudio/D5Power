@@ -8,3 +8,13 @@ D5Power是一款基于[Egret Engine](http://www.egret.com)开发的游戏框架�
 # 快速开始
 
 请进入[Wiki](https://github.com/D5PowerStudio/D5Power/wiki)获取更多内容
+
+# 开发者社区
+
+QQ群：425823401
+QQ群：20949502
+QQ群：116118654
+QQ群：165845403
+
+微信公众号：D5Power
+<img src="./docs/qcode.png"/>
