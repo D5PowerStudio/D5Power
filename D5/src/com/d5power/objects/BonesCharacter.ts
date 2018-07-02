@@ -107,7 +107,7 @@ module d5power
                     that._data = data;
                     that._onReady = onReady;
                     that._onReady_obj = thisobj;
-                    this.setup();
+                    that.setup();
                     
                 }
             }
