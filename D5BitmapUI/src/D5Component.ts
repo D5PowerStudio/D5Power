@@ -360,6 +360,8 @@ module d5power
                     com.setSkin(value.skinId);
                     com.x = value.x;
                     com.y = value.y;
+                    if(value.rotation!=0) com.rotation = value.rotation;
+                    if(value.zoom) com.scaleX = com.scaleY = value.zoom;
                     if(container) container[com.name] = com;
                     break;
                 case "D5RadioBtn":
