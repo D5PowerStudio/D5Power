@@ -460,7 +460,7 @@ module d5power
                     com.y = value.y;
                     //(<D5BitmapNumber>com).setPadding(value.src);
                     (<D5BitmapNumber>com).setAlign(value.align);
-                    (<D5BitmapNumber>com).setValue(1);
+                    (<D5BitmapNumber>com).setValue('0');
                     if(container) container[com.name] = com;
                     break;
                 case "D5Shape":
