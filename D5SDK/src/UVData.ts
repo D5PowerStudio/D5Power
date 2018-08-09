@@ -75,7 +75,7 @@ module d5power {
         /**
          * 贴图的起始坐标
          */ 
-        public y: number;
+		public y: number;
 		
         /**
          * 格式化数据

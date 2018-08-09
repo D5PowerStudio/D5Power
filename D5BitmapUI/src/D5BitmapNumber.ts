@@ -34,6 +34,7 @@ module d5power {
 	 */
 	export class D5BitmapNumber extends D5Component {
 
+		private static BASIC_CONTENT:string = '0123456789';
         private data:D5UIResourceData;
         private _align: number = 0;
         private _box: D5HBox;
@@ -43,6 +44,15 @@ module d5power {
         private _nowValue:number = 0;
 		private _targetValue:number = 0;
 		private _lastrender:number = 0;
+		private _string_map:string='';
+		private _value:string='';
+
+		
+
+		private _hasPoint:boolean;
+		private _allowPoint:boolean;
+		private _edge:number;
+		private _perWidth:number=0;
 		
         private static _pool:Array<egret.Bitmap> = [];
         
@@ -108,21 +118,74 @@ module d5power {
             {
                 trace("[D5Button]No Resource"+name);
                 return;
-            }
+			}
+			
+			this._perWidth = this.data.getResource(0).textureWidth;
+			this._hasPoint = this.data.extData.indexOf('.')!=-1
+			this._string_map = D5BitmapNumber.BASIC_CONTENT+(this.data.extData);
 		}
 
-		public setValue(v:number):void
+		private getNumber(value:string):string
 		{
-            var str: string = v + '';
-            var len: number = str.length;
+			return value.replace(/[^.0123456789]/ig,'');
+		}
+
+		public setValue(v:string):void
+		{
+			var len: number = v.length;
+			if(len>0 && this._value.length!=v.length)
+			{
+				var bitmap:egret.Bitmap;
+				if(len>this._displayer.length){
+    			    // 需要新增
+        			   for(var i:number=this._displayer.length;i<len;i++){
+						   bitmap = D5BitmapNumber.getBitmap();
+						   bitmap.width = this._perWidth;
+            			   this._displayer.push(bitmap);
+            			   this._box.addChild(bitmap);
+        			   }
+    			}else{
+    			    // 需要减少
+        			   while(this._displayer.length>len){
+        			       bitmap = this._displayer.pop();
+        			       D5BitmapNumber.back2Pool(bitmap);
+        			   }
+				}
+				
+				this._w = len*this._perWidth;
+    			
+    			switch(this._align)
+                {
+                    case D5Text.CENTER:
+                    this._box.x = -this._w >> 1;
+                    break;
+                    case D5Text.RIGHT:
+                    this._box.x = -this._w-this._perWidth;
+                    break;
+                }
+			}
 			
-			this._targetValue = parseInt(<string><any>v);
-            
-			this.cacheAsBitmap=false;
+			this._allowPoint = v.indexOf('.')!=-1 && this._hasPoint;
+			this._edge = this._allowPoint ? 0.01 : 1;
+
+
+			if(this.getNumber(this._value)==this.getNumber(v))
+			{
+				if(this._value!=v) this.drawNumber(v);
+				this._value = v;
+				return;
+			}
+
+			this._value = v;
+			if(!this.data) return;
+
+			
             if(!this._autoAdd)
 			{
-    			this.drawNumber(str);
-			}else if(this._targetValue!=this._nowValue){
+    			this.drawNumber(v);
+			}else{
+				this._targetValue = Number(this.getNumber(v));
+				this.cacheAsBitmap=false;
 				this.addEventListener(egret.Event.ENTER_FRAME,this.autoAddRender,this);
 			}
 		}
@@ -131,45 +194,20 @@ module d5power {
 		{
 		    var pnumber: string;
 		    var bitmap:egret.Bitmap;
-		    var len:number = str.length;
-		    
-		    if(len>0 && this._displayer.length!=str.length && this._keepLength==0)
+			var len:number = str.length;
+			var i:number;
+			if(this._keepLength!=0)
 			{
-    			var i:number;
-    			var j:number;
-    			if(len>this._displayer.length){
-    			    // 需要新增
-        			   for(i=this._displayer.length;i<len;i++){
-            			   bitmap = D5BitmapNumber.getBitmap();
-            			   this._displayer.push(bitmap);
-            			   this._box.addChild(bitmap);
-        			   }
-    			}else{
-    			    // 需要减少
-        			   while(this._displayer.length<=len){
-        			       bitmap = this._displayer.pop();
-        			       D5BitmapNumber.back2Pool(bitmap);
-        			   }
-    			}
-    			
-    			var perW:number = this.data.getResource(0).textureWidth;
-    			this._w = len*perW;
-    			
-    			switch(this._align)
-                {
-                    case D5Text.CENTER:
-                    this._box.x = -this._w >> 1;
-                    break;
-                    case D5Text.RIGHT:
-                    this._box.x = -this._w-perW;
-                    break;
-                }
+				var totalZero:String='';
+				for(i=len;i<this._keepLength;i++) totalZero+='0';
+				str = totalZero+str;
+				len = this._keepLength;
 			}
-		    
+			
             for(var i: number = 0;i < len;i++){
-                pnumber = str.substr(i,1);
-                bitmap = this._displayer[i];
-                bitmap.texture = this.data.getResource(parseInt(pnumber));
+				pnumber = str.substr(i,1);
+				var id:number = this._string_map.indexOf(pnumber);
+                this._displayer[i].texture = id==-1 ? null : this.data.getResource(id);
             }
 		}
 
@@ -198,17 +236,22 @@ module d5power {
 			
 			var nowOld:number = this._nowValue;
 			this._nowValue+= (this._targetValue-this._nowValue)/5;
-			if(Math.ceil(this._nowValue)==this._targetValue)
+
+			if(Math.abs(this._targetValue-this._nowValue)<this._edge)
 			{
 				this._nowValue = this._targetValue;
-				this.removeEventListener(egret.Event.ENTER_FRAME,this.autoAddRender,this);
+				this.drawNumber(this._value);
 				this.dispatchEvent(new egret.Event(egret.Event.COMPLETE));
 				this.autoCache();
+				return;
 			}
 			
 			// 避免小数转整后相同而导致的渲染
 			if(parseInt(<string><any>this._nowValue)==parseInt(<string><any>nowOld)) return;
 			this.drawNumber(Math.floor(this._nowValue)+'');
+
+			if(!this._allowPoint && Math.floor(nowOld)==Math.floor(this._nowValue)) return;
+			this.drawNumber((this._allowPoint ? this._nowValue.toFixed(2) : Math.floor(this._nowValue)).toString());
 		}
 	}
 }

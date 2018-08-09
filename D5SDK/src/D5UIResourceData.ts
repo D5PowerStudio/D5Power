@@ -420,16 +420,19 @@ module d5power
                         data.setupResource(sp,k,uvList);
                         break;
                     case "D5BitmapNumber":
-
-                        for(var i:number=0;i<10;i++)
+                        
+                        var extData:string = !obj.extData ? '' : obj.extData;
+                        var count:number = extData=='' ? 10 : 10+extData.length;
+                        for(var i:number=0;i<count;i++)
                         {
                             uv = new UVData();
-                            uv.offX = obj.x+i*obj.w/10;
+                            uv.offX = obj.x+i*obj.w/count;
                             uv.offY = obj.y;
-                            uv.width = obj.w/10;
+                            uv.width = obj.w/count;
                             uv.height = obj.h;
                             uvList.push(uv);
                         }
+                        data.extData = extData;
                         data.setupResource(sp,k,uvList);
                         break;
                     case "D5Loop":
@@ -500,6 +503,7 @@ module d5power
         private _resList:Array<string>;
         private _name:string;
         public  buttonType:number;
+        public extData:string='';
         public constructor()
         {
             this._resList = [];
