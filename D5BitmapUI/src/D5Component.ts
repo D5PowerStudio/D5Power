@@ -515,6 +515,7 @@ module d5power
         {
             if(this._belone){
                 var target:Array<any> = D5Component._preloadList[this._belone];
+                if(!target) return;
                 var list:Array<any> = target[0];
                 var callback:Function = target[1];
                 var thisobj:any = target[2];
@@ -524,6 +525,7 @@ module d5power
                 callback.apply(thisobj,[list.length]);
 
                 if(!list.length) delete D5Component._preloadList[this._belone];
+                this._belone=null;
             }
         }
         
