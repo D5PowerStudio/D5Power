@@ -90,6 +90,16 @@ module d5power {
 		{
 			this._keepLength = v;
 		}
+
+		public get nowValue():number
+		{
+			return this._targetValue;
+		}
+
+		public get text():string
+		{
+			return this._targetValue.toString();
+		}
 		
 		/**
 		 * 是否开启自动增长功能
