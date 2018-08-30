@@ -10,7 +10,7 @@ export class WxgamePlugin implements plugins.Command {
 			if(filename == 'lib/modules/d5sdk/d5sdk.js' || filename=='libs/modules/d5sdk/d5sdk.min.js')
             {
                 let content = file.contents.toString();
-                content += `;window.d5power = d5power;`;
+                content += `;window.d5power = d5power;window.trace = trace;`;
                 content = content.replace(/definition = __global/, "definition = window");
                 file.contents = new Buffer(content);
             }
