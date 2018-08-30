@@ -1,8 +1,0 @@
-require("js/egret.min.js")
-require("js/game.min.js")
-require("js/res.min.js")
-require("js/dragonBones.min.js")
-require("js/d5sdk.min.js")
-require("js/d5.min.js")
-require("js/d5bitmapui.min.js")
-require("js/main.min.js")
