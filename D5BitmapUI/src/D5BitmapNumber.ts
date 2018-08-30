@@ -106,12 +106,12 @@ module d5power {
             this.data = D5UIResourceData.getData(name);
             if(this.data==null)
             {
-                trace("[D5Button]No Resource"+name);
+                trace("[D5Button]No Resource in lib:"+name);
                 return;
 			}
 			
 			this._perWidth = this.data.getResource(0).textureWidth;
-			this._hasPoint = this.data.extData.indexOf('.')!=-1
+			this._hasPoint = this.data.extData && this.data.extData.indexOf('.')!=-1
 			this._string_map = D5BitmapNumber.BASIC_CONTENT+(this.data.extData);
 		}
 
@@ -136,10 +136,11 @@ module d5power {
         			   }
     			}else{
     			    // 需要减少
-        			   while(this._displayer.length>len){
-        			       bitmap = this._displayer.pop();
-        			       D5BitmapNumber.back2Pool(bitmap);
-        			   }
+					while(this._displayer.length>len){
+						bitmap = this._displayer.pop();
+						this._box.removeChild(bitmap);
+						D5BitmapNumber.back2Pool(bitmap);
+					}
 				}
 				
 				this._w = len*this._perWidth;
