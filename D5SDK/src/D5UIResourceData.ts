@@ -89,29 +89,29 @@ module d5power
                         cut = obj.cut[0];
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
                         uv.width = cut.x;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x+cut.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x+cut.x;
+                        uv.y = obj.y;
                         uv.width = obj.w - cut.x - 1;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y + cut.y - 1;
+                        uv.x = obj.x;
+                        uv.y = obj.y + cut.y - 1;
                         uv.width = cut.x;
                         uv.height = obj.h-cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x+cut.x;
-                        uv.offY = obj.y+cut.y;
+                        uv.x = obj.x+cut.x;
+                        uv.y = obj.y+cut.y;
                         uv.width = obj.w - cut.x - 1;
                         uv.height = obj.h - cut.y - 1;
                         uvList.push(uv);
@@ -125,64 +125,64 @@ module d5power
                         cut1 = obj.cut[1];
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
                         uv.width = cut.x;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x+cut.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x+cut.x;
+                        uv.y = obj.y;
                         uv.width = cut1.x-cut.x;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + cut1.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + cut1.x;
+                        uv.y = obj.y;
                         uv.width = obj.w - cut1.x;
                         uv.height = cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y+cut.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y+cut.y;
                         uv.width = cut.x;
                         uv.height = cut1.y-cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x+cut.x;
-                        uv.offY = obj.y+cut.y;
+                        uv.x = obj.x+cut.x;
+                        uv.y = obj.y+cut.y;
                         uv.width = cut1.x-cut.x;
                         uv.height = cut1.y-cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + cut1.x;
-                        uv.offY = obj.y + cut.y;
+                        uv.x = obj.x + cut1.x;
+                        uv.y = obj.y + cut.y;
                         uv.width = obj.w - cut1.x;
                         uv.height = cut1.y - cut.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y + cut1.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y + cut1.y;
                         uv.width = cut.x;
                         uv.height = obj.h - cut1.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + cut.x;
-                        uv.offY = obj.y + cut1.y;
+                        uv.x = obj.x + cut.x;
+                        uv.y = obj.y + cut1.y;
                         uv.width = cut1.x - cut.x;
                         uv.height = obj.h - cut1.y;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + cut1.x;
-                        uv.offY = obj.y + cut1.y;
+                        uv.x = obj.x + cut1.x;
+                        uv.v = obj.y + cut1.y;
                         uv.width = obj.w - cut1.x;
                         uv.height = obj.h - cut1.y;
                         uvList.push(uv);
@@ -196,29 +196,29 @@ module d5power
                         if(cut.x==0)    //4帧按钮
                         {
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = obj.w/4;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + obj.w/4;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + obj.w/4;
+                            uv.y = obj.y;
                             uv.width = obj.w/4;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + obj.w/2;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + obj.w/2;
+                            uv.y = obj.y;
                             uv.width = obj.w/4;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + obj.w - obj.w/4;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + obj.w - obj.w/4;
+                            uv.y = obj.y;
                             uv.width = obj.w/4;
                             uv.height = obj.h;
                             uvList.push(uv);
@@ -228,15 +228,15 @@ module d5power
                         else
                         {
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = obj.w/2;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + obj.w/2;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + obj.w/2;
+                            uv.y = obj.y;
                             uv.width = obj.w/2;
                             uv.height = obj.h;
                             uvList.push(uv);
@@ -248,29 +248,29 @@ module d5power
                         break;
                     case "D5Button4":
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
                         uv.width = obj.w / 4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w / 4;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w / 4;
+                        uv.y = obj.y;
                         uv.width = obj.w / 4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w / 2;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w / 2;
+                        uv.y = obj.y;
                         uv.width = obj.w / 4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w - obj.w / 4;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w - obj.w / 4;
+                        uv.y = obj.y;
                         uv.width = obj.w / 4;
                         uv.height = obj.h;
                         uvList.push(uv);
@@ -287,15 +287,15 @@ module d5power
                         if(cut.y == 0)           //X轴拉伸
                         {
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = cut.x;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + cut.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + cut.x;
+                            uv.y = obj.y;
                             uv.width = obj.w - cut.x - 1;
                             uv.height = obj.h;
                             uvList.push(uv);
@@ -306,15 +306,15 @@ module d5power
                         }else{                   //y轴拉伸
 
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = obj.w;
                             uv.height = cut.y;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y + cut.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y + cut.y;
                             uv.width = obj.w;
                             uv.height = obj.h - cut.y - 1;
                             uvList.push(uv);
@@ -329,8 +329,10 @@ module d5power
                     case "D5Bitmap":
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
+                        uv.offX = obj.offX;
+                        uv.offY = obj.offY;
                         uv.width = obj.w;
                         uv.height = obj.h;
                         uvList.push(uv);
@@ -341,29 +343,29 @@ module d5power
                     case "D5RadioBtn":
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
                         uv.width = obj.w/4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w/4;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w/4;
+                        uv.y = obj.y;
                         uv.width = obj.w/4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w/2;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w/2;
+                        uv.y = obj.y;
                         uv.width = obj.w/4;
                         uv.height = obj.h;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w - obj.w/4;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + obj.w - obj.w/4;
+                        uv.y = obj.y;
                         uv.width = obj.w/4;
                         uv.height = obj.h;
                         uvList.push(uv);
@@ -376,43 +378,43 @@ module d5power
                         cut = obj.cut[0];
 
                         uv = new UVData();
-                        uv.offX = obj.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x;
+                        uv.y = obj.y;
                         uv.width = cut.x;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + cut.x;
-                        uv.offY = obj.y;
+                        uv.x = obj.x + cut.x;
+                        uv.y = obj.y;
                         uv.width = obj.w - cut.x;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
 
                         uv = new UVData();              //下面是按钮素材   ，上面是背景素材
-                        uv.offX = obj.x;
-                        uv.offY = obj.y + obj.h / 2;
+                        uv.x = obj.x;
+                        uv.y = obj.y + obj.h / 2;
                         uv.width = obj.w / 4;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w/4;
-                        uv.offY = obj.y + obj.h / 2;
+                        uv.x = obj.x + obj.w/4;
+                        uv.y = obj.y + obj.h / 2;
                         uv.width = obj.w / 4;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w/2;
-                        uv.offY = obj.y + obj.h / 2;
+                        uv.x = obj.x + obj.w/2;
+                        uv.y = obj.y + obj.h / 2;
                         uv.width = obj.w/4;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
 
                         uv = new UVData();
-                        uv.offX = obj.x + obj.w - obj.w/4;
-                        uv.offY = obj.y + obj.h / 2;
+                        uv.x = obj.x + obj.w - obj.w/4;
+                        uv.y = obj.y + obj.h / 2;
                         uv.width = obj.w/4;
                         uv.height = obj.h / 2;
                         uvList.push(uv);
@@ -426,8 +428,8 @@ module d5power
                         for(var i:number=0;i<count;i++)
                         {
                             uv = new UVData();
-                            uv.offX = obj.x+i*obj.w/count;
-                            uv.offY = obj.y;
+                            uv.x = obj.x+i*obj.w/count;
+                            uv.y = obj.y;
                             uv.width = obj.w/count;
                             uv.height = obj.h;
                             uvList.push(uv);
@@ -443,44 +445,44 @@ module d5power
                         if(cut.y == 0)           //X轴拉伸
                         {
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = cut.x;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x + cut.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x + cut.x;
+                            uv.y = obj.y;
                             uv.width = cut1.x - cut.x - 1;
                             uv.height = obj.h;
                             uvList.push(uv);
                             
                             uv = new UVData();
-                            uv.offX = obj.x+cut1.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x+cut1.x;
+                            uv.y = obj.y;
                             uv.width = obj.w-cut1.x;
                             uv.height = obj.h;
                             uvList.push(uv);
 
                         }else{                   //y轴拉伸
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y;
                             uv.width = obj.w;
                             uv.height = cut.y;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y + cut.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y + cut.y;
                             uv.width = obj.w;
                             uv.height = cut1.y - cut.y - 1;
                             uvList.push(uv);
 
                             uv = new UVData();
-                            uv.offX = obj.x;
-                            uv.offY = obj.y+cut1.y;
+                            uv.x = obj.x;
+                            uv.y = obj.y+cut1.y;
                             uv.width = obj.w;
                             uv.height = obj.h-cut1.y;
                             uvList.push(uv);
@@ -516,7 +518,7 @@ module d5power
             var txture:egret.Texture;
             for(var i:number=0,j:number=uvData.length;i<j;i++)
             {
-                txture = sp.createTexture(name+i,uvData[i].offX,uvData[i].offY,uvData[i].width,uvData[i].height);
+                txture = sp.createTexture(name+i,uvData[i].x,uvData[i].y,uvData[i].width,uvData[i].height);
                 D5UIResourceData._resource[name+i] = txture
             }
         }
