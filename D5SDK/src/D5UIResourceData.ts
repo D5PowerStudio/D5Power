@@ -533,7 +533,7 @@ module d5power
 
         public getUVConf(id:number):UVData
         {
-            return D5UIResourceData._resource[this._name+id];
+            return D5UIResourceData._uvLib[this._name+id];
         }
         
         public static addResource(id:number,texture:egret.Texture,name:string=''):void
