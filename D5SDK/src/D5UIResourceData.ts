@@ -37,6 +37,8 @@ module d5power
 
         private static _resourceLib:any={};
 
+        private static _uvLib:any = {};
+
         public static _typeLoop:number = 0;
 
         public static setup(path:string,callback:Function,thisobj:any):void
@@ -338,6 +340,7 @@ module d5power
                         uvList.push(uv);
 
                         data.setupResource(sp,k,uvList);
+                        D5UIResourceData.addUVConf(0,uv,k);
                         break;
 
                     case "D5RadioBtn":
@@ -527,10 +530,20 @@ module d5power
         {
             return D5UIResourceData._resource[this._name+id];
         }
+
+        public getUVConf(id:number):UVData
+        {
+            return D5UIResourceData._resource[this._name+id];
+        }
         
         public static addResource(id:number,texture:egret.Texture,name:string=''):void
         {
             D5UIResourceData._resource[name+id] = texture;
+        }
+
+        public static addUVConf(id:number,uv:UVData,name=''):void
+        {
+            D5UIResourceData._uvLib[name+id] = uv;
         }
     }
 }
