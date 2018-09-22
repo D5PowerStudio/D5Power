@@ -159,7 +159,7 @@ module d5power
 			for(var i:number=_root.numChildren-1;i>=0;i--)
 			{
                 var obj:any = _root.getChildAt(i);
-                if(skip && skip.indexOf(obj)==-1) continue;
+                if(skip && skip.indexOf(obj)!=-1) continue;
 				if(obj!=this)
 				{
 					if(rect.contains(obj.x,obj.y) || (contain!=null && contain.indexOf(obj)!=-1))
