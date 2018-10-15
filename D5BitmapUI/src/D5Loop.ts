@@ -17,6 +17,19 @@ module d5power
             this._cutsize1 = cutsize1;
             this._cutsize2 = cutsize2;
         }
+
+        public clone():D5Loop
+        {
+            var loop:D5Loop = new D5Loop(0,0,0);
+            loop._workmode = this._workmode;
+            loop._cutsize1 = this._cutsize1;
+            loop._cutsize2 = this._cutsize2;
+            loop._partI = new egret.Bitmap(this._partI.texture);
+            loop._partII = new egret.Bitmap(this._partII.texture);
+            loop._partIII = new egret.Bitmap(this._partIII.texture);
+            loop.setSize(this._w,this._h);
+            return loop;
+        }
         
         private buildPart():void
         {

@@ -239,6 +239,18 @@ module d5power
                 if(this._dbuffer.parent) this._dbuffer.parent.removeChild(this._dbuffer);
             }
             this._dbuffer = container;
+
+            if(this._dbuffer.stage==null)
+            {
+                var that:BaseMap = this;
+                this._dbuffer.once(egret.Event.ADDED_TO_STAGE,function():void{
+                    D5Game.screenWidth = that._dbuffer.stage.stageWidth;
+                    D5Game.screenHeight = that._dbuffer.stage.stageHeight;
+                },this);
+            }else{
+                D5Game.screenWidth = this._dbuffer.stage.stageWidth;
+                D5Game.screenHeight = this._dbuffer.stage.stageHeight;
+            }
         }
         /**
          * 设置区块格式

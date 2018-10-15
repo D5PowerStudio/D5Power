@@ -63,26 +63,31 @@ module d5power
             var tx:number = this._pos.x;
             var ty:number = this._pos.y;
 
-            var wout:boolean = this._map.width>D5Game.screenWidth;
-            var hout:boolean = this._map.height>D5Game.screenHeight;
+            
 
-            if(this.beFocus && wout && hout){
-            // 地图比屏幕大，需要卷动
+            if(this._map)
+            {
+                var wout:boolean = this._map.width>D5Game.screenWidth;
+                var hout:boolean = this._map.height>D5Game.screenHeight;
 
-                var tw:number = wout ? D5Game.screenWidth : this._map.width;
-                var th:number = hout ? D5Game.screenHeight : this._map.height;
-
-                tx = tx>this._map.width-(tw>>1) ? tx-(this._map.width-tw) : tx;
-                ty = ty>this._map.height-(th>>1) ? ty-(this._map.height-th) : ty;
-
-                tx = tx>(tw>>1) && tx==this._pos.x ? (tw>>1) : tx;
-                ty = ty>(th>>1) && ty==this._pos.y ? (th>>1) : ty;
-            }else{
-                var target:egret.Point = this._map.getScreenPostion(tx,ty);
-                tx = target.x;
-                ty = target.y;
+                if(this.beFocus && wout && hout){
+                    // 地图比屏幕大，需要卷动
+        
+                        var tw:number = wout ? D5Game.screenWidth : this._map.width;
+                        var th:number = hout ? D5Game.screenHeight : this._map.height;
+        
+                        tx = tx>this._map.width-(tw>>1) ? tx-(this._map.width-tw) : tx;
+                        ty = ty>this._map.height-(th>>1) ? ty-(this._map.height-th) : ty;
+        
+                        tx = tx>(tw>>1) && tx==this._pos.x ? (tw>>1) : tx;
+                        ty = ty>(th>>1) && ty==this._pos.y ? (th>>1) : ty;
+                    }else{
+                        var target:egret.Point = this._map.getScreenPostion(tx,ty);
+                        tx = target.x;
+                        ty = target.y;
+                    }
             }
-
+            
             if(this._monitor==null) return;
 
             this._monitor.x = tx+offX;

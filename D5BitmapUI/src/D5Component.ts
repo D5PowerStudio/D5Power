@@ -159,7 +159,7 @@ module d5power
 			for(var i:number=_root.numChildren-1;i>=0;i--)
 			{
                 var obj:any = _root.getChildAt(i);
-                if(skip && skip.indexOf(obj)==-1) continue;
+                if(skip && skip.indexOf(obj)!=-1) continue;
 				if(obj!=this)
 				{
 					if(rect.contains(obj.x,obj.y) || (contain!=null && contain.indexOf(obj)!=-1))
@@ -360,6 +360,8 @@ module d5power
                     com.setSkin(value.skinId);
                     com.x = value.x;
                     com.y = value.y;
+                    if(value.rotation!=0) com.rotation = value.rotation;
+                    if(value.zoom) com.scaleX = com.scaleY = value.zoom;
                     if(container) container[com.name] = com;
                     break;
                 case "D5RadioBtn":
@@ -458,7 +460,7 @@ module d5power
                     com.y = value.y;
                     //(<D5BitmapNumber>com).setPadding(value.src);
                     (<D5BitmapNumber>com).setAlign(value.align);
-                    (<D5BitmapNumber>com).setValue(1);
+                    (<D5BitmapNumber>com).setValue('0');
                     if(container) container[com.name] = com;
                     break;
                 case "D5Shape":
@@ -515,6 +517,7 @@ module d5power
         {
             if(this._belone){
                 var target:Array<any> = D5Component._preloadList[this._belone];
+                if(!target) return;
                 var list:Array<any> = target[0];
                 var callback:Function = target[1];
                 var thisobj:any = target[2];
@@ -524,6 +527,7 @@ module d5power
                 callback.apply(thisobj,[list.length]);
 
                 if(!list.length) delete D5Component._preloadList[this._belone];
+                this._belone=null;
             }
         }
         
