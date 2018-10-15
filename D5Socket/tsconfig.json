@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "outFile": "bin/d5socket/d5socket.js",
+        "declaration": true
+    },
+    "files": [
+        "libs/d5sdk.d.ts",
+        "libs/egret.d.ts",
+		"src/native/NativeSocket.ts",
+        "src/web/HTML5WebSocket.ts",
+        "src/ISocket.ts",
+        "src/D5Socket.ts"
+    ]
+}
