@@ -48,6 +48,18 @@ module d5power
             super();
         }
 
+        private _isLoopFill:number;
+        /**
+         * 是否为循环贴图
+         */
+        public set loop(b:boolean)
+        {
+            if(this.bit)
+                this.bit.fillMode = b ? egret.BitmapFillMode.REPEAT : egret.BitmapFillMode.SCALE;
+            else
+                this._isLoopFill = b ? 1 : 0;
+        }
+
         public setSkin(name:string):void
         {
             if(this._nowName == name) return;
@@ -72,6 +84,8 @@ module d5power
             {
                 this.bit = new egret.Bitmap();
             }
+
+            if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             this.bit.texture = data.getResource(0);
             this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
             this.invalidate();
@@ -98,7 +112,7 @@ module d5power
         {
             var b:D5Bitmap = new D5Bitmap();
             b.setSize(this._w,this._h);
-            b.setSkin(this._nowName);
+            b.setRes(this.bit==null ? null : this.bit.texture);
             return b;
         }
 
@@ -117,7 +131,8 @@ module d5power
                 trace(this.name,'resource hot found ==============');
                 data = D5Bitmap._defaultTexture;
             }
-             this.bit.texture = data;
+            this.bit.texture = data;
+            if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
             //this.invalidate();
 
