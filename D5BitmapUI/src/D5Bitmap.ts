@@ -160,7 +160,12 @@ module d5power
                 if(!this.contains(this.bit)) {
                     this.addChildAt(this.bit,0);
                 }
-
+                
+                if(this.bit.fillMode==egret.BitmapFillMode.REPEAT)
+                {
+                    this.bit.width = this._w;
+                    this.bit.height = this._h;
+                }
             }
             super.draw();
         }
