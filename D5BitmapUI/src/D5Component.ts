@@ -354,6 +354,16 @@ module d5power
                     com.setSize(value.width,value.height);
                     if(container) container[com.name] = com;
                     break;
+                case "D5Lib":
+                    com = new d5power.D5Lib();
+                    com.name = value.name;
+                    (<D5Lib>com).init(value.src);
+                    com.x = value.x;
+                    com.y = value.y;
+                    if(value.rotation!=0) com.rotation = value.rotation;
+                    if(value.zoom) com.scaleX = com.scaleY = value.zoom;
+                    if(container) container[com.name] = com;
+                    break;
                 case "D5Bitmap":
                     com = new d5power.D5Bitmap();
                     com.name = value.name;
