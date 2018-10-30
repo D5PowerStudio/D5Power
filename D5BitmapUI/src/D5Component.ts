@@ -30,6 +30,35 @@ module d5power
 {
     export class D5Component extends egret.Sprite 
     {
+        private static _actionList:Array<D5Component>=[];
+        private static _actionTimer:egret.Timer;
+        private static _actionRunning:boolean=false;
+
+        protected static addAction(target:D5Component,conf:any):void
+        {
+            
+            if(!this._actionRunning) setTimeout(this.actionRener,20);
+        }
+
+        protected static actionRener():void
+        {
+            D5Component._actionRunning = true;
+            var o:D5Component;
+            for(var i:number=0;i<D5Component._actionList.length;i--)
+            {
+                o = D5Component._actionList[i];
+                if(!o._actionConf)
+                {
+                    D5Component._actionList.splice(i,1);
+                }else{
+                    o.action();
+                    if(o._actionConf.done) D5Component._actionList.splice(i,1);
+                }
+            }
+
+            if(D5Component._actionList.length) setTimeout(this.actionRener,20);
+        }
+
         public static MOVE_NUMBER:number = 10;
 		public static MOVE_NONE:number = 0;
 		public static MOVE_LEFT:number = 1;
@@ -43,6 +72,22 @@ module d5power
         protected _w:number;
         protected _h:number;
         protected _nowName:string;
+        /**
+         * 移动速度
+         */
+        protected _speed:number = 2;
+        /**
+         * 旋转速度
+         */
+        protected _rspeed:number = 1;
+        /**
+         * 缩放速度
+         */
+        protected _xspeed:number = 0.05
+        /**
+         * 动作配置
+         */
+        protected _actionConf:any;
         /**
          * 归属，用于判断加载进度
          */
@@ -136,7 +181,60 @@ module d5power
 				}
 			}
 			if(D5Component._moveList.length==0)D5Component.me.removeEventListener(egret.Event.ENTER_FRAME,this.onMoveUI,this);
-		}
+        }
+
+        /**
+         * 让组件播放动画
+         * @param conf 处理的参数x,y,loop
+         */
+        public go(conf:any):void
+        {
+            if(!this._actionConf) this._actionConf={x:this.x,y:this.y,sx:this.x,sy:this.y,posdone:true,loop:false,done:false};
+            for(var k in conf) this._actionConf[k] = conf[k];
+            
+            if(this.x+this.y!=this._actionConf.x+this._actionConf.y) this._actionConf.posdone = false;
+        }
+        
+        /**
+         * 动画实现
+         */
+        protected action():void
+        {
+            if(this._actionConf.posdone)
+            {
+                var angle:number = Math.atan2(this._actionConf.y-this.y,this._actionConf.x-this.x);
+                var speed:number;
+
+                var target:number = this._actionConf.x;
+                if(this.x!=target)
+                {
+                    speed = this._speed*Math.cos(angle);
+                    this.x = Math.abs(this.x-target)<this._speed ? target : speed+this.x ;
+                }
+
+                target = this._actionConf.y;
+                if(this.y!=this._actionConf.y)
+                {
+                    speed = this._speed*Math.sin(angle);
+                    this.y = Math.abs(this.y-target)<this._speed ? target : speed+this.y ;
+                }
+
+                if(this.x==this._actionConf.x && this.y==this._actionConf.y)
+                {
+                    if(this._actionConf.loop)
+                    {
+                        this._actionConf.x = this._actionConf.sx;
+                        this._actionConf.y = this._actionConf.sy;
+                        this._actionConf.x = this.x;
+                        this._actionConf.y = this.y;
+                    }else{
+                        this._actionConf.posdone = true;
+                    }
+                }
+            }
+
+            if(this._actionConf.posdone) this._actionConf.done = true;
+        }
 		
         /**
 		 * 将与自己同容器，且在自己范围内的对象纳入自己的自对象，形成一个整体
