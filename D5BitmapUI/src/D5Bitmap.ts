@@ -60,6 +60,11 @@ module d5power
                 this._isLoopFill = b ? 1 : 0;
         }
 
+        public get texture():egret.Texture
+        {
+            return this.bit ? this.bit.texture : null;
+        }
+
         public setSkin(name:string):void
         {
             if(this._nowName == name) return;
@@ -113,6 +118,8 @@ module d5power
             var b:D5Bitmap = new D5Bitmap();
             b.setSize(this._w,this._h);
             b.setRes(this.bit==null ? null : this.bit.texture);
+            b.anchorOffsetX = this.anchorOffsetX;
+            b.anchorOffsetY = this.anchorOffsetY;
             return b;
         }
 
