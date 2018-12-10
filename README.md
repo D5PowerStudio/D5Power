@@ -20,7 +20,9 @@ D5Power是一款基于[Egret Engine](http://www.egret.com)开发的游戏框架�
 
 # 专题视频教程
 
-<img src='http://www.webgamei.com/data/attachment/forum/201812/08/234342sbp4ocd1xpcimo1b.png'/>
+<img src='http://h5.d5power.com/d5power.teach/qc2.jpg'/>
+
+<img src='http://h5.d5power.com/d5power.teach/qc1.jpg'/>
 
 # 开发者社区
 
