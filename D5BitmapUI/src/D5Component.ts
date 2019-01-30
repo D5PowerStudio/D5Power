@@ -607,6 +607,17 @@ module d5power
                     com.setSize(value.width,value.height);
                     if(container) container[com.name] = com;
                     break;
+                case "D5Music":
+                    com = new D5Music();
+                    com.name = value.name;
+                    com.x = value.x;
+                    com.y = value.y;
+                    (<D5Music>com).loop = value.loop=='1';
+                    (<D5Music>com).src = value.src;
+                    (<D5Music>com).autoPlay = value.autoPlay=='1';
+                    (<D5Music>com).keep = value.keep=='1';
+                    if(container) container[com.name] = com;
+                    break;
             }
             com.startX = value.x;
 			com.startY = value.y;
