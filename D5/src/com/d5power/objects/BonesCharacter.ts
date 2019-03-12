@@ -8,9 +8,10 @@ module d5power
         private _factory:dragonBones.EgretFactory;
         private _onReady:Function;
         private _onReady_obj:any;
-        private _waitAction:number=-1;
-        private _targetPoint:egret.Point;
-        private _faceAngle:number;
+        private _waitAction:string = null;
+        private _nowAction:string = null;
+        private _dirK:number;
+        
 
         public constructor(map:IMap)
         {
@@ -21,39 +22,35 @@ module d5power
         {
             if(this._targetPoint)
             {
-                var radian:number = GMath.getPointAngle(this._targetPoint.x-this._pos.x,this._targetPoint.y-this._pos.y);
-                var angle:number = GMath.R2A(radian)+90;
-                if(this._faceAngle!=angle)
+                this._movedir = GMath.getPointAngle(this._targetPoint.x-this._pos.x,this._targetPoint.y-this._pos.y);
+                if(this.moveWidthDir())
                 {
-                    this.faceAngle = angle;
-                }
-
-                var xisok:boolean=false;
-                var yisok:boolean=false;
-
-                var xspeed:number = this.speed*Math.cos(radian);
-                var yspeed:number = this.speed*Math.sin(radian);
-
-
-                if(Math.abs(this._pos.x-this._targetPoint.x)<=1){
-                    xisok=true;
-                    xspeed=0;
-                }
-
-                if(Math.abs(this._pos.y-this._targetPoint.y)<=1){
-                    yisok=true;
-                    yspeed=0;
-                }
-
-                this.setPos(this._pos.x+xspeed,this._pos.y+yspeed);
-                if(xisok && yisok){
                     // 走到新的位置点 更新区块坐标
                     this._targetPoint = null;
-                    this.action = Actions.Wait;
+                    this.run2wait();
                 }
+            }else if(!isNaN(this._movedir)){
+                this.moveWidthDir();
             }
 
             this.updatePos();
+        }
+
+        /**
+         * 由跑动切换到待机的缓冲动作
+         * @param action_name 由跑动切换到待机的缓冲动作
+         */
+        protected run2wait(action_name:string=null,callback:Function=null,thisobj:any=null):void
+        {
+            if(action_name!=null) this.playAction(action_name);
+            this._speedK = .5;
+            var that:BoneCharacter = this;
+            setTimeout(function():void{
+                that.action = Actions.Wait;
+                that._speedK = 1;
+                that._movedir = NaN;
+                if(callback!=null) callback.apply(thisobj);
+            },800);
         }
 
         public move2Tile(tx:number,ty:number):void
@@ -73,9 +70,18 @@ module d5power
             this.action = Actions.Run;
         }
 
-        public setSkin(path:string,onReady:Function,thisobj:any)
+        /**
+         * 
+         * @param path 
+         * @param onReady 
+         * @param thisobj 
+         * @param leftDir 若角色方向默认向左，不需要使用此参数。若角色方向默认向右，请传递-1
+         */
+        public setSkin(path:string,onReady:Function,thisobj:any,leftDir:number=1)
         {
             var that:BoneCharacter = this;
+            this._dirK = leftDir;
+
             var onTexture:Function = function(data:egret.Texture)
             {
                 if(data==null)
@@ -139,25 +145,61 @@ module d5power
             
             this._onReady.apply(this._onReady_obj,[this]);
 
-            if(this._waitAction!=-1) this.action = this._waitAction;
+            if(this._waitAction!=null) this.playAction(this._waitAction);
         }
 
+        /**
+         * 兼容逐帧对象的播放形式，传递动作ID开始播放
+         */
         public set action(v:number)
+        {
+            this.playAction('action'+v);
+        }
+
+        /**
+         * 沿着某一个方向移动
+         * @param dir 移动角度
+         */
+        public go(dir:number):void
+        {
+            this._movedir = dir;
+            this.action = Actions.Run;
+        }
+
+        /**
+         * 停止沿某个方向移动
+         * @param   action  过渡切换动作
+         * @param   callback 完全停止后的反馈函数，无参数
+         * @param   thisobj
+         */
+        public stop(action:string=null,callback:Function=null,thisobj:any=null):void
+        {
+            this.run2wait(action,callback,thisobj);
+        }
+
+        /**
+         * 播放某个骨骼动作
+         * @param name 动作名
+         */
+        public playAction(name:string):void
         {
             if(!this._monitor) 
             {
-                this._waitAction = v;
+                this._waitAction = name;
                 return;
             }
-            (<dragonBones.EgretArmatureDisplay><any>this._monitor).animation.play('action'+v);
-            this._waitAction = -1;
+
+            if(this._nowAction==name) return;
+            this._nowAction = name;
+            (<dragonBones.EgretArmatureDisplay><any>this._monitor).animation.play(name);
+            this._waitAction = null;
         }
 
         /**
          * 根据角度值修改角色的方向
          * @param   angle   角度
          */
-        private set faceAngle(angle:number){
+        protected set faceAngle(angle:number){
             this._faceAngle = angle;
             　
             if(!this._monitor) return;
@@ -167,19 +209,19 @@ module d5power
             if(angle>=-22.5 && angle<22.5){
                 
             }else if(angle>=22.5 && angle<67.5){
-                this._monitor.scaleX = s*-1;
+                this._monitor.scaleX = s*-1*this._dirK;
             }else if(angle>=67.5 && angle<112.5){
-                this._monitor.scaleX = s*-1;
+                this._monitor.scaleX = s*-1*this._dirK;
             }else if(angle>=112.5 && angle<157.5){
-                this._monitor.scaleX = s*-1;
+                this._monitor.scaleX = s*-1*this._dirK;
             }else if(angle>=157.5 && angle<202.5){
                 
             }else if(angle>=202.5 && angle<247.5){
-                this._monitor.scaleX = s;
+                this._monitor.scaleX = s*this._dirK;
             }else if(angle>=247.5 && angle<292.5){
-                this._monitor.scaleX = s;
+                this._monitor.scaleX = s*this._dirK;
             }else{
-                this._monitor.scaleX = s;
+                this._monitor.scaleX = s*this._dirK;
             }
         }
     }

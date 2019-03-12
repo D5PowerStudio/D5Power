@@ -8,7 +8,24 @@ module d5power
 
         protected _map:IMap;
 
+        /**
+         * 面向方向
+         */
+        protected _faceAngle:number;
+        
+        /**
+         * 移动方向
+         */
+        protected _movedir:number;
+
+        protected _targetPoint:egret.Point;
+
         public speed:number=3;
+
+        /**
+         * 速度系数
+         */
+        protected _speedK:number = 1;
 
         public beFocus:boolean;
 
@@ -51,7 +68,48 @@ module d5power
 
         }
 
-        
+        /**
+         * 根据角度值修改角色的方向
+         * @param   angle   角度
+         */
+        protected set faceAngle(angle:number){
+        }
+
+        /**
+         * 沿某个方向移动的计算
+         */
+        protected moveWidthDir():boolean
+        {
+            var angle:number = GMath.R2A(this._movedir)+90;
+            if(this._faceAngle!=angle)
+            {
+                this.faceAngle = angle;
+            }
+
+            var xisok:boolean=false;
+            var yisok:boolean=false;
+
+            var xspeed:number = this.speed*Math.cos(this._movedir)*this._speedK;
+            var yspeed:number = this.speed*Math.sin(this._movedir)*this._speedK;
+
+
+            if(this._targetPoint && Math.abs(this._pos.x-this._targetPoint.x)<=1){
+                xisok=true;
+                xspeed=0;
+            }
+
+            if(this._targetPoint && Math.abs(this._pos.y-this._targetPoint.y)<=1){
+                yisok=true;
+                yspeed=0;
+            }
+
+            this.setPos(this._pos.x+xspeed,this._pos.y+yspeed);
+            if(xisok && yisok){
+                return true;
+            }else{
+                return false;
+            }
+        }
 
         public get monitor():egret.DisplayObject
         {

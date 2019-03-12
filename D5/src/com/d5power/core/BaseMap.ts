@@ -192,7 +192,9 @@ module d5power
                 
                 that._loopBg = data;
                 
-                that.setupRoad(null);
+                that.reset();
+                that.resize();
+                if(callback) callback.apply(thisobj);
             },this);
         }
 
