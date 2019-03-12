@@ -42,6 +42,7 @@
 		"src/com/d5power/objects/FrameCharacter.ts",
 		"src/com/d5power/objects/SingleFrameCharacter.ts",
 		"src/com/d5power/D5Game.ts",
-		"src/com/d5power/D5World.ts"
+		"src/com/d5power/D5World.ts",
+		"src/com/d5power/controller/TouchController.ts"
     ]
 }
