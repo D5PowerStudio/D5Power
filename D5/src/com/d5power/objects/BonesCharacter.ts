@@ -11,11 +11,18 @@ module d5power
         private _waitAction:string = null;
         private _nowAction:string = null;
         private _dirK:number;
+        private _id:string;
         
 
-        public constructor(map:IMap)
+        public constructor(map:IMap,id:string=null)
         {
             super(map);
+            this._id = id;
+        }
+
+        public get id():string
+        {
+            return this._id;
         }
 
         public run(t:number):void
@@ -154,6 +161,16 @@ module d5power
         public set action(v:number)
         {
             this.playAction('action'+v);
+        }
+
+        public get action():number
+        {
+            if(this._nowAction.substr(0,6)=='action')
+            {
+                return parseInt(this._nowAction.substr(6));
+            }else{
+                return -1;
+            }
         }
 
         /**
