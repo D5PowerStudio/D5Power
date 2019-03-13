@@ -67,6 +67,12 @@ module d5power
          * 标签，是否正在加载中
          */
         private _isLoading:boolean;
+
+        /**
+         * 状态，是否正在播放中
+         */
+        private _isPlaying:boolean;
+
         public constructor()
         {
             super();
@@ -124,18 +130,28 @@ module d5power
             this._autoPlay = v;
             this.checkAuto();
         }
+
+        public stop():void
+        {
+            this._nowPlay = '';
+            this._isPlaying = false;
+            if(this._sound_c==null) return;
+            this._sound_c.stop();
+            this._sound_c = null;
+        }
         
         /**
          * 开始播放
          */
         public play():void
         {
+            this._isPlaying = true;
             var that:D5Music = this;
             // 若播放的文件相同，且已经在播放了，则重新开始，并重置循环状态
             if(this._nowPlay==this._src && this._sound_c)
             {
                 this._sound_c.stop();
-                this._sound_c = this._sound.play(this._loop?0:1);
+                if(this._sound) this._sound_c = this._sound.play(this._loop?0:1);
 
                 return;
             }
@@ -158,12 +174,14 @@ module d5power
                 {
                     that._sound.close();
                     that._sound = null;
-                    that.play();
+                    // 若在加载期间调用了stop方法，则一下代码不会运行
+                    if(that._isPlaying) that.play();
                     return;
                 }
                 if(that.parent || that.keep)
                 {
                     that._sound_c = that._sound.play(that._loop?0:1);
+                    
                 }else if(that._sound){
                     that._sound.close();
                 }
