@@ -141,15 +141,15 @@ module d5power{
 		 * 根据大地图的xy获取地图类型
 		 */
 		public getFloorTypeByPx(px: number, py: number): number {
-			px = Math.floor(px / RandMapConf.map_cfx);
-			py = this.baseMap._bitmapHeight - Math.floor(py / RandMapConf.map_cfy);
+			px = Math.floor(px / RandMapConf.map_scale_x);
+			py = this.baseMap._bitmapHeight - Math.floor(py / RandMapConf.map_scale_y);
 			return this.getFloorType(px, py);
 		}
 
 		/**
-		 * 重建
+		 * 通过Object进行格式化
 		 */
-		public build(obj: Object): void {
+		public format(obj: Object): void {
 			this.sizeX = obj["w"];
 			this.sizeY = obj["h"];
 			this.buildGridDic(this.sizeX, this.sizeY);
@@ -200,9 +200,9 @@ module d5power{
 		}
 
 		/**
-		 * 获取存储用的DB信息
+		 * 将当前地图数据转换为Object
 		 */
-		public getDb(): Object {
+		public getObj(): Object {
 			var obj: Object = new Object();
 			obj["w"] = this.sizeX;
 			obj["h"] = this.sizeY;
