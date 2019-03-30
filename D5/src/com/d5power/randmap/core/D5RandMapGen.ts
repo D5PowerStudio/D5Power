@@ -63,11 +63,11 @@ module d5power
                 map.buildLand();//修正地图的地形为最终地形
                 map.amendOasis(3);//增加绿洲
 
-                var smap:egret.Shape = map.getMapBaseTextture(800,800);
+                var smap:egret.Shape = map.getMapBaseTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
                 var ttr:egret.RenderTexture = new egret.RenderTexture();
                 ttr.drawToTexture(smap);
                 map.baseMap = ttr;
-                var river:egret.Shape = map.getRiverTextture(800,800);
+                var river:egret.Shape = map.getRiverTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
                 ttr = new egret.RenderTexture();
                 ttr.drawToTexture(river);
                 map.riverMap = ttr;
