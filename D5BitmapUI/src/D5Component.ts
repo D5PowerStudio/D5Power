@@ -594,6 +594,7 @@ module d5power
                     (<D5Shape>com).setOffY(value.offY);
                     (<D5Shape>com).setSize(value.width,value.height);
                     (<D5Shape>com).setRadius(value.radius);
+                    (<D5Shape>com).maskName = value.maskName;
                     (<D5Shape>com).pointString = value.pointString;
                     if(container) container[com.name] = com;
                     break;

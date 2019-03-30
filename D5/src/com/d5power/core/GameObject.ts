@@ -93,12 +93,12 @@ module d5power
             var yspeed:number = this.speed*Math.sin(this._movedir)*this._speedK;
 
 
-            if(this._targetPoint && Math.abs(this._pos.x-this._targetPoint.x)<=1){
+            if(this._targetPoint && Math.abs(this._pos.x-this._targetPoint.x)<=this.speed){
                 xisok=true;
                 xspeed=0;
             }
 
-            if(this._targetPoint && Math.abs(this._pos.y-this._targetPoint.y)<=1){
+            if(this._targetPoint && Math.abs(this._pos.y-this._targetPoint.y)<=this.speed){
                 yisok=true;
                 yspeed=0;
             }

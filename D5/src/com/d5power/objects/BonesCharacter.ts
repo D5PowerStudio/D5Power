@@ -13,6 +13,7 @@ module d5power
         private _dirK:number;
         private _id:string;
         
+        
 
         public constructor(map:IMap,id:string=null)
         {
@@ -34,7 +35,7 @@ module d5power
                 {
                     // 走到新的位置点 更新区块坐标
                     this._targetPoint = null;
-                    this.run2wait();
+                    this.action = Actions.Wait;
                 }
             }else if(!isNaN(this._movedir)){
                 this.moveWidthDir();
@@ -60,6 +61,11 @@ module d5power
             },800);
         }
 
+        /**
+         * 移动到某个区块地图
+         * @param tx 移动到的X坐标
+         * @param ty 移动到的Y坐标
+         */
         public move2Tile(tx:number,ty:number):void
         {
             tx = Math.ceil(tx);
@@ -72,6 +78,24 @@ module d5power
                 this._targetPoint.y = p.y;
             }else{
                 this._targetPoint = new egret.Point(p.x,p.y);
+            }
+
+            this.action = Actions.Run;
+        }
+
+        /**
+         * 移动到某个世界地图
+         * @param px 移动到的X坐标
+         * @param py 移动到的Y坐标
+         */
+        public move2Pos(px:number,py:number):void
+        {
+            if(this._targetPoint)
+            {
+                this._targetPoint.x = px;
+                this._targetPoint.y = py;
+            }else{
+                this._targetPoint = new egret.Point(px,py);
             }
 
             this.action = Actions.Run;
@@ -165,7 +189,7 @@ module d5power
 
         public get action():number
         {
-            if(this._nowAction.substr(0,6)=='action')
+            if(this._nowAction && this._nowAction.substr(0,6)=='action')
             {
                 return parseInt(this._nowAction.substr(6));
             }else{
