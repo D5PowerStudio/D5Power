@@ -2,7 +2,13 @@
     "compilerOptions": {
         "target": "es5",
         "outFile": "bin/d5/d5.js",
-        "declaration": true
+				"declaration": true,
+				"experimentalDecorators": true,
+				"lib": [
+					"es6",
+					"dom",
+					"es2015.promise"
+			]
     },
     "files": [
 		"libs/egret.d.ts",
@@ -41,6 +47,22 @@
 		"src/com/d5power/objects/BonesCharacter.ts",
 		"src/com/d5power/objects/FrameCharacter.ts",
 		"src/com/d5power/objects/SingleFrameCharacter.ts",
+		"src/com/d5power/randmap/conf/RandMapConf.ts",
+		"src/com/d5power/randmap/core/BaseRandMap.ts",
+		"src/com/d5power/randmap/core/D5RandMapGen.ts",
+		"src/com/d5power/randmap/core/RandMap.ts",
+		"src/com/d5power/randmap/utils/Area2D.ts",
+		"src/com/d5power/randmap/utils/AreaPoint.ts",
+		"src/com/d5power/randmap/utils/Edge2D.ts",
+		"src/com/d5power/randmap/utils/Lake.ts",
+		"src/com/d5power/randmap/utils/PerlinNoiseUtil.ts",
+		"src/com/d5power/randmap/utils/Point2D.ts",
+		"src/com/d5power/randmap/utils/Pol2D.ts",
+		"src/com/d5power/randmap/utils/RandMapUtil.ts",
+		"src/com/d5power/randmap/utils/RandomPointUtil.ts",
+		"src/com/d5power/randmap/utils/River.ts",
+		"src/com/d5power/randmap/utils/Tri2D.ts",
+		"src/com/d5power/randmap/utils/TriangleUtil.ts",
 		"src/com/d5power/D5Game.ts",
 		"src/com/d5power/D5World.ts",
 		"src/com/d5power/controller/TouchController.ts"

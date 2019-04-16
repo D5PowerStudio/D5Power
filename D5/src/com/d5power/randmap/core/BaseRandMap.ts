@@ -12,11 +12,17 @@ module d5power
 
         public setup(id:number,w:number=800, h:number=800, tw:number=64, th:number=64, onReady:Function=null, onReadyThis:any=null):void
         {
-            throw new Error("[BaseRandMap] Can not support setup mode.please build map with generate function.");
+            throw new Error("[BaseRandMap] Can not support setup mode.please build map with generate function.Or you can use BaseMap");
         }
 
-        public generate(id:number,onReady:Function, onReadyThis,w:number=800, h:number=800, tw:number=256, th:number=128):void
+        public createLoop(id:number,bg:string,callback:Function,thisobj:any,blockw:number = 10,blockh:number=10):void
         {
+            throw new Error("[BaseRandMap] Can not support setup mode.please build map with generate function.Or you can use BaseMap");
+        }
+
+        public generate(id:number,onReady:Function, onReadyThis,w:number=800, h:number=800, tw:number=128, th:number=128):void
+        {
+            
             d5power.D5RandMapGen.generate(w,h,function(){
                 if(D5RandMapGen.map==null || D5RandMapGen.mapsnap==null)
                 {
@@ -56,8 +62,13 @@ module d5power
                 this._smallMap = new egret.SpriteSheet(this._mapsnap);
                 this.createSmallData(this._mapsnap.textureWidth,this._mapsnap.textureHeight);
 
+                // BaseMap正常渲染必须使此属性不为空。在随机地图中本数字无需使用，但为了兼容BaseMap，还是进行初始化
+                this._posFlush=[];
                 if (this._onReady != null) {
-                    this._onReady.apply(this._onReadyThis);
+                    var p:egret.Point = d5power.D5RandMapGen.map.getBorn();
+                    p.x = p.x*tw;
+                    p.y = p.y*th;
+                    this._onReady.apply(this._onReadyThis,[p]);
                 }
 
                 this.resize();
