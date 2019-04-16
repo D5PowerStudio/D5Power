@@ -87,7 +87,7 @@ module d5power
                 this._focus.beFocus=false;
             }
             this._focus = o;
-            o.beFocus = true;
+            if(o) o.beFocus = true;
             this.update();
             this.reCut();
         }

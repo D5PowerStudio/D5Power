@@ -7,6 +7,24 @@ module d5power
     {
         private static _map:RandMap;
         private static _mapsnap:egret.Texture;
+        private static _mapW:number;
+        private static _mapH:number;
+
+        /**
+         * 地图区块宽
+         */
+        public static get mapW():number
+        {
+            return this._mapW;
+        }
+
+        /**
+         * 地图区块高
+         */
+        public static get mapH():number
+        {
+            return this._mapH;
+        }
 
         /**
          * 地图截图
@@ -33,6 +51,9 @@ module d5power
          */
         public static generate(sizeW:number,sizeH:number,callback:Function,thisObj:any):void
         {
+            this._mapW = sizeW;
+            this._mapH = sizeH;
+
             var makeMap:Function = function(){
                 var t:number = egret.getTimer();
                 var map:RandMap = new RandMap();
@@ -82,7 +103,7 @@ module d5power
 
                 trace("Create map success,cost:"+(egret.getTimer()-t)+'ms');
                 D5RandMapGen._map = map;
-                callback.apply(this);
+                if(callback!=null) callback.apply(thisObj);
             }
 
             makeMap();
