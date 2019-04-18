@@ -42,6 +42,19 @@ module d5power
             return this._map;
         }
 
+        public static format(obj:any,callback:Function,thisObj:any):void
+        {
+            var t:number = egret.getTimer();
+            var map:RandMap = new RandMap();
+            map.format(obj);
+            D5RandMapGen.buildSnap(map);
+            trace("Rebuild map success,cost:"+(egret.getTimer()-t)+'ms');
+            D5RandMapGen._map = map;
+            if(callback!=null) callback.apply(thisObj);
+
+
+        }
+
         /**
          * 产生地图
          * @param   sizeW   地图宽度
@@ -53,6 +66,7 @@ module d5power
         {
             this._mapW = sizeW;
             this._mapH = sizeH;
+
 
             var makeMap:Function = function(){
                 var t:number = egret.getTimer();
@@ -84,22 +98,7 @@ module d5power
                 map.buildLand();//修正地图的地形为最终地形
                 map.amendOasis(3);//增加绿洲
 
-                var smap:egret.Shape = map.getMapBaseTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
-                var ttr:egret.RenderTexture = new egret.RenderTexture();
-                ttr.drawToTexture(smap);
-                map.baseMap = ttr;
-                var river:egret.Shape = map.getRiverTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
-                ttr = new egret.RenderTexture();
-                ttr.drawToTexture(river);
-                map.riverMap = ttr;
-
-                var box:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
-                box.addChild(smap);
-                box.addChild(river);
-
-                if(D5RandMapGen._mapsnap==null) D5RandMapGen._mapsnap = new egret.RenderTexture();
-
-                (<egret.RenderTexture>D5RandMapGen._mapsnap).drawToTexture(box);
+                D5RandMapGen.buildSnap(map);
 
                 trace("Create map success,cost:"+(egret.getTimer()-t)+'ms');
                 D5RandMapGen._map = map;
@@ -107,6 +106,26 @@ module d5power
             }
 
             makeMap();
+        }
+
+        private static buildSnap(map:RandMap):void
+        {
+            var smap:egret.Shape = map.getMapBaseTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
+            var ttr:egret.RenderTexture = new egret.RenderTexture();
+            ttr.drawToTexture(smap);
+            map.baseMap = ttr;
+            var river:egret.Shape = map.getRiverTextture(RandMapConf.SMAP_W,RandMapConf.SMAP_H);
+            ttr = new egret.RenderTexture();
+            ttr.drawToTexture(river);
+            map.riverMap = ttr;
+
+            var box:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+            box.addChild(smap);
+            box.addChild(river);
+
+            if(D5RandMapGen._mapsnap==null) D5RandMapGen._mapsnap = new egret.RenderTexture();
+
+            (<egret.RenderTexture>D5RandMapGen._mapsnap).drawToTexture(box);
         }
     }
 }

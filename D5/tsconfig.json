@@ -51,6 +51,7 @@
 		"src/com/d5power/randmap/core/BaseRandMap.ts",
 		"src/com/d5power/randmap/core/D5RandMapGen.ts",
 		"src/com/d5power/randmap/core/RandMap.ts",
+		"src/com/d5power/randmap/utils/RandMapItem.ts",
 		"src/com/d5power/randmap/utils/Area2D.ts",
 		"src/com/d5power/randmap/utils/AreaPoint.ts",
 		"src/com/d5power/randmap/utils/Edge2D.ts",

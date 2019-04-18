@@ -967,6 +967,7 @@ module d5power{
 		public getBorn(): egret.Point {
 			this.initGridDic();
 			var lake: Lake = this._lakes[0];
+			if(!lake) return null;
 			var key: any;
 			var area: Area2D;
 			for (key in lake.getAreas()) {

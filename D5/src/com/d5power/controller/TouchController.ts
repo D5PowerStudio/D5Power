@@ -25,6 +25,23 @@ module d5power
             this._listener.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
         }
 
+        private _actionArea:egret.Rectangle;
+        private _actionPoint:egret.Point;
+        public setActionArea(px:number,py:number,w:number,h:number)
+        {
+            if(this._actionArea==null)
+            {
+                this._actionArea = new egret.Rectangle(px,py,w,h);
+                this._actionPoint = new egret.Point();
+            }else{
+                this._actionArea.x = px;
+                this._actionArea.y = py;
+                this._actionArea.width = w;
+                this._actionArea.y = h;
+            }
+                
+        }
+
         public init(bg:egret.DisplayObject,controller:egret.DisplayObject,needChangeActor:boolean=true):void
         {
             if(!bg.width || !bg.height || !controller.width || !controller.height)
@@ -57,6 +74,12 @@ module d5power
 
         private onBegin(e:egret.TouchEvent):void
         {
+            if(this._actionArea)
+            {
+                this._actionPoint.x = e.stageX;
+                this._actionPoint.y = e.stageY;
+                if(!this._actionArea.containsPoint(this._actionPoint)) return;
+            }
             this._listener.once(egret.TouchEvent.TOUCH_END,this.onEnd,this);
             this._listener.once(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.onEnd,this);
             this._listener.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this);
