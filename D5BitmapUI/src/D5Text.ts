@@ -70,6 +70,11 @@ module d5power
          *文本id,用此id去语言包取对应的值
          */
         private _textID:string;
+
+        /**
+         * 输入框的提示信息
+         */
+        private _placeholder:string;
 //        /**
 //         * 设置对齐
 //         */
@@ -100,7 +105,39 @@ module d5power
 			
 			this.addChild(this._textField);
            
-		}
+        }
+        
+        public placeholder(v:string=null)
+        {
+            if(v==null) v = this._textField.text;
+            this._placeholder = v;
+            if(v && v!='')
+            {
+                this.text = v;
+                this._textField.displayAsPassword = false;
+                this._textField.addEventListener(egret.FocusEvent.FOCUS_IN,this.autoPlaceholder,this);
+                this._textField.addEventListener(egret.FocusEvent.FOCUS_OUT,this.autoPlaceholder,this);
+            }else{
+                this._textField.removeEventListener(egret.FocusEvent.FOCUS_IN,this.autoPlaceholder,this);
+                this._textField.removeEventListener(egret.FocusEvent.FOCUS_OUT,this.autoPlaceholder,this);
+            }
+        }
+
+        private autoPlaceholder(e:egret.FocusEvent):void
+        {
+            if(e.type==egret.FocusEvent.FOCUS_IN)
+            {
+                if(this._placeholder==this._textField.text) this._textField.text = '';
+                if(this._isPass==1) this._textField.displayAsPassword = true;
+            }else{
+                if(this._textField.text=='')
+                {
+                    this._textField.text = this._placeholder;
+                    if(this._isPass==1) this._textField.displayAsPassword = false;
+                }
+            }
+        }
+
         public update():void
         {
             this.setText(<string>(D5Component._pro_binding_source.getPro(this._binding)));
@@ -208,7 +245,7 @@ module d5power
 
         public get text():string
         {
-            return this._textField.text;
+            return (this._placeholder==this._textField.text) ? "" : this._textField.text;
         }
         public get textField():egret.TextField
         {
@@ -266,11 +303,13 @@ module d5power
             return this._darkBorder;
         }
 
+        private _isPass:number=0;
         /**
          * 是否以密码的状态显示文本
          */
         public setIsPassword(v:boolean)
         {
+            this._isPass = v ? 1 : 0;
             this._textField.displayAsPassword = v;
         }
 

@@ -39,6 +39,11 @@ module d5power
         private _onComplateObj:any;
 
         /**
+         * 运行脚本
+         */
+        public script:string;
+
+        /**
          * 默认贴图
          */
         private static _defaultTexture:egret.Texture = new egret.Texture();

@@ -5,16 +5,26 @@ module d5power
         private _data:any;
         private _texture_data:any;
         private _texture:egret.Texture;
-        private _factory:dragonBones.EgretFactory;
+        protected static factory:dragonBones.EgretFactory;
         private _onReady:Function;
+        private _factory:dragonBones.EgretFactory;
+        private _bone:dragonBones.Armature;
         private _onReady_obj:any;
         private _waitAction:number=-1;
         private _targetPoint:egret.Point;
         private _faceAngle:number;
+        private _boneName:string;
 
-        public constructor(map:IMap)
+        public constructor(map:IMap,boneName:string='armatureName',factory:dragonBones.EgretFactory=null)
         {
             super(map);
+            if(BoneCharacter.factory==null)
+            {
+                BoneCharacter.factory = dragonBones.EgretFactory.factory;
+            }
+
+            this._factory = factory==null ? BoneCharacter.factory : factory;
+            this._boneName = boneName;
         }
 
         public run(t:number):void
@@ -116,6 +126,30 @@ module d5power
             RES.getResByUrl(path+'tex.png',onTexture,this);
         }
 
+        private _lastRender:number=0;
+        public render(t:number):void
+        {
+            if(this._bone)
+            {
+                var cost:number = t-this._lastRender;
+                this._lastRender = t;
+                this._bone.advanceTime(cost/1000);
+            }
+        }
+
+        /**
+         * 骨骼动画播放速度系数
+         */
+        private _speedK:number = 1;
+        /**
+         * 设置骨骼动画播放速度系数
+         */
+        public set speedK(k:number)
+        {
+            this._speedK = k;
+            if(this._bone) this._bone.animation.timeScale = k;
+        }
+
         private setup():void
         {
             if(this._factory) this._factory.dispose();
@@ -127,9 +161,11 @@ module d5power
 
             this._factory = new dragonBones.EgretFactory();  
             this._factory.addDragonBonesData(dragonBones.DataParser.parseDragonBonesData(this._data));  
-            this._factory.addTextureAtlas(new dragonBones.EgretTextureAtlas(this._texture,this._texture_data));
+            this._factory.addTextureAtlasData(this._factory.parseTextureAtlasData(this._texture_data,this._texture));
             
-            this._monitor = this._factory.buildArmatureDisplay("armatureName");
+            this._bone = this._factory.buildArmature("armatureName");
+            this._bone.animation.timeScale = this._speedK;
+            this._monitor = this._bone.display;
             if(this._texture_data.scale)
             {
                 this._monitor.scaleX = this._monitor.scaleY = this._texture_data.scale;

@@ -104,7 +104,14 @@ module d5power
 		{
 			this._moveAction = value;
 		}
-		
+        /**
+         * 动画顺序
+         */
+        public animationIndex:number;
+        /**
+         * 携带数据
+         */
+        public extdata:any;
 		public startX:number;
 		public startY:number;
 		private static _me:D5Component;
@@ -466,7 +473,7 @@ module d5power
                     com = new d5power.D5Bitmap();
                     com.name = value.name;
                     com.setSkin(value.skinId);
-                    
+                    (<d5power.D5Bitmap>com).script = value.script;
                     if(value.anchor!='')
                     {
                         com.anchorOffsetX = value.width*value.anchor;
@@ -529,7 +536,7 @@ module d5power
                     (<D5Text>com).setLtBorder(value.ltColor);
                     (<D5Text>com).setRbBorder(value.rbColor);
                     (<D5Text>com).setWrapFlg(value.wrapType);
-                    (<D5Text>com).setIsPassword((<boolean>value.password));
+                    (<D5Text>com).setIsPassword(value.password=='1' ? true : false);
                     (<D5Text>com).setTextID((value.textID).toString());
                     (<D5Text>com)._binding = value.binding;
                     if(container) container[com.name] = com;
@@ -609,7 +616,11 @@ module d5power
                     break;
             }
             com.startX = value.x;
-			com.startY = value.y;
+            com.startY = value.y;
+            var scalex:number = Number(value.scalex);
+            var scaley:number = Number(value.scaley);
+            if(!isNaN(scalex) && scalex!=1.0) com.scaleX = scalex;
+            if(!isNaN(scaley) && scaley!=1.0) com.scaleY = scaley;
 			com.moveAction = parseInt(value.moveAction);
             return com;
         }

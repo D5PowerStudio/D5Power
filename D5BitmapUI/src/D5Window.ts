@@ -170,8 +170,13 @@ module d5power
                     this.addChildAt(this.rb,0);
                 }
 
-                this.m.width = this.t.width = this.b.width = this._w-this.lt.width - this.rt.width;
-                this.m.height = this.l.height = this.r.height = this._h-this.lt.height - this.lb.height;
+                var bodyW:number = this.b.width = this._w-this.lt.width - this.rt.width;
+                if(bodyW<0) bodyW = 0;
+                this.m.width = this.t.width = bodyW;
+
+                var bodyH:number = this._h-this.lt.height - this.lb.height;
+                if(bodyH<0) bodyH = 0;
+                this.m.height = this.l.height = this.r.height = bodyH;
 
                 this.t.x = this.m.x = this.b.x = this.lt.width;
                 this.rt.x = this.r.x = this.rb.x = this.lt.width + this.t.width;
