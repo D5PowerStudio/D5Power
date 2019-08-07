@@ -73,7 +73,7 @@ module d5power {
 			super();
 			
             this._box = new D5HBox();
-//            this._box.setPadding(0);
+            this._box.setPadding(0);
             this._displayer = [];
             this.addChild(this._box);
 		}

@@ -8,7 +8,6 @@ module d5power
 
         private _action:number = 0;
         private _dir:number = 0;
-        private _faceAngle:number;
         private _playFrame:number = 0;
         private _lastTimer:number = 0;
 
@@ -16,8 +15,6 @@ module d5power
         private _data_renderTime:number = 0;
         private _data_totalFrame:number = 0;
         private _data_totalDir:number = 0;
-
-        protected _targetPoint:egret.Point;
 
         protected _offX:number=0;
         protected _offY:number=0;
@@ -134,39 +131,16 @@ module d5power
 
             if(this._targetPoint)
             {
-                var radian:number = GMath.getPointAngle(this._targetPoint.x-this._pos.x,this._targetPoint.y-this._pos.y);
-                var angle:number = GMath.R2A(radian)+90;
-                if(this._faceAngle!=angle)
+                this._movedir = GMath.getPointAngle(this._targetPoint.x-this._pos.x,this._targetPoint.y-this._pos.y);
+                if(this.moveWidthDir())
                 {
-                    this.faceAngle = angle;
-                }
-
-                var xisok:boolean=false;
-                var yisok:boolean=false;
-
-                var xspeed:number = this.speed*Math.cos(radian);
-                var yspeed:number = this.speed*Math.sin(radian);
-
-
-                if(Math.abs(this._pos.x-this._targetPoint.x)<=1){
-                    xisok=true;
-                    xspeed=0;
-                }
-
-                if(Math.abs(this._pos.y-this._targetPoint.y)<=1){
-                    yisok=true;
-                    yspeed=0;
-                }
-
-                this.setPos(this._pos.x+xspeed,this._pos.y+yspeed);
-                if(xisok && yisok){
                     // 走到新的位置点 更新区块坐标
                     this._targetPoint = null;
                     this.action = Actions.Wait;
                 }
+            }else if(!isNaN(this._movedir)){
+                this.moveWidthDir();
             }
-
-            
         }
 
         public render(t:number):void
@@ -258,7 +232,7 @@ module d5power
          * 根据角度值修改角色的方向
          * @param   angle   角度
          */
-        private set faceAngle(angle:number){
+        protected set faceAngle(angle:number){
             this._faceAngle = angle;
 
             if(angle<-22.5) angle+=360;

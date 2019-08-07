@@ -602,6 +602,7 @@ module d5power
                     (<D5Shape>com).setOffY(value.offY);
                     (<D5Shape>com).setSize(value.width,value.height);
                     (<D5Shape>com).setRadius(value.radius);
+                    (<D5Shape>com).maskName = value.maskName;
                     (<D5Shape>com).pointString = value.pointString;
                     if(container) container[com.name] = com;
                     break;
@@ -613,6 +614,17 @@ module d5power
                     com.y = value.y;
                     com.setSkin(value.file);
                     com.setSize(value.width,value.height);
+                    if(container) container[com.name] = com;
+                    break;
+                case "D5Music":
+                    com = new D5Music();
+                    com.name = value.name;
+                    com.x = value.x;
+                    com.y = value.y;
+                    (<D5Music>com).loop = value.loop=='1';
+                    (<D5Music>com).src = value.src;
+                    (<D5Music>com).autoPlay = value.autoPlay=='1';
+                    (<D5Music>com).keep = value.keep=='1';
                     if(container) container[com.name] = com;
                     break;
             }

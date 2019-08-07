@@ -51,35 +51,35 @@ module d5power
         /**
          * 地图编号
          */
-        private _mapid:number;
+        protected _mapid:number;
         /**
          * 地图宽度
          */
-        private _mapWidth:number;
+        protected _mapWidth:number;
         /**
          * 地图高度
          */
-        private _mapHeight:number;
+        protected _mapHeight:number;
         /**
          * 地砖宽度
          */
-        private _tileW:number;
+        protected _tileW:number;
         /**
          * 地砖高度
          */
-        private _tileH:number;
+        protected _tileH:number;
         /**
          * 地图加载完成后的处理
          */
-        private _onReady:Function;
+        protected _onReady:Function;
         /**
          * 地图准备完成后的处理目标对象
          */
-        private _onReadyThis:any;
+        protected _onReadyThis:any;
         /**
          * 
          */
-        private _mapResource:any;
+        protected _mapResource:any;
         /**
          * 区块文件格式
          */
@@ -105,7 +105,7 @@ module d5power
         /**
          * 小地图
          */
-        private _smallMap:egret.SpriteSheet;
+        protected _smallMap:egret.SpriteSheet;
         /**
          * 路点序列
          */
@@ -118,19 +118,19 @@ module d5power
         /**
          * 显示区域区块数量x方向
          */
-        private _areaX:number;
+        protected _areaX:number;
         /**
          * 显示区域区块数量y方向
          */
-        private _areaY:number;
+        protected _areaY:number;
         /**
          * 当前渲染的起始区块x
          */
-        private _nowStartX:number=-1;
+        protected _nowStartX:number=-1;
         /**
          * 当前渲染的起始区块y
          */
-        private _nowStartY:number=-1;
+        protected _nowStartY:number=-1;
         /**
          * 当前屏幕正在渲染的坐标记录
          */
@@ -139,7 +139,7 @@ module d5power
         /**
          * 正常渲染层（与角色同层次）
          */
-        private _dbuffer:egret.DisplayObjectContainer;
+        protected _dbuffer:egret.DisplayObjectContainer;
 
         /**
          * 二叉堆优化的a*寻路
@@ -192,7 +192,9 @@ module d5power
                 
                 that._loopBg = data;
                 
-                that.setupRoad(null);
+                that.reset();
+                that.resize();
+                if(callback) callback.apply(thisobj);
             },this);
         }
 
@@ -299,7 +301,7 @@ module d5power
          * @param smallW 
          * @param smallH 
          */
-        private createSmallData(smallW:number,smallH:number):void
+        protected createSmallData(smallW:number,smallH:number):void
         {
             var smallWidth:number = smallW/(this._mapWidth/this._tileW);
             var smallHeight:number = smallH/(this._mapHeight/this._tileH);
@@ -582,7 +584,7 @@ module d5power
 
         }
 
-        private makeData(startx:number, starty:number, flush:boolean):void
+        protected makeData(startx:number, starty:number, flush:boolean):void
         {
             if (this._nowStartX == startx && this._nowStartY == starty) return;
 
@@ -674,7 +676,7 @@ module d5power
         }
 
         private mod_buffer:boolean;
-        private fillTile(tx:number,ty:number,data:egret.Texture):void
+        protected fillTile(tx:number,ty:number,data:egret.Texture):void
         {
             var bitmap: egret.Bitmap = <egret.Bitmap><any>this._dbuffer.getChildByName(tx + "_" + ty);
             if(bitmap==null)
@@ -686,8 +688,6 @@ module d5power
                 this._dbuffer.addChild(bitmap);
             }
             bitmap.texture = data;
-
-            this._dbuffer.cacheAsBitmap=true;
         }
 
         /**
