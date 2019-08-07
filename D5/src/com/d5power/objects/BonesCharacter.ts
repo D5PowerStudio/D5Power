@@ -27,6 +27,16 @@ module d5power
             this._boneName = boneName;
         }
 
+        public get id():string
+        {
+            return this._boneName;
+        }
+
+        public get boneName():string
+        {
+            return this._boneName;
+        }
+
         public run(t:number):void
         {
             if(this._targetPoint)
