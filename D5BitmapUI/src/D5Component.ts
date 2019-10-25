@@ -281,9 +281,9 @@ module d5power
 				this.addChild(arr[i]);
             }
             
-            this.parent.setChildIndex(this,0);
-		}
-
+            //this.parent.setChildIndex(this,0);
+        }
+        
         public setSkin(name:string):void
         {
             

@@ -43,6 +43,7 @@ module d5power
         private b:egret.Bitmap;
         private rb:egret.Bitmap;
 
+        private _texture:egret.Texture;
         public constructor()
         {
             super();
@@ -53,8 +54,19 @@ module d5power
             this.onComplate(data);
         }
 
+        public clone():D5MirrorBox
+        {
+            var c:D5MirrorBox = new D5MirrorBox();
+            c.cutX = this.cutX;
+            c.cutY = this.cutY;
+            this._texture ? c.onComplate(this._texture) : c.setSkin(this._nowName);
+            c.setSize(this._w,this._h);
+            return c;
+        }
+
         protected onComplate(data:egret.Texture):void
         {
+            this._texture = data;
              var sheet:egret.SpriteSheet = new egret.SpriteSheet(data);
              sheet.createTexture('0',0,0,this.cutX,this.cutY);
              sheet.createTexture('1',this.cutX,0,data.textureWidth - this.cutX,this.cutY);
