@@ -40,6 +40,10 @@ module d5power
 
         public _cutSize:number = 0;
 
+        private _minW:number;
+
+        private _minH:number;
+
         public constructor()
         {
             super();
@@ -67,6 +71,8 @@ module d5power
                 if(this.after==null)this.after = new egret.Bitmap();
                 this.after.texture = sheet.getTexture('0');
                 this.after.scaleX = -1;
+
+                this._minW = this.front.texture.textureWidth+this.enter.texture.textureWidth+this.after.texture.textureWidth;
             }
             else
             {
@@ -82,6 +88,8 @@ module d5power
                 if(this.after==null)this.after = new egret.Bitmap();
                 this.after.texture = sheet.getTexture('0');
                 this.after.scaleY = -1;
+
+                this._minH = this.front.texture.textureHeight+this.enter.texture.textureHeight+this.after.texture.textureHeight;
             }
             this.invalidate();
         }
@@ -97,7 +105,7 @@ module d5power
                 return;
             }
 
-            if(D5UIResourceData._typeLoop == 0)   //x轴D5UIResourceData._typeLoop == 0
+            if(data.typeLoop == 0)   //x轴D5UIResourceData._typeLoop == 0
             {
                 this._mode = 0;
                 if(this.front==null)this.front = new egret.Bitmap();
@@ -138,26 +146,42 @@ module d5power
                 if(!this.contains(this.front)) {
 
                     this.addChildAt(this.front,0);
-                    this.addChildAt(this.enter,0);
-                    this.addChildAt(this.after,0);
+                    this.addChildAt(this.enter,1);
+                    this.addChildAt(this.after,2);
                 }
             }
-
+            var targetSize:number;
+            this.enter.visible = true;
             if(this._mode == 0)
             {
                 this.enter.x = this.front.width;
-                this.enter.width = this._w - this.front.width * 2;
-                this.after.x = this._w;
+                targetSize<0 && (targetSize=0);
+                targetSize>0 ? (this.enter.width = targetSize) : (this.enter.visible=false);
+                this.after.x = this.enter.x+targetSize+this.front.width;
             }else{
                 this.enter.y = this.front.height;
-                this.enter.height = this._h - this.front.height * 2;
-                this.after.y = this._h;
+                targetSize = this._h - this.front.height * 2;
+                targetSize<0 && (targetSize=0);
+                targetSize>0 ? (this.enter.height = targetSize) : (this.enter.visible=false);
+                this.after.y = this.enter.y+targetSize+this.front.height;
             }
-
             this.autoCache();
             super.draw();
 
         }
+
+        public setSize(w:number,h:number):void
+        {
+            if(!this.enter) return;
+            if(this._mode==0)
+            {
+                w = w<=this._minW ? this._minW : w;
+            }else{
+                h = h<=this._minH ? this._minH : h;
+            }
+            super.setSize(w,h);
+        }
+
         public clone():D5MirrorLoop
 		{
 			var ui:D5MirrorLoop = new D5MirrorLoop();

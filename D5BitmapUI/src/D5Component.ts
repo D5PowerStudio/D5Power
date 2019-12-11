@@ -349,14 +349,16 @@ module d5power
                     {
                         uiObj._belone = res;
                         list.push(uiObj);
+                    }else{
+                        src = comObj.src;
+                        if(src && D5UIResourceData.getData(src)==null)
+                        {
+                            uiObj._belone = res;
+                            list.push(uiObj);
+                        }
                     }
 
-                    src = comObj.src;
-                    if(src && D5UIResourceData.getData(src)==null)
-                    {
-                        uiObj._belone = res;
-                        list.push(uiObj);
-                    }
+                    
                     container.addChild(uiObj);
                 }
 
