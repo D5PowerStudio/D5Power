@@ -480,12 +480,9 @@ module d5power
                     {
                         com.anchorOffsetX = value.width*value.anchor;
                         com.anchorOffsetY = value.height*value.anchor;
-                        com.x = value.x+com.anchorOffsetX;
-                        com.y = value.y+com.anchorOffsetY;
-                    }else{
-                        com.x = value.x;
-                        com.y = value.y;
                     }
+                    com.x = value.x;
+                    com.y = value.y;
                     if(value.rotation!=0) com.rotation = value.rotation;
                     if(value.zoom) com.scaleX = com.scaleY = value.zoom;
                     if(container) container[com.name] = com;
