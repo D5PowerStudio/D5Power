@@ -143,7 +143,7 @@ module d5power
         /**
          * 开始播放
          */
-        public play():void
+        public play(callback:Function=null,thisobj:any=null,begin:number=0):void
         {
             this._isPlaying = true;
             var that:D5Music = this;
@@ -180,8 +180,10 @@ module d5power
                 }
                 if(that.parent || that.keep)
                 {
-                    that._sound_c = that._sound.play(that._loop?0:1);
-                    
+                    that._sound_c = that._sound.play(0,that._loop?0:1);
+                    that._sound_c.once(egret.Event.SOUND_COMPLETE,function(e:egret.Event):void{
+                        if(callback!=null) callback.apply(thisobj);
+                    },this);
                 }else if(that._sound){
                     that._sound.close();
                 }

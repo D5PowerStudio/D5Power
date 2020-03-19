@@ -129,22 +129,30 @@ module d5power {
 			this.updateEditorBG();
 		}
 		
-		
+		private _lastModTime:number;
 		public addChild(child:egret.DisplayObject):egret.DisplayObject{
 			var obj:egret.DisplayObject = super.addChild(child);
 			obj.addEventListener(egret.Event.RESIZE,this.redraw,this);
-			this.redraw();
+			this._lastModTime = egret.getTimer();
+			if(!this.hasEventListener(egret.Event.ENTER_FRAME)) this.addEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+			
 			return obj;
 		}
 		
 		public removeChild(child:egret.DisplayObject):egret.DisplayObject{
 			var obj:egret.DisplayObject = super.removeChild(child);
 			obj.removeEventListener(egret.Event.RESIZE,this.redraw,this);
-			this.redraw();
+			this._lastModTime = egret.getTimer();
+			if(!this.hasEventListener(egret.Event.ENTER_FRAME)) this.addEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+
 			return obj;
 		}
 		
 		private redraw(e:Event=null):void{
+			var t:number = egret.getTimer();
+			if(t-this._lastModTime<100) return;
+			this.removeEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+
 			this._usedWidth = 0;
 			this._usedHeight = 0;
 			var obj:egret.DisplayObject;
@@ -153,7 +161,7 @@ module d5power {
 			for(var i:number = 0,j:number=this.numChildren;i<j;i++){
 				obj = this.getChildAt(i);
 				
-				if(this._usedWidth+this._paddingx+obj.width>this._maxWidth){
+				if(this._usedWidth+obj.width>this._maxWidth){
 					this._usedHeight+=perMaxHeight+this._paddingy;
 					perMaxHeight = 0;
 					this._usedWidth = 0;

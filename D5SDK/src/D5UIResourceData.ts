@@ -39,7 +39,7 @@ module d5power
 
         private static _uvLib:any = {};
 
-        public static _typeLoop:number = 0;
+        public typeLoop:number = 0;
 
         public static setup(path:string,callback:Function,thisobj:any):void
         {
@@ -184,7 +184,7 @@ module d5power
 
                         uv = new UVData();
                         uv.x = obj.x + cut1.x;
-                        uv.v = obj.y + cut1.y;
+                        uv.y = obj.y + cut1.y;
                         uv.width = obj.w - cut1.x;
                         uv.height = obj.h - cut1.y;
                         uvList.push(uv);
@@ -248,6 +248,24 @@ module d5power
 
                         data.setupResource(sp,k,uvList);
                         break;
+                    case "D5Button2":
+                        uv = new UVData();
+                        uv.x = obj.x;
+                        uv.y = obj.y;
+                        uv.width = obj.w/2;
+                        uv.height = obj.h;
+                        uvList.push(uv);
+
+                        uv = new UVData();
+                        uv.x = obj.x + obj.w/2;
+                        uv.y = obj.y;
+                        uv.width = obj.w/2;
+                        uv.height = obj.h;
+                        uvList.push(uv);
+                        data.buttonType = 2;
+
+                        data.setupResource(sp,k,uvList);
+                        break;
                     case "D5Button4":
                         uv = new UVData();
                         uv.x = obj.x;
@@ -303,7 +321,7 @@ module d5power
                             uvList.push(uv);
 
 
-                            D5UIResourceData._typeLoop = 0;
+                            data.typeLoop = 0;
 
                         }else{                   //y轴拉伸
 
@@ -321,7 +339,7 @@ module d5power
                             uv.height = obj.h - cut.y - 1;
                             uvList.push(uv);
 
-                            D5UIResourceData._typeLoop = 1;
+                            data.typeLoop = 1;
 
                         }
 

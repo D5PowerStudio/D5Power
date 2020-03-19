@@ -97,7 +97,7 @@ module d5power
 
             if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             this.bit.texture = data.getResource(0);
-            this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
+            if(isNaN(this._w) || isNaN(this._h)) this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
             this.invalidate();
         }
 
@@ -145,7 +145,7 @@ module d5power
             }
             this.bit.texture = data;
             if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
-            this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
+            if(isNaN(this._w) || isNaN(this._h)) this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
             //this.invalidate();
 
             if(this._onComplate!=null)
@@ -173,7 +173,7 @@ module d5power
                     this.addChildAt(this.bit,0);
                 }
                 
-                if(this.bit.fillMode==egret.BitmapFillMode.REPEAT)
+                if(this.bit.fillMode==egret.BitmapFillMode.SCALE)
                 {
                     this.bit.width = this._w;
                     this.bit.height = this._h;

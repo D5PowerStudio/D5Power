@@ -115,6 +115,15 @@ module d5power
                 return;
             }
 
+            var arr:Array<egret.Bitmap> = [this.lt,this.t,this.rt,this.l,this.m,this.r,this.lb,this.b,this.rb];
+            for(var i:number=0,j:number = arr.length;i<j;i++)
+            {
+                var target:egret.Bitmap = arr[i];
+                if(!target) continue;
+                target.texture = null;
+                target.parent && target.parent.removeChild(target);
+            }
+
             this.lt = new egret.Bitmap();
             this.lt.texture = data.getResource(0);
 

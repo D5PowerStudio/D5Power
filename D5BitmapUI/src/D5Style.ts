@@ -50,6 +50,10 @@ module d5power {
 		 * UI控件是否自动释放
 		 */ 
 		public static autoRelease:boolean=false;
+		/**
+		 * 默认字体
+		 */
+		public static default_txt_font_family = '微软雅黑';
 		
 		public constructor(){
 		}

@@ -90,8 +90,9 @@ module d5power
 		public constructor(_text:string = '', fontcolor:number = -1, bgcolor:number = -1, border:number = -1,size:number=12)
         {
 			super();
-			
-			this._textField = new egret.TextField();
+            
+            this._textField = new egret.TextField();
+            if(D5Style.default_txt_font_family!='' && D5Style.default_txt_font_family) this._textField.fontFamily = D5Style.default_txt_font_family;
             this._textField.verticalAlign = egret.VerticalAlign.MIDDLE;
             this._textField.textAlign = egret.HorizontalAlign.LEFT; //egret.VerticalAlign.MIDDLE;
 			if (fontcolor>=0) this._textField.textColor = fontcolor;
