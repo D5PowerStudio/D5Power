@@ -30,6 +30,7 @@ module d5power
 {
     export class D5Component extends egret.Sprite 
     {
+        public static UIPostion:string = 'd5power_uiposition';
         private static _actionList:Array<D5Component>=[];
         private static _actionTimer:egret.Timer;
         private static _actionRunning:boolean=false;
@@ -93,6 +94,23 @@ module d5power
          */
         protected _belone:string;
         protected _moveAction:number = 0;
+        /**
+         * 对齐模式
+         */
+        protected _marginMode:number;
+        /**
+         * 相对坐标
+         */
+        protected _relx:number;
+        /**
+         * 相对坐标
+         */
+        protected _rely:number;
+        
+        /**
+         * 对齐目标
+         */
+        protected _margin_target:string
         
 
 		public get moveAction():number
@@ -634,13 +652,98 @@ module d5power
             var scaley:number = Number(value.scaley);
             if(!isNaN(scalex) && scalex!=1.0) com.scaleX = scalex;
             if(!isNaN(scaley) && scaley!=1.0) com.scaleY = scaley;
-			com.moveAction = parseInt(value.moveAction);
+            com.moveAction = parseInt(value.moveAction);
+            com._marginMode = parseInt(value.margin_mode);
+			if(com._marginMode!=0)
+			{
+                com.setRelPos(Number(value.relx),Number(value.rely),value.margin_target);
+            }
             return com;
+        }
+
+        /**
+         * 设置相对坐标
+         * @param px 
+         * @param py 
+         * @param margin_target 
+         */
+        protected setRelPos(px:number,py:number,margin_target:string):void
+        {
+            if(isNaN(px) || isNaN(py)) return;
+            this._relx = px;
+            this._rely = py;
+            this._margin_target = margin_target;
+
+            if(margin_target!=null && margin_target!='' && margin_target!='null')
+            {
+                var target:D5Component;
+				if(this._margin_target!=null && this._margin_target!='')
+				{
+					target = <D5Component>this.parent.getChildByName(this._margin_target);
+					if(target) target.removeEventListener(D5Component.UIPostion,this.autoFllowPos,this);
+				}
+				
+				this._margin_target = margin_target;
+				var waitBegin:number = egret.getTimer();
+                var lastWait:number = waitBegin;
+                var that:D5Component = this;
+				var cancleWait:Function = function(e:Event=null):void
+				{
+					this.removeEventListener(egret.Event.ENTER_FRAME,wait,this);
+					this.removeEventListener(egret.Event.REMOVED_FROM_STAGE,cancleWait,this);
+				}
+				var wait:Function = function(e:Event=null):void
+				{
+					var t:number = egret.getTimer();
+					if(t-lastWait<500) return;
+					if(t-waitBegin>5000)
+					{
+						cancleWait();
+						return;
+					}
+					lastWait = t;
+					target = <D5Component>this.parent.getChildByName(this._margin_target);
+					if(target)
+					{
+						cancleWait();
+						target.addEventListener(D5Component.UIPostion,this.autoFllowPos,this);
+						var evt:egret.Event = new egret.Event(egret.Event.ACTIVATE);
+						this.autoFllowPos(evt);
+					}
+				}
+				
+				this.addEventListener(egret.Event.ENTER_FRAME,wait,this);
+				this.addEventListener(egret.Event.REMOVED_FROM_STAGE,cancleWait,this);
+            }
+        }
+
+        protected autoFllowPos(e:egret.Event=null):void
+        {
+            if(!parent) return;
+			if(e==null)
+			{
+				// 舞台对齐
+				this.x = Math.floor(this._relx*(this.parent.width));
+				this.y = Math.floor(this._rely*(this.parent.height));
+			}else{
+				var target:D5Component = <D5Component> (e.type==egret.Event.ACTIVATE ? this.parent.getChildByName(this._margin_target) : e.currentTarget);
+				if(target)
+				{
+					this.x = target.x+this._relx+(this._relx>0 ? target.width*target.scaleX : (this._relx<0 ? -this.width*this.scaleX : 0));
+					this.y = target.y+this._rely+(this._rely>0 ? target.height*target.height : (this._rely<0 ? -this.height*this.scaleY : 0));
+				}
+			}
+        }
+        
+        $setX(v:number):boolean
+        {
+            this.dispatchEvent(new egret.Event(D5Component.UIPostion));
+            return super.$setX(v);
         }
 
         public dispose():void
         {
-
+            
         }
 
         protected invalidate():void
