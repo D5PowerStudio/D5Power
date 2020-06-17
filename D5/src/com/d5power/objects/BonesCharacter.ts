@@ -10,10 +10,11 @@ module d5power
         private _factory:dragonBones.EgretFactory;
         private _bone:dragonBones.Armature;
         private _onReady_obj:any;
-        private _waitAction:number=-1;
-        private _targetPoint:egret.Point;
-        private _faceAngle:number;
+        private _waitAction:string='';
+        private _nowAction:string='';
+        private _dirK:number = 1;
         private _boneName:string;
+        
 
         public constructor(map:IMap,boneName:string='armatureName',factory:dragonBones.EgretFactory=null)
         {
@@ -175,10 +176,6 @@ module d5power
             }
         }
 
-        /**
-         * 骨骼动画播放速度系数
-         */
-        private _speedK:number = 1;
         /**
          * 设置骨骼动画播放速度系数
          */

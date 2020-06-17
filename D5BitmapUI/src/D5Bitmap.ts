@@ -128,6 +128,22 @@ module d5power
             return b;
         }
 
+        /**
+         * 通过网址加载图片素材，本方法支持跨域
+         * @param url 需要加载的图片地址
+         */
+        public loadUrl(url:string):void
+        {
+            var that:D5Bitmap = this;
+            var loader:egret.ImageLoader = new egret.ImageLoader();
+            loader.crossOrigin = 'anonymous';
+            loader.once(egret.Event.COMPLETE,function(e:egret.Event):void{
+                var t:egret.Texture = new egret.Texture();
+                t.bitmapData = loader.data;
+                this.setRes(t);
+            },this);
+            loader.load(url);
+        }
 
         public setRes(data:egret.Texture):void
         {

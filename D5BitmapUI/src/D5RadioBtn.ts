@@ -67,6 +67,13 @@ module d5power
             }
         }
 
+        public clone():D5RadioBtn
+        {
+            var c:D5RadioBtn = new D5RadioBtn();
+            c.setSkin(this._nowName);
+            return c;
+        }
+
         public setLable(lab:string):void
         {
             if(this._lable==null)

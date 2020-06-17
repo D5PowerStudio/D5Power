@@ -63,6 +63,13 @@ module d5power
             return this._icon==null ? false : this._icon.visible;
         }
 
+        public clone():D5Button
+        {
+            var c:D5Button = new D5Button();
+            c.setSkin(this._nowName);
+            return c;
+        }
+
         public setIcon(url:string,xpos:number=0,ypos:number=0):void
         {
             if(url=='')return;
