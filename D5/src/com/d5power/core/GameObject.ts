@@ -76,6 +76,13 @@ module d5power
         }
 
         /**
+         * 设置角色移动方向
+         */
+        public set moveDir(angle:number){
+            this._movedir = angle;
+        }
+
+        /**
          * 沿某个方向移动的计算
          */
         protected moveWidthDir():boolean

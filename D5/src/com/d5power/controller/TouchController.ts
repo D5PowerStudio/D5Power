@@ -1,20 +1,42 @@
 module d5power
 {
+    /**
+     * 触屏摇杆
+     * Controller for touch screen
+     */
     export class TouchController
     {
+        /**
+         * 摇杆背景
+         * background view of controller
+         */
         private _bg:egret.DisplayObject;
+        /**
+         * 摇杆控制器
+         * controll bar view 
+         */
         private _controller:egret.DisplayObject;
-
+        /**
+         * 响应函数
+         * call back function
+         */
         private _callback:Function;
         private _thisobj:any;
+        /**
+         * 侦听目标
+         * the target which will recived touch event
+         */
         private _listener:egret.IEventDispatcher;
+        /**
+         * 
+         */
         private _limit:number;
-        private _stage:egret.Stage;
+        private _controller_box:egret.DisplayObjectContainer;
 
         /**
-         * @listener 侦听对象
-         * @callback 响应函数,调用时第一参数为本次触控的角度，第二参数为触控位置距中心的距离，第三参数为和上次相比的变化角度
-         * @thisobj
+         * @listener 侦听对象 the target which will recived touch event.
+         * @callback 响应函数,调用时第一参数为本次触控的角度，第二参数为触控位置距中心的距离，第三参数为和上次相比的变化角度。Callback function.there will need three params,first one is angle of controller.sceond is the distance from controller to the center of the background.third is change angle from last touch.
+         * @thisobj 
          */
         public constructor(listener:egret.IEventDispatcher,callback:Function,thisobj:any)
         {
@@ -22,11 +44,18 @@ module d5power
             this._callback = callback;
             this._thisobj = thisobj;
             this._listener = listener;
-            this._listener.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
         }
 
         private _actionArea:egret.Rectangle;
         private _actionPoint:egret.Point;
+        /**
+         * 设置摇杆的有效区域
+         * touch area
+         * @param px 有效区域起始X Begin X
+         * @param py 有效区域起始Y Begin Y
+         * @param w 宽度 with of area
+         * @param h 高度 height of area
+         */
         public setActionArea(px:number,py:number,w:number,h:number)
         {
             if(this._actionArea==null)
@@ -42,7 +71,14 @@ module d5power
                 
         }
 
-        public init(bg:egret.DisplayObject,controller:egret.DisplayObject,needChangeActor:boolean=true):void
+        /**
+         * 初始化摇杆
+         * init controll bar
+         * @param bg                摇杆背景。skin of controller background
+         * @param controller        摇杆。skin for controll bar
+         * @param needChangeAnchor  是否需要自动居中锚点，默认为是。change anchor of bg and controller,true for defaule.
+         */
+        public init(bg:egret.DisplayObject,controller:egret.DisplayObject,needChangeAnchor:boolean=true):void
         {
             if(!bg.width || !bg.height || !controller.width || !controller.height)
             {
@@ -57,11 +93,11 @@ module d5power
 
             this._bg = bg;
             this._controller = controller;
-            this._stage = this._bg.stage;
+            this._controller_box = this._bg.parent;
             
 
             this._limit = bg.width>bg.height ? Math.ceil(bg.width>>1) : Math.ceil(bg.height>>1);
-            if(needChangeActor){
+            if(needChangeAnchor){
                 this._bg.anchorOffsetX = this._bg.width>>1;
                 this._bg.anchorOffsetY = this._bg.height>>1;
                 this._controller.anchorOffsetX = this._controller.width>>1;
@@ -70,6 +106,7 @@ module d5power
 
             this._bg.touchEnabled = false;
             this._controller.touchEnabled = false;
+            this._listener && this._listener.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
         }
 
         private onBegin(e:egret.TouchEvent):void
@@ -90,8 +127,8 @@ module d5power
             this._lastX = this._bg.x;
             this._lastY = this._bg.y;
 
-            this._stage.addChild(this._bg);
-            this._stage.addChild(this._controller);
+            this._controller_box.addChild(this._bg);
+            this._controller_box.addChild(this._controller);
 
             this._callback.apply(this._thisobj,[0,-1,0]);
         }
