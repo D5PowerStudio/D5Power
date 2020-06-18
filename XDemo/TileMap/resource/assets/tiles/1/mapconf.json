@@ -1,1 +1,0 @@
-{"roadpoint":[],"id":1,"mapH":650,"tiled":[],"mapW":2800,"tileFormat":"jpg","tileX":200,"npc":[{"name":"老翁","posx":269,"res":"mapRes/npc/1.png","posy":394,"uid":2,"job":{"value":0,"num":0,"type":0},"say":"什么鬼！"}],"tileY":130,"event":[],"movie":[],"far":[],"monster":[],"script":"","gravity":0,"music":"","mapName":""}
