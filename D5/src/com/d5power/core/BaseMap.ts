@@ -157,12 +157,22 @@ module d5power
         private _data:any;
 
         /**
+         * 地图是否准备好
+         */
+        protected _isReady:boolean;
+
+        /**
          * 
          * @param goManager 用来维护和管理地图场景中的各种游戏对象的管理器
          */
         public constructor(goManager:IGameObjectManager=null) {
             this._tempPoint = new egret.Point();
             this._gameObjectManager = goManager;
+        }
+
+        public get isReady():boolean
+        {
+            return this._isReady;
         }
 
         /**
@@ -177,6 +187,7 @@ module d5power
         public createLoop(id:number,bg:string,callback:Function,thisobj:any,blockw:number = 10,blockh:number=10):void
         {
             var that:BaseMap = this;
+            this._isReady = false;
             RES.getResByUrl(bg,function(data:egret.Texture){
                 
                 that._mapid = id;
@@ -194,6 +205,9 @@ module d5power
                 
                 that.reset();
                 that.resize();
+
+
+                this._isReady = true;
                 if(callback) callback.apply(thisobj);
             },this);
         }
@@ -207,6 +221,7 @@ module d5power
         public enter(id:number,callback:Function,thisobj:any):void{
 
             var that:BaseMap = this;
+            this._isReady = false;
             RES.getResByUrl(D5Game.RES_SERVER + D5Game.ASSET_PATH + "/tiles/" + id + "/mapconf.json", function(data:any){
                 that._data = data;
                 that.setup(
@@ -275,6 +290,7 @@ module d5power
          * @param onReadyThis this
          */
         public setup(id:number, w:number, h:number, tw:number, th:number, onReady:Function, onReadyThis:any):void {
+            this._isReady = false;
             this._mapid = id;
             this._mapHeight = h;
             this._mapWidth = w;
@@ -576,7 +592,7 @@ module d5power
                 }
             }
             
-
+            this._isReady = true;
             if (this._onReady != null) {
                 this._onReady.apply(this._onReadyThis);
             }
