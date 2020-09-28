@@ -400,11 +400,15 @@ module d5power
                 needZoom = true;
             }
             
+
             if(needZoom){
                 this._textField.x = this._textField.y = D5Text.AUTO_PADDING;
-                this._textField.height = h-D5Text.AUTO_PADDING*2;
-                this._textField.width = w-D5Text.AUTO_PADDING*2;
-            }else{
+                if(this._textField.multiline)
+                {
+                    this._textField.height = h-D5Text.AUTO_PADDING*2;
+                    this._textField.width = w-D5Text.AUTO_PADDING*2;
+                }
+            }else if(this._textField.multiline){
                 this._textField.height = h;
                 this._textField.width = w;
             }
@@ -417,7 +421,7 @@ module d5power
         public autoGrow():void
         {
             if(this._textField == null) return;
-            this._w = this._maxWidth==0 || this._textField.multiline==false ? this._textField.textWidth+6 : this._maxWidth;
+            this._w = this._textField.multiline==false || this._maxWidth==0 ? this._textField.textWidth+6 : this._maxWidth;
             this._h = this._textField.textHeight+10;
             this.setSize(this._w,this._h);
 //            console.log("[d5text2]"+this._textField.textHeight+"|"+this._textField.height);
