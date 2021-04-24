@@ -38,6 +38,10 @@ module d5power
 
         private _onComplateObj:any;
 
+        private _round:number;
+
+        private _bitmapdata:egret.RenderTexture;
+
         /**
          * 运行脚本
          */
@@ -107,6 +111,17 @@ module d5power
             this._onComplateObj = thisObj;
         }
 
+		public set round(v:number)
+		{
+			this._round = v;
+			this.draw();
+		}
+
+		public get round():number
+		{
+			return this._round;
+		}
+
         public setSrc(url:string):void
         {
             this._url = url;
@@ -125,6 +140,7 @@ module d5power
             b.setRes(this.bit==null ? null : this.bit.texture);
             b.anchorOffsetX = this.anchorOffsetX;
             b.anchorOffsetY = this.anchorOffsetY;
+            b.round = this._round;
             return b;
         }
 
@@ -185,18 +201,53 @@ module d5power
             {
 
             }else{
-                if(!this.contains(this.bit)) {
-                    this.addChildAt(this.bit,0);
-                }
-                
+
                 if(this.bit.fillMode==egret.BitmapFillMode.SCALE)
                 {
                     this.bit.width = this._w;
                     this.bit.height = this._h;
                 }
+
+                this._round>0 && (this.drawRound());
+
+                !this.contains(this.bit) && this.addChildAt(this.bit,0);
             }
             super.draw();
         }
+
+        /**
+         * 圆角转换
+         */
+        private drawRound():void
+        {
+			var b:egret.RenderTexture = new egret.RenderTexture();
+			var masker:egret.Shape = new egret.Shape();
+			var box:egret.Sprite = new egret.Sprite();
+
+			masker.graphics.beginFill(0);
+			masker.graphics.drawRoundRect(0,0,this.bit.width,this.bit.height,this._round);
+			masker.graphics.endFill();
+			box.addChild(this.bit);
+			box.addChild(masker);
+			this.bit.mask = masker;
+            this.addChild(box);
+
+            var that:D5Bitmap = this;
+            var autoRenderRound:Function = function(e:egret.Event):void
+            {
+                b.drawToTexture(box);
+                that.bit.texture = null;
+                that.bit.mask = null;
+                that.removeChild(box);
+                box.removeChildren();
+                box = null;
+                that.bit = new egret.Bitmap(b);
+                that.addChildAt(that.bit,0);
+            }
+
+			this.once(egret.Event.ENTER_FRAME,autoRenderRound,this);
+		}
+
         public dispose():void
         {
             if(this.bit)

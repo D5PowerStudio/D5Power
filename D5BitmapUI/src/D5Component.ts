@@ -503,6 +503,7 @@ module d5power
                     com.y = value.y;
                     if(value.rotation!=0) com.rotation = value.rotation;
                     if(value.zoom) com.scaleX = com.scaleY = value.zoom;
+                    if(value.round!=0) (<d5power.D5Bitmap>com).round = value.round;
                     if(container) container[com.name] = com;
                     break;
                 case "D5RadioBtn":
@@ -619,6 +620,7 @@ module d5power
                     (<D5Shape>com).setOffY(value.offY);
                     (<D5Shape>com).setSize(value.width,value.height);
                     (<D5Shape>com).setRadius(value.radius);
+                    (<D5Shape>com).round = value.round;
                     (<D5Shape>com).maskName = value.maskName;
                     (<D5Shape>com).pointString = value.pointString;
                     if(container) container[com.name] = com;

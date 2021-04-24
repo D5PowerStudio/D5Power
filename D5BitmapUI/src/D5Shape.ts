@@ -75,6 +75,16 @@ module d5power {
         public drawAlpha:number = 1;
 
         public lineAlpha:number = 1;
+
+        private _round_0:number = 0;
+
+		private _round_1:number = 0;
+
+		private _round_2:number = 0;
+
+		private _round_3:number = 0;
+
+		private _round:string;
         
         public constructor()
         {
@@ -95,6 +105,65 @@ module d5power {
             this._waitTime = egret.getTimer();
 			this.addEventListener(egret.Event.ENTER_FRAME,this.waitMasker,this);
         }
+
+        public get round():string
+		{
+			return this._round ? this._round : '';
+		}
+
+		public set round(r:string)
+		{
+			if(r==null || r=='null') r = '0';
+			r = r.replace(/'/g,'');
+			var v:number;
+			if(r.indexOf(' ')==-1)
+			{
+				v = parseInt(r);
+				if(v<0) v = 0;
+				this._round_0 = this._round_1 = this._round_2 = this._round_3 = v;
+				this._round = v+'';
+			}else{
+				var arr:Array<string> = r.split(' ');
+				switch(arr.length)
+				{
+					case 2:
+						v = parseInt(arr[0]);
+						if(v<0) v = 0;
+						this._round_0 = this._round_1 = v;
+						v = parseInt(arr[1]);
+						if(v<0) v = 0;
+						this._round_2 = this._round_3 = v;
+						this._round = arr[0]+' '+arr[1];
+						break;
+					case 3:
+						v = parseInt(arr[0]);
+						if(v<0) v = 0;
+						this._round_0 = v;
+
+						v = parseInt(arr[1]);
+						if(v<0) v = 0;
+						this._round_1 = v;
+
+						v = parseInt(arr[2]);
+						if(v<0) v = 0;
+						this._round_2 = this._round_3 = v;
+
+						this._round = arr[0]+' '+arr[1]+' '+arr[2];
+						break;
+					default:
+						for(var i:number=0;i<4;i++)
+						{
+							v = parseInt(arr[i]);
+							if(v<0) v = 0;
+							this['_round_'+i]  = v;
+						}
+						this._round = arr[0]+' '+arr[1]+' '+arr[2]+' '+arr[3];
+						break;
+				}
+			}
+
+			this.draw();
+		}
 
         private waitMasker(e:egret.Event):void
         {
@@ -121,7 +190,28 @@ module d5power {
                     {
                         this._shape.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
                     }
-                    this._shape.graphics.drawRect(this._offX,this._offY,this._w,this._h);
+                    if (this._round_0 == this._round_1 && this._round_1==this._round_2 && this._round_2==this._round_3){
+                        this._shape.graphics.drawRoundRect(this._offX, this._offY, this._w, this._h,this._round_0);
+                    }else if(this._round_0!=0 || this._round_1!=0 || this._round_2!=0 || this._round_3!=0)
+					{
+                        var p:egret.Point = new egret.Point(this._offX,this._offY);
+                        this._shape.graphics.moveTo(p.x, p.y);
+                        var rk = Math.PI/180;
+                        this._shape.graphics.drawArc(p.x + this._round_0, p.y + this._round_0, this._round_0, 180*rk,270*rk);
+                        p.x += this._w - this._round_1;
+                        this._shape.graphics.lineTo(p.x, p.y);
+                        this._shape.graphics.drawArc(p.x, p.y + this._round_1, this._round_1, -90*rk, 0);
+                        p.x += this._round_1;
+                        p.y += this._h - this._round_3;
+                        this._shape.graphics.lineTo(p.x, p.y);
+                        this._shape.graphics.drawArc(p.x - this._round_3, p.y, this._round_3, 0, 90*rk);
+                        p.x -= this._w - this._round_2;
+                        p.y += this._round_3;
+                        this._shape.graphics.lineTo(p.x, p.y);
+                        this._shape.graphics.drawArc(p.x - this._round_2, p.y, this._round_2, 90*rk, 180*rk);
+					}else{
+						this._shape.graphics.drawRect(this._offX,this._offY,this._w,this._h);
+					}
                     this._shape.graphics.endFill();
                     break;
                 case D5Shape.CIRCLE:
