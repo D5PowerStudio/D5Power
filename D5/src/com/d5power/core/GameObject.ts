@@ -76,6 +76,33 @@ module d5power
         }
 
         /**
+         * 计算某个目标角色和自己的夹角
+         * figure out the angle with a special target.
+         * @param target 目标角色/target gameobject
+         */
+        public getTargetDir(target:GameObject):number
+        {
+            return Math.atan2(target._pos.y-this._pos.y,target._pos.x-this._pos.x);
+        }
+
+        /**
+         * 计算某个目标角色和自己的距离
+         * figure out the distance between this object and another target.
+         * @param target 目标角色/target gameobject
+         */
+        public getTargetDis(target:GameObject):number
+        {
+            return egret.Point.distance(target._pos,this._pos);
+        }
+
+        /**
+         * 设置角色移动方向
+         */
+        public set moveDir(angle:number){
+            this._movedir = angle;
+        }
+
+        /**
          * 沿某个方向移动的计算
          */
         protected moveWidthDir():boolean

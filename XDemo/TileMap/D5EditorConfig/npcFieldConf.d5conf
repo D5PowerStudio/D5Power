@@ -1,6 +1,0 @@
-<data>
-	<!-- 道具配置文件由Excel表格转换的字段 -->
-	<field name='NPC ID' field='-1'>id</field>
-	<field name='NPC名' field='-1'>npcname</field>
-	<field name='默认头像' field='-1'>npcskin</field>
-</data>

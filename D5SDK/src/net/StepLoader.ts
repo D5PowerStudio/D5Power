@@ -132,9 +132,35 @@ module d5power
 			}
 		}
 		
+		/**
+		 * 根据文件地址从缓存池中获取数据（和getRes功能一致）
+		 * get resource from pool,just like function getRes
+		 * @param url 文件地址 file address
+		 */
 		public getResByUrl(url:string):any
 		{
 			return StepLoader._pool[url];
+		}
+
+		/**
+		 * 根据文件地址从缓存池中获取数据（和getResByUrl功能一致）
+		 * get resource from pool,just like function getResByUrl
+		 * @param url 文件地址 file address
+		 */
+		public getRes(url:string):any
+		{
+			return StepLoader._pool[url];
+		}
+
+		/**
+		 * 向缓存池中新增缓存文件
+		 * add resource to pool
+		 * @param url 		文件地址 file address
+		 * @param data 		文件内容 file content
+		 */
+		public addCache(url:string,data:any)
+		{
+			StepLoader._pool[url] = data;
 		}
 		
 		private _allComplate:Function;

@@ -51,7 +51,8 @@ module d5power
                     callback.apply(thisobj,[-1]);
                 }else{
                     texture = data;
-                    RES.getResByUrl(path+'uiresource.json',onJson,this,RES.ResourceItem.TYPE_JSON);
+                    var store_data:any = StepLoader.me.getResByUrl(path+'uiresource.json');
+                    store_data ? onJson(store_data) : RES.getResByUrl(path+'uiresource.json',onJson,this,RES.ResourceItem.TYPE_JSON);
                 }
             }
 
@@ -66,7 +67,8 @@ module d5power
                 }
             }
 
-            RES.getResByUrl(path+'uiresource.png',onBitmap,this,RES.ResourceItem.TYPE_IMAGE);
+            var store_data:any = StepLoader.me.getResByUrl(path+'uiresource.png');
+            store_data ? onBitmap(store_data) : RES.getResByUrl(path+'uiresource.png',onBitmap,this,RES.ResourceItem.TYPE_IMAGE);
 
         }
 

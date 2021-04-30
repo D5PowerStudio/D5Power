@@ -23,6 +23,7 @@ module d5power
 
             this._objList = [];
             this._container = container;
+            this._lastOrder = 0;
 
             this._farLayer = new egret.DisplayObjectContainer();
             this._groundLayer = new egret.DisplayObjectContainer();
@@ -69,6 +70,7 @@ module d5power
             this._middleLayer.addChild(obj.monitor);
         }
 
+        private _lastOrder:number;
         protected run()
         {
             var that:D5World = D5World._that;
@@ -85,9 +87,40 @@ module d5power
                 obj = that._objList[i];
                 obj.render(t);
             }
+
+            // 定期调增深度排序
+            if(t-that._lastOrder>500)
+            {
+                that._objList.sort(this.deepSort);
+				
+				var orderCount:number = that._objList.length;
+				// 交换层次对象
+				var child:egret.DisplayObject;	// 场景对象
+				var child_now:egret.DisplayObject;
+                var _layer_go:egret.DisplayObjectContainer = that._middleLayer;
+				while(orderCount--)
+				{
+					child_now = that._objList[orderCount].monitor;
+					if(orderCount<_layer_go.numChildren)
+					{
+						child = _layer_go.getChildAt(orderCount);
+						if(child!=child_now && _layer_go.contains(child_now))
+						{
+							_layer_go.setChildIndex(child_now,orderCount);
+						}
+					}
+                }
+                
+                this._lastOrder = t;
+            }
             
             that._camera.update();
             that._map.render();
+        }
+
+        private deepSort(orderA:GameObject,orderB:GameObject):number
+        {
+            return (orderA.posY-orderB.posY)*100+orderA.posX-orderB.posX;
         }
     }
 }
