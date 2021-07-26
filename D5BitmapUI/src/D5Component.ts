@@ -130,6 +130,11 @@ module d5power
          * 携带数据
          */
         public extdata:any;
+        /**
+         * 克隆目标
+         */
+        public cloneFrom:D5Component;
+        
 		public startX:number;
 		public startY:number;
 		private static _me:D5Component;

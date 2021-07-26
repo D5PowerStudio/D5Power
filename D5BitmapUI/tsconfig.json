@@ -11,6 +11,7 @@
 		"src/ui/IProBindingContainer.ts",
 		"src/ui/IProBindingSupport.ts",
 		"src/ResLibParser.ts",
+		"src/D5Template.ts",
 		"src/D5Component.ts",
 		"src/D5Loop.ts",
 		"src/D5Lib.ts",

@@ -38,8 +38,8 @@ module d5power
         public static TOP:number = 0;
         public static MIDDLE:number = 1;
         public static BOTTOM:number = 2;
-        public static AUTO_PADDING:number = 3;
-
+        public static AUTO_PADDINGX:number = 2;
+        public static AUTO_PADDINGY:number = 5;
         /**
          * 绑定属性
          */
@@ -402,17 +402,18 @@ module d5power
             
 
             if(needZoom){
-                this._textField.x = this._textField.y = D5Text.AUTO_PADDING;
                 if(this._textField.multiline)
                 {
-                    this._textField.height = h-D5Text.AUTO_PADDING*2;
-                    this._textField.width = w-D5Text.AUTO_PADDING*2;
+                    this._textField.height = h-D5Text.AUTO_PADDINGY*2;
+                    this._textField.width = w-D5Text.AUTO_PADDINGX*2;
                 }
             }else if(this._textField.multiline){
                 this._textField.height = h;
                 this._textField.width = w;
             }
             
+            this._textField.x = D5Text.AUTO_PADDINGX
+            this._textField.y = D5Text.AUTO_PADDINGY;
         }
 
          /**
