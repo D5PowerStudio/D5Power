@@ -107,7 +107,7 @@ module d5power
 
             if(data.typeLoop == 0)   //x轴D5UIResourceData._typeLoop == 0
             {
-                this._mode = 0;
+                //this._mode = 0;
                 if(this.front==null)this.front = new egret.Bitmap();
                 this.front.texture = data.getResource(0);
 
@@ -119,7 +119,7 @@ module d5power
                 this.after.texture = data.getResource(0);
                 this.after.scaleX = -1;
             }else{
-                this._mode = 1;
+                //this._mode = 1;
                 if(this.front==null)this.front = new egret.Bitmap();
                 this.front.texture = data.getResource(0);
 
@@ -155,6 +155,7 @@ module d5power
             if(this._mode == 0)
             {
                 this.enter.x = this.front.width;
+                targetSize = this._w - this.front.width * 2;
                 targetSize<0 && (targetSize=0);
                 targetSize>0 ? (this.enter.width = targetSize) : (this.enter.visible=false);
                 this.after.x = this.enter.x+targetSize+this.front.width;

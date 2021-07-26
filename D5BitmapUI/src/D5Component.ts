@@ -476,9 +476,9 @@ module d5power
                 case "D5MirrorLoop":
                     com = new d5power.D5MirrorLoop();
                     com.name = value.name;
-                    (<D5MirrorLoop>com)._mode = value.workmode;
                     (<D5MirrorLoop>com)._cutSize = value.cutsize;
                     com.setSkin(value.skinId);
+                    (<D5MirrorLoop>com)._mode = value.workmode;
                     com.x = value.x;
                     com.y = value.y;
                     com.setSize(value.width,value.height);

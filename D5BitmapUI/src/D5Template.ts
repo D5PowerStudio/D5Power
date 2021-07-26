@@ -57,6 +57,24 @@ module d5power
             }
         }
 
+        /**
+         * 从一个容器进行初始化，用于程序开发，一般用于add2Me方法之后
+         * @param root 根对象
+         * @param target 克隆皮肤
+         */
+        public fromContainer(container:D5Component):void
+        {
+            this._root = container;
+            var off:Array<number> = container ? [container.x,container.y] : null;
+            for(var i:number=container.numChildren-1;i>0;i--)
+            {
+                let comp:D5Component = <D5Component>container.getChildAt(i);
+                if(!comp) continue;
+                comp.parent && comp.parent.removeChild(comp);
+                this._skin.push(comp);
+            }
+        }
+
         
         /**
          * 获取一个克隆皮肤
