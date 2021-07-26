@@ -66,6 +66,8 @@ module d5power
         {
             this._root = container;
             var off:Array<number> = container ? [container.x,container.y] : null;
+            this._skin.push(container);
+            container.x = container.y = 0;
             for(var i:number=container.numChildren-1;i>0;i--)
             {
                 let comp:D5Component = <D5Component>container.getChildAt(i);
