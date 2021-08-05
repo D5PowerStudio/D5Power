@@ -92,6 +92,14 @@ module d5power {
             this._shape = new egret.Shape();
             this.addChild(this._shape);
         }
+
+        public saveStatic():void
+        {
+            var txr:egret.RenderTexture = new egret.RenderTexture();
+            txr.drawToTexture(this);
+            this.removeChildren();
+            this.addChild(new egret.Bitmap(txr));
+        }
         
         public set pointString(value:string)
 		{

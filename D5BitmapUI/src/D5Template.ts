@@ -42,11 +42,20 @@ module d5power
         public fromComponent(root:D5Component,...target):void
         {
             this._root = root;
-            var off:Array<number> = root ? [root.x,root.y] : null;
+            var off:Array<number>;
+            if(root)
+            {
+                off = [root.x,root.y];
+                this._skin.push(root);
+                root.x = 0;
+                root.y = 0;
+                root.parent && root.parent.removeChild(root);
+            }
+            
             for(var i:number=0,j:number=target.length;i<j;i++)
             {
                 let comp:D5Component = target[i];
-                if(!comp) continue;
+                if(!comp || comp==root) continue;
                 if(off)
                 {
                     comp.x -= off[0];
@@ -72,9 +81,9 @@ module d5power
             {
                 let comp:D5Component = <D5Component>container.getChildAt(i);
                 if(!comp) continue;
-                comp.parent && comp.parent.removeChild(comp);
                 this._skin.push(comp);
             }
+            container.parent && container.parent.removeChild(container);
         }
 
         
