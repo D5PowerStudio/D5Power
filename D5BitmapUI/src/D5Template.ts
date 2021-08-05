@@ -86,6 +86,11 @@ module d5power
             container.parent && container.parent.removeChild(container);
         }
 
+        public bind()
+        {
+            
+        }
+
         
         /**
          * 获取一个克隆皮肤

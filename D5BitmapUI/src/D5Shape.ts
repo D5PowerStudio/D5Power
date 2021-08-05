@@ -390,13 +390,6 @@ module d5power {
             this.invalidate();
         }
         
-        public setSize(w:number,h:number):void
-        {
-            if(this._w==w && this._h==h) return;
-            this._w = w;
-            this._h = h;
-            this.invalidate();
-        }
 
         public get radius():number
         {

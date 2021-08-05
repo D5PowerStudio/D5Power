@@ -325,11 +325,40 @@ module d5power
             return this._pro_binding_source;
         }
 
+        public _setSize(w:number,h:number):void
+        {
+            this.invalidate();
+        }
+
+        private _sizeTime:number;
+        private _resizeID:number;
+        /**
+         * 修改尺寸，本API进行了延迟优化，如需要立即修改尺寸，请使用_setSize
+         * @param w 
+         * @param h 
+         */
         public setSize(w:number,h:number):void
         {
+            var t:number = egret.getTimer();
+            var that:D5Component = this;
             this._w = w;
             this._h = h;
-            this.invalidate();
+            if(isNaN(this._resizeID))
+            {
+                this.visible=false;
+                this._sizeTime = t;
+                this._resizeID = setTimeout(function(){ that.setSize(w,h) },200);
+            }else if(t-this._sizeTime<200){
+                clearTimeout(this._resizeID);
+                this._sizeTime = t;
+                this._resizeID = setTimeout(function(){ that.setSize(w,h) },200);
+            }else{
+                this.visible=true;
+                this._setSize(w,h);
+                this._resizeID = NaN;
+                this._sizeTime = NaN;
+            }
+            
         }
         public get nowName():string
         {
@@ -551,7 +580,7 @@ module d5power
                     com.name = value.name;
                     com.x = value.x;
                     com.y = value.y;
-                    com.setSize(value.width,value.height);
+                    
                     (<D5Text>com).setType(value.type);
                     (<D5Text>com).setTextAlign(value.alignType);
                     (<D5Text>com).setFontBold((<boolean>value.bold));
@@ -561,6 +590,7 @@ module d5power
                     (<D5Text>com).setWrapFlg(value.wrapType);
                     (<D5Text>com).setIsPassword(value.password=='1' ? true : false);
                     (<D5Text>com).setTextID((value.textID).toString());
+                    com.setSize(value.width,value.height);
                     (<D5Text>com)._binding = value.binding;
                     if(container) container[com.name] = com;
                     if(container && <IProBindingContainer><any>container && (<D5Text>com)._binding!='') (<IProBindingContainer><any>container).addBinder(<D5Text>com);

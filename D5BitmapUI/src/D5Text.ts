@@ -370,17 +370,14 @@ module d5power
         /**
          *背景宽高
          */
-        public setSize(w:number, h:number = 0):void
+        public _setSize(w:number, h:number = 0):void
         {
-            var needZoom:boolean=false;
-
             this._w = w;
             this._h = h;
 
             this.graphics.clear();
             if(this._bgColor!=-1){
                 this.graphics.beginFill(this._bgColor);
-                needZoom = true;
             }
 
             if(this._lightBorder!=-1){
@@ -393,27 +390,15 @@ module d5power
                 this.graphics.lineStyle(1,this._lightBorder);
                 this.graphics.lineTo(0,0);
                 this.graphics.endFill();
-                needZoom = true;
             }else if(this._bgColor!=-1){
                 this.graphics.drawRect(0,0,this._w,this._h);
                 this.graphics.endFill();
-                needZoom = true;
-            }
-            
-
-            if(needZoom){
-                if(this._textField.multiline)
-                {
-                    this._textField.height = h-D5Text.AUTO_PADDINGY*2;
-                    this._textField.width = w-D5Text.AUTO_PADDINGX*2;
-                }
-            }else if(this._textField.multiline){
-                this._textField.height = h;
-                this._textField.width = w;
             }
             
             this._textField.x = D5Text.AUTO_PADDINGX
             this._textField.y = D5Text.AUTO_PADDINGY;
+            this._textField.height = h;
+            this._textField.width = w;
         }
 
          /**

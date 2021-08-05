@@ -171,7 +171,7 @@ module d5power
 
         }
 
-        public setSize(w:number,h:number):void
+        public _setSize(w:number,h:number):void
         {
             if(!this.enter) return;
             if(this._mode==0)
@@ -180,7 +180,9 @@ module d5power
             }else{
                 h = h<=this._minH ? this._minH : h;
             }
-            super.setSize(w,h);
+            this._w = w;
+            this._h = h;
+            this.invalidate();
         }
 
         public clone():D5MirrorLoop
