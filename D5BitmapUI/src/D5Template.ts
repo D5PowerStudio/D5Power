@@ -77,6 +77,11 @@ module d5power
             }
         }
 
+        public bind()
+        {
+            
+        }
+
         
         /**
          * 获取一个克隆皮肤
