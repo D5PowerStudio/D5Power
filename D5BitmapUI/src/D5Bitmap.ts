@@ -140,7 +140,7 @@ module d5power
             b.setRes(this.bit==null ? null : this.bit.texture);
             b.anchorOffsetX = this.anchorOffsetX;
             b.anchorOffsetY = this.anchorOffsetY;
-            b.round = this._round;
+            b._round = this._round;
             return b;
         }
 

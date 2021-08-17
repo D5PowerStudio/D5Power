@@ -56,7 +56,7 @@ module d5power
             {
                 let comp:D5Component = target[i];
                 if(!comp || comp==root) continue;
-                if(off)
+                if(off && comp.parent!=root)
                 {
                     comp.x -= off[0];
                     comp.y -= off[1];
@@ -86,9 +86,33 @@ module d5power
             container.parent && container.parent.removeChild(container);
         }
 
-        public bind()
+        /**
+         * 获取一个克隆皮肤，并绑定到一个类
+         * @param bindTarget 要绑定的类
+         */
+        public getInstanceBind(bindTarget:any):any
         {
-            
+            var instance:any = new bindTarget();
+            for(var i:number=0,j:number=this._skin.length;i<j;i++)
+            {
+                let comp:D5Component = this._skin[i];
+                if(comp['clone'])
+                {
+                    let n_comp:any = (<any>comp).clone();
+                    n_comp.setSize(comp.width,comp.height);
+                    n_comp.x = comp.x;
+                    n_comp.y = comp.y;
+                    instance.addChild(n_comp);
+                    try
+                    {
+                        instance[comp.name] = n_comp;
+                    }catch(e){
+
+                    }
+                }
+            }
+
+            return instance;
         }
 
         

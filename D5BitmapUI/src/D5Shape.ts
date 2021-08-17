@@ -86,19 +86,29 @@ module d5power {
 
 		private _round:string;
         
-        public constructor()
+        public constructor(autoInit:boolean=true)
         {
             super();
-            this._shape = new egret.Shape();
-            this.addChild(this._shape);
+            if(autoInit)
+            {
+                this._shape = new egret.Shape();
+                this.addChild(this._shape);
+            }
+            
         }
 
+        private _staticTex:egret.RenderTexture;
         public saveStatic():void
         {
-            var txr:egret.RenderTexture = new egret.RenderTexture();
-            txr.drawToTexture(this);
+            if(this._staticTex)
+            {
+                this._staticTex.dispose();
+            }
+            this._staticTex = new egret.RenderTexture();
+            this._staticTex.drawToTexture(this);
+            this.graphics.clear();
             this.removeChildren();
-            this.addChild(new egret.Bitmap(txr));
+            this.addChild(new egret.Bitmap(this._staticTex));
         }
         
         public set pointString(value:string)
@@ -189,22 +199,22 @@ module d5power {
 
         public draw():void
         {
-            if(this._shape)this._shape.graphics.clear();
+            if(!this._shape) return;
+            this._shape.graphics.clear();
+            const rk = Math.PI/180;
+
+            this._fillColor>=0 &&  this._shape.graphics.beginFill(this._fillColor,this.drawAlpha);
+            this._tickNess>=0 && this._shape.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
+
             switch(this._workMode)
             {
                 case D5Shape.RECT:
-                     this._shape.graphics.beginFill(this._fillColor,this.drawAlpha);
-                    if(this._tickNess>0)
-                    {
-                        this._shape.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
-                    }
                     if (this._round_0 == this._round_1 && this._round_1==this._round_2 && this._round_2==this._round_3){
                         this._shape.graphics.drawRoundRect(this._offX, this._offY, this._w, this._h,this._round_0);
                     }else if(this._round_0!=0 || this._round_1!=0 || this._round_2!=0 || this._round_3!=0)
 					{
                         var p:egret.Point = new egret.Point(this._offX,this._offY);
                         this._shape.graphics.moveTo(p.x, p.y);
-                        var rk = Math.PI/180;
                         this._shape.graphics.drawArc(p.x + this._round_0, p.y + this._round_0, this._round_0, 180*rk,270*rk);
                         p.x += this._w - this._round_1;
                         this._shape.graphics.lineTo(p.x, p.y);
@@ -216,27 +226,17 @@ module d5power {
                         p.x -= this._w - this._round_2;
                         p.y += this._round_3;
                         this._shape.graphics.lineTo(p.x, p.y);
-                        this._shape.graphics.drawArc(p.x - this._round_2, p.y, this._round_2, 90*rk, 180*rk);
+                        this._shape.graphics.drawArc(p.x, p.y - this._round_2, this._round_2, 90 * rk, 180 * rk);
 					}else{
 						this._shape.graphics.drawRect(this._offX,this._offY,this._w,this._h);
 					}
                     this._shape.graphics.endFill();
                     break;
                 case D5Shape.CIRCLE:
-                    this._shape.graphics.beginFill(this._fillColor,this.drawAlpha);
-                    if(this._tickNess>0)
-                    {
-                        this._shape.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
-                    }
                     this._shape.graphics.drawCircle(this._offX,this._offY,this._radius);
                     this._shape.graphics.endFill();
                     break;
                 case D5Shape.CUSTOM:
-                    this._shape.graphics.beginFill(this._fillColor,this.lineAlpha);
-                    if(this._tickNess>0)
-					{
-						this._shape.graphics.lineStyle(this._tickNess,this._color);
-					}
 					var temp:Array<string>;
 					var tempX:number;
 					var tempY:number;
@@ -357,17 +357,26 @@ module d5power {
         
         public clone():D5Shape
         {
-            var obj:D5Shape = new D5Shape();
-            obj._workMode = this._workMode;
-            obj._fillColor = this._fillColor;
-            obj._tickNess = this._tickNess;
-            obj._color = this._color;
-            obj._offX = this._offX;
-            obj._offY = this._offY;
-            obj._radius = this._radius;
-            obj.setSize(this._w,this._h);
-            obj.drawAlpha = this.drawAlpha;
-            obj.invalidate();
+            
+            if(!this._staticTex)
+            {
+                var obj:D5Shape = new D5Shape();
+                obj._workMode = this._workMode;
+                obj._fillColor = this._fillColor;
+                obj._tickNess = this._tickNess;
+                obj._color = this._color;
+                obj._offX = this._offX;
+                obj._offY = this._offY;
+                obj._radius = this._radius;
+                obj.round = this._round;
+                obj.setSize(this._w,this._h);
+                obj.drawAlpha = this.drawAlpha;
+                obj.invalidate();
+            }else{
+                var obj:D5Shape = new D5Shape(false);
+                obj.addChild(new egret.Bitmap(this._staticTex));
+            }
+            
             return obj;
         }
 
