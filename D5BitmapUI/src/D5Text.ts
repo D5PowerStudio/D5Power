@@ -107,6 +107,29 @@ module d5power
 			this.addChild(this._textField);
            
         }
+
+        private _cache:egret.RenderTexture;
+        public drawStatic():void
+        {
+            
+            this.clearStatic();
+            this._cache = new egret.RenderTexture();
+            this._cache.drawToTexture(this);
+            this.removeChildren();
+            this.addChild(new egret.Bitmap(this._cache));
+            
+        }
+
+        public clearStatic():void
+        {
+            if(this._cache)
+            {
+                this.removeChildren();
+                this._cache.dispose();
+            }
+            if(!this._textField.parent) this.addChild(this._textField);
+            this._cache=null;
+        }
         
         public placeholder(v:string=null)
         {
@@ -165,21 +188,29 @@ module d5power
 		 */ 
 		public copyFormat(target:D5Text,content:String='文字'):void
 		{
-			target.setFontBold(this.fontBold);
-			target.setFontSize(this.fontSize);
-			target.setFontBorder(this.fontBorder);
-			target.setSize(this._w,this._h);
-			target._maxWidth = this._maxWidth;
-			target._textField.verticalAlign = this._textField.verticalAlign;
-			target._textField.textAlign = this._textField.textAlign;
+            if(this._cache)
+            {
+                target._cache = this._cache;
+                target.removeChildren();
+                target.addChild(new egret.Bitmap(target._cache));
+            }else{
+                target.setFontBold(this.fontBold);
+                target.setFontSize(this.fontSize);
+                target.setFontBorder(this.fontBorder);
+                target.setSize(this._w,this._h);
+                target._maxWidth = this._maxWidth;
+                target._textField.verticalAlign = this._textField.verticalAlign;
+                target._textField.textAlign = this._textField.textAlign;
+                
+                target._textField.multiline = this._textField.multiline;
+                target._textField.type = this._textField.type;
+                target.setTextColor(this.textColor);
+                target.setLtBorder(this.ltBorder);
+                target.setRbBorder(this.rbBorder);
+                target.setBgColor(this.bgColor);
+                target.setIsPassword(this.isPassword);
+            }
 			
-			target._textField.multiline = this._textField.multiline;
-			target._textField.type = this._textField.type;
-			target.setTextColor(this.textColor);
-			target.setLtBorder(this.ltBorder);
-			target.setRbBorder(this.rbBorder);
-			target.setBgColor(this.bgColor);
-			target.setIsPassword(this.isPassword);
 		}
        
         /**

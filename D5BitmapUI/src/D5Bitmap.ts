@@ -79,13 +79,17 @@ module d5power
             if(this._nowName == name) return;
             this._nowName = name;
             var data:D5UIResourceData = D5UIResourceData.getData(name);
+            if(this.bit == null) 
+            {
+                this.bit = new egret.Bitmap();
+            }
+            
             if(data==null)
             {
                 trace("[D5Bitmap]No Resource"+name);
                 var texture:egret.Texture = RES.getRes(name);
                 if(texture)
                 {
-                    this.bit = new egret.Bitmap();
                     this.bit.texture = texture;
                     this.invalidate();
                 }else
@@ -94,10 +98,7 @@ module d5power
                 }
                 return;
             }
-            if(this.bit == null) 
-            {
-                this.bit = new egret.Bitmap();
-            }
+            
 
             if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             this.bit.texture = data.getResource(0);
