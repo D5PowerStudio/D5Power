@@ -161,7 +161,7 @@ module d5power {
 			for(var i:number = 0,j:number=this.numChildren;i<j;i++){
 				obj = this.getChildAt(i);
 				
-				if(this._usedWidth+obj.width>this._maxWidth){
+				if(this._usedWidth+obj.width>this._maxWidth*1.1){
 					this._usedHeight+=perMaxHeight+this._paddingy;
 					perMaxHeight = 0;
 					this._usedWidth = 0;

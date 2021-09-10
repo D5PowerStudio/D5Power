@@ -42,12 +42,21 @@ module d5power
         public fromComponent(root:D5Component,...target):void
         {
             this._root = root;
-            var off:Array<number> = root ? [root.x,root.y] : null;
+            var off:Array<number>;
+            if(root)
+            {
+                off = [root.x,root.y];
+                this._skin.push(root);
+                root.x = 0;
+                root.y = 0;
+                root.parent && root.parent.removeChild(root);
+            }
+            
             for(var i:number=0,j:number=target.length;i<j;i++)
             {
                 let comp:D5Component = target[i];
-                if(!comp) continue;
-                if(off)
+                if(!comp || comp==root) continue;
+                if(off && comp.parent!=root)
                 {
                     comp.x -= off[0];
                     comp.y -= off[1];
@@ -72,14 +81,38 @@ module d5power
             {
                 let comp:D5Component = <D5Component>container.getChildAt(i);
                 if(!comp) continue;
-                comp.parent && comp.parent.removeChild(comp);
                 this._skin.push(comp);
             }
+            container.parent && container.parent.removeChild(container);
         }
 
-        public bind()
+        /**
+         * 获取一个克隆皮肤，并绑定到一个类
+         * @param bindTarget 要绑定的类
+         */
+        public getInstanceBind(bindTarget:any):any
         {
-            
+            var instance:any = new bindTarget();
+            for(var i:number=0,j:number=this._skin.length;i<j;i++)
+            {
+                let comp:D5Component = this._skin[i];
+                if(comp['clone'])
+                {
+                    let n_comp:any = (<any>comp).clone();
+                    n_comp.setSize(comp.width,comp.height);
+                    n_comp.x = comp.x;
+                    n_comp.y = comp.y;
+                    instance.addChild(n_comp);
+                    try
+                    {
+                        instance[comp.name] = n_comp;
+                    }catch(e){
+
+                    }
+                }
+            }
+
+            return instance;
         }
 
         
