@@ -86,7 +86,7 @@ module d5power
             
             if(data==null)
             {
-                trace("[D5Bitmap]No Resource"+name);
+                trace("[D5Bitmap]No Resource "+name);
                 var texture:egret.Texture = RES.getRes(name);
                 if(texture)
                 {

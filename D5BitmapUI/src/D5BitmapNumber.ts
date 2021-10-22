@@ -116,13 +116,22 @@ module d5power {
             this.data = D5UIResourceData.getData(name);
             if(this.data==null)
             {
-                trace("[D5Button]No Resource in lib:"+name);
+                trace("[D5BitmapNumber]No Resource "+name);
+				RES.getResByUrl(name,this.skinLoaded,this,RES.ResourceItem.TYPE_IMAGE);
                 return;
 			}
 			
 			this._perWidth = this.data.getResource(0).textureWidth;
 			this._hasPoint = this.data.extData && this.data.extData.indexOf('.')!=-1
 			this._string_map = D5BitmapNumber.BASIC_CONTENT+(this.data.extData);
+		}
+
+		private skinLoaded(texture:egret.Texture):void
+		{
+			if(texture)
+			{
+
+			}
 		}
 
 		private getNumber(value:string):string
