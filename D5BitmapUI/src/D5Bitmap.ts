@@ -194,6 +194,7 @@ module d5power
                 this._onComplate = null;
                 this._onComplateObj = null;
             }
+            this.dispatchEvent(new egret.Event(egret.Event.COMPLETE));
         }
 
         public draw():void
@@ -203,14 +204,10 @@ module d5power
 
             }else{
 
-                if(this.bit.fillMode==egret.BitmapFillMode.SCALE)
-                {
-                    this.bit.width = this._w;
-                    this.bit.height = this._h;
-                }
+                this.bit.width = this._w;
+                this.bit.height = this._h;
 
                 this._round>0 && (this.drawRound());
-
                 !this.contains(this.bit) && this.addChildAt(this.bit,0);
             }
             super.draw();
