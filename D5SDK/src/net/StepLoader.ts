@@ -43,7 +43,8 @@ module d5power
 				{
 					conf.callback.apply(conf.thisobj,[data]);
 				}catch(e){
-					trace("资源加载回叫失败",e);
+					trace("[StepLoader] resource onload callback fail" + conf.url);
+					trace(e.stack);
 				}
 			}
 
@@ -60,7 +61,8 @@ module d5power
 						{
 							finder.callback.apply(finder.thisobj,[data]);
 						}catch(e){
-							trace("资源加载回叫失败",e.getStackTrace());
+							trace("[StepLoader] resource onload callback fail" + conf.url);
+							trace(e.stack);
 						}
 					}
 					arr.splice(id);
@@ -179,6 +181,9 @@ module d5power
 					this._allComplate.apply(this._allComplateObj);
 				}catch(e){
 					//trace("[StepLoader] 尝试呼叫结束函数失败",e.getStackTrace());
+					trace("[StepLoader] allComplate callback fail.");
+					trace(e.stack);
+
 				}
 				this._allComplate = null;
 			}

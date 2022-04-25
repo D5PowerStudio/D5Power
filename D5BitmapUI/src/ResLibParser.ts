@@ -79,11 +79,10 @@ module d5power
                 this._loadCount++;
                 this._loadTotal++;
                 var that:ResLibParser = this;
-				egret.BitmapData.create("arraybuffer",b.buffer,function(bitmap:egret.BitmapData){
-                    var texture:egret.Texture = new egret.Texture();
-                    texture.bitmapData = bitmap;
-                    that.update(path,texture);
-                });
+				var bitmap:egret.BitmapData = egret.BitmapData.create("arraybuffer",b.buffer);
+				var texture:egret.Texture = new egret.Texture();
+				texture.bitmapData = bitmap;
+				that.update(path,texture);
 			}else{
 				// UTFFile
 				var str:string = b.readUTFBytes(b.bytesAvailable);
@@ -96,7 +95,8 @@ module d5power
 							var json:Object = JSON.parse(str);
 							this.update(path,json);
 						}catch(e){
-							trace("Format JSON error");
+							trace("[ResLibParser] Format JSON error");
+							trace(e.stack);
 						}
 						break;
 					default:
@@ -127,6 +127,7 @@ module d5power
                             o['addCache'](path,data)
                         }catch(e){
                             trace("[ResLibParser] add cache fail. "+e.stack);
+							trace(e.stack);
                         }
                         
                     }
