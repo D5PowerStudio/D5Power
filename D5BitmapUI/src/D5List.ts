@@ -83,6 +83,33 @@ module d5power{
 			this._blockW = value;
 			this.flushFormat();
 		}
+
+		public set blockW(v:number)
+		{
+			this._blockW = v;
+			this.flushFormat();
+		}
+
+		public set blockH(v:number)
+		{
+			this._blockH = v;
+			this.flushFormat();
+		}
+
+		public get blockW():number
+		{
+			return this._blockW;
+		}
+
+		public get blockH():number
+		{
+			return this._blockH;
+		}
+
+		public get count():number
+		{
+			return this._list.length;
+		}
 		
 		public dispose():void{
 			if(this.parent)this.parent.removeChild(this);
@@ -128,6 +155,10 @@ module d5power{
 			this._selected = null;
 		}
 		
+		public getIndex(obj:egret.DisplayObjectContainer):number
+		{
+			return this._list.indexOf(obj);
+		}
 		
 		public get height():number{
 			var p:number = (<D5VBox><any> (this._content)).padding;

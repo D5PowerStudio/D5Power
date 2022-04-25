@@ -589,6 +589,9 @@ module d5power
                     (<D5Text>com).setTextID((value.textID).toString());
                     com.setSize(value.width,value.height);
                     (<D5Text>com)._binding = value.binding;
+                    (<D5Text>com).placeholder = value.placeholder;
+                    // for fix autoSize in above code.
+                    com.setSize(value.width,value.height);
                     if(container) container[com.name] = com;
                     if(container && <IProBindingContainer><any>container && (<D5Text>com)._binding!='') (<IProBindingContainer><any>container).addBinder(<D5Text>com);
                     break;
@@ -653,6 +656,7 @@ module d5power
                     (<D5Shape>com).setSize(value.width,value.height);
                     (<D5Shape>com).setRadius(value.radius);
                     (<D5Shape>com).round = value.round;
+                    (<D5Shape>com).rotation = value.rotation;
                     (<D5Shape>com).maskName = value.maskName;
                     (<D5Shape>com).pointString = value.pointString;
                     if(container) container[com.name] = com;

@@ -65,7 +65,7 @@ module d5power
         /**
          * 最大宽度
          */
-        private _maxWidth:number=200;
+        private _maxWidth:number=0;
         /**
          *文本id,用此id去语言包取对应的值
          */
@@ -131,7 +131,7 @@ module d5power
             this._cache=null;
         }
         
-        public placeholder(v:string=null)
+        public set placeholder(v:string)
         {
             if(v==null) v = this._textField.text;
             this._placeholder = v;
@@ -369,7 +369,7 @@ module d5power
         public setWidth(value:number)
         {
             this._w = value;
-            this._textField.width = value > this._maxWidth ? this._maxWidth:value;
+            this._textField.width = this._maxWidth>0 && value > this._maxWidth ? this._maxWidth:value;
         }
 
         public setHeight(value:number)

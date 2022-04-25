@@ -197,6 +197,8 @@ module d5power {
                         json = eval('('+this._xhr.responseText+')');
                     }catch(e){
                         json = null;
+                        trace("[URLLoader] JSON parse fail.");
+                        trace(e.stack);
                     }
                     this._data = json;
                     break;

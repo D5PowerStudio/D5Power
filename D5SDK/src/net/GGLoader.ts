@@ -140,6 +140,7 @@ module d5power
                 if(gdata.callback!=null) gdata.callback.apply(gdata.thisObj,[obj]);
             } catch(e) {
                 trace('JSON parse Error:',gdata.loader.data,"\n",e);
+                trace(e.stack);
             }
 
 

@@ -138,7 +138,7 @@ module d5power
         {
             var b:D5Bitmap = new D5Bitmap();
             b.setSize(this._w,this._h);
-            b.setRes(this.bit==null ? null : this.bit.texture);
+            this.bit==null ? b.setSkin(this._nowName) : b.setRes(this.bit==null ? null : this.bit.texture);
             b.anchorOffsetX = this.anchorOffsetX;
             b.anchorOffsetY = this.anchorOffsetY;
             b._round = this._round;
@@ -188,7 +188,8 @@ module d5power
                     this._onComplate.apply(this._onComplateObj);
                     this._onComplate = null;
                 }catch(e){
-                    trace(e);
+                    trace("[D5Bitmap] onComplate function call fail.");
+                    trace(e.stack);
                 }
                 
                 this._onComplate = null;
