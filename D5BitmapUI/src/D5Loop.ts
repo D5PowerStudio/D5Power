@@ -70,11 +70,11 @@ module d5power
             {
                 sheet.createTexture('0',0,0,this._cutsize1,data.textureHeight);
                 sheet.createTexture('1',this._cutsize1,0,this._cutsize2-this._cutsize1,data.textureHeight);
-                sheet.createTexture('2',this._cutsize2,0,data.textureWidth-this._cutsize1,data.textureHeight);
+                sheet.createTexture('2',this._cutsize2,0,data.textureWidth-this._cutsize2,data.textureHeight);
             }else{
                 sheet.createTexture('0',0,0,data.textureWidth,this._cutsize1);
                 sheet.createTexture('1',0,this._cutsize1,data.textureWidth,this._cutsize2-this._cutsize1);
-                sheet.createTexture('2',0,this._cutsize2,data.textureWidth,data.textureHeight-this._cutsize1);
+                sheet.createTexture('2',0,this._cutsize2,data.textureWidth,data.textureHeight-this._cutsize2);
             }
             this.buildPart();
             this._partI.texture = sheet.getTexture('0');

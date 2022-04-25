@@ -38,8 +38,8 @@ module d5power
         public static TOP:number = 0;
         public static MIDDLE:number = 1;
         public static BOTTOM:number = 2;
-        public static AUTO_PADDING:number = 3;
-
+        public static AUTO_PADDINGX:number = 2;
+        public static AUTO_PADDINGY:number = 5;
         /**
          * 绑定属性
          */
@@ -107,6 +107,29 @@ module d5power
 			this.addChild(this._textField);
            
         }
+
+        private _cache:egret.RenderTexture;
+        public drawStatic():void
+        {
+            
+            this.clearStatic();
+            this._cache = new egret.RenderTexture();
+            this._cache.drawToTexture(this);
+            this.removeChildren();
+            this.addChild(new egret.Bitmap(this._cache));
+            
+        }
+
+        public clearStatic():void
+        {
+            if(this._cache)
+            {
+                this.removeChildren();
+                this._cache.dispose();
+            }
+            if(!this._textField.parent) this.addChild(this._textField);
+            this._cache=null;
+        }
         
         public set placeholder(v:string)
         {
@@ -155,31 +178,39 @@ module d5power
         public clone():D5Text
         {
             var copy:D5Text = new D5Text();
-            this.copyFormat(copy);
+            this.copyFormat(copy,this.text);
             return copy;
         }
         
         /**
 		 * 将自身的格式复制设置给目标文本
-		 * @param		copy		想复制当前文本格式的D5Text
+		 * @param		target		想复制当前文本格式的D5Text
 		 */ 
-		public copyFormat(copy:D5Text,content:String='文字'):void
+		public copyFormat(target:D5Text,content:String='文字'):void
 		{
-			copy.setFontBold(this.fontBold);
-			copy.setFontSize(this.fontSize);
-			copy.setFontBorder(this.fontBorder);
-			copy.setSize(this._w,this._h);
-			copy._maxWidth = this._maxWidth;
-			copy._textField.verticalAlign = this._textField.verticalAlign;
-			copy._textField.textAlign = this._textField.textAlign;
+            if(this._cache)
+            {
+                target._cache = this._cache;
+                target.removeChildren();
+                target.addChild(new egret.Bitmap(target._cache));
+            }else{
+                target.setFontBold(this.fontBold);
+                target.setFontSize(this.fontSize);
+                target.setFontBorder(this.fontBorder);
+                target.setSize(this._w,this._h);
+                target._maxWidth = this._maxWidth;
+                target._textField.verticalAlign = this._textField.verticalAlign;
+                target._textField.textAlign = this._textField.textAlign;
+                
+                target._textField.multiline = this._textField.multiline;
+                target._textField.type = this._textField.type;
+                target.setTextColor(this.textColor);
+                target.setLtBorder(this.ltBorder);
+                target.setRbBorder(this.rbBorder);
+                target.setBgColor(this.bgColor);
+                target.setIsPassword(this.isPassword);
+            }
 			
-			copy._textField.multiline = this._textField.multiline;
-			copy._textField.type = this._textField.type;
-			copy.setTextColor(this.textColor);
-			copy.setLtBorder(this.ltBorder);
-			copy.setRbBorder(this.rbBorder);
-			copy.setBgColor(this.bgColor);
-			copy.setIsPassword(this.isPassword);
 		}
        
         /**
@@ -370,17 +401,14 @@ module d5power
         /**
          *背景宽高
          */
-        public setSize(w:number, h:number = 0):void
+        public _setSize(w:number, h:number = 0):void
         {
-            var needZoom:boolean=false;
-
             this._w = w;
             this._h = h;
 
             this.graphics.clear();
             if(this._bgColor!=-1){
                 this.graphics.beginFill(this._bgColor);
-                needZoom = true;
             }
 
             if(this._lightBorder!=-1){
@@ -393,23 +421,15 @@ module d5power
                 this.graphics.lineStyle(1,this._lightBorder);
                 this.graphics.lineTo(0,0);
                 this.graphics.endFill();
-                needZoom = true;
             }else if(this._bgColor!=-1){
                 this.graphics.drawRect(0,0,this._w,this._h);
                 this.graphics.endFill();
-                needZoom = true;
             }
             
-
-            if(needZoom){
-                this._textField.x = this._textField.y = D5Text.AUTO_PADDING;
-                this._textField.height = h-D5Text.AUTO_PADDING*2;
-                this._textField.width = w-D5Text.AUTO_PADDING*2;
-            }else{
-                this._textField.height = h;
-                this._textField.width = w;
-            }
-            
+            this._textField.x = D5Text.AUTO_PADDINGX
+            this._textField.y = D5Text.AUTO_PADDINGY;
+            this._textField.height = h;
+            this._textField.width = w;
         }
 
          /**

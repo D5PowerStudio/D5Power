@@ -79,13 +79,17 @@ module d5power
             if(this._nowName == name) return;
             this._nowName = name;
             var data:D5UIResourceData = D5UIResourceData.getData(name);
+            if(this.bit == null) 
+            {
+                this.bit = new egret.Bitmap();
+            }
+            
             if(data==null)
             {
-                trace("[D5Bitmap]No Resource"+name);
+                trace("[D5Bitmap]No Resource "+name);
                 var texture:egret.Texture = RES.getRes(name);
                 if(texture)
                 {
-                    this.bit = new egret.Bitmap();
                     this.bit.texture = texture;
                     this.invalidate();
                 }else
@@ -94,10 +98,7 @@ module d5power
                 }
                 return;
             }
-            if(this.bit == null) 
-            {
-                this.bit = new egret.Bitmap();
-            }
+            
 
             if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             this.bit.texture = data.getResource(0);
@@ -140,7 +141,7 @@ module d5power
             this.bit==null ? b.setSkin(this._nowName) : b.setRes(this.bit==null ? null : this.bit.texture);
             b.anchorOffsetX = this.anchorOffsetX;
             b.anchorOffsetY = this.anchorOffsetY;
-            b.round = this._round;
+            b._round = this._round;
             return b;
         }
 
@@ -194,6 +195,7 @@ module d5power
                 this._onComplate = null;
                 this._onComplateObj = null;
             }
+            this.dispatchEvent(new egret.Event(egret.Event.COMPLETE));
         }
 
         public draw():void
@@ -203,14 +205,10 @@ module d5power
 
             }else{
 
-                if(this.bit.fillMode==egret.BitmapFillMode.SCALE)
-                {
-                    this.bit.width = this._w;
-                    this.bit.height = this._h;
-                }
+                this.bit.width = this._w;
+                this.bit.height = this._h;
 
                 this._round>0 && (this.drawRound());
-
                 !this.contains(this.bit) && this.addChildAt(this.bit,0);
             }
             super.draw();

@@ -80,9 +80,11 @@ module d5power {
             return this._cding;
         }
         
-        public  setSize(w:number, h:number):void
+        public _setSize(w:number, h:number):void
         {
-            super.setSize(w,h);
+            this._w = w;
+            this._h = h;
+            this.invalidate();
             this._progressMax = (w+h)*2;
             this._startX = w>>1;
             this._startY = h>>1;
