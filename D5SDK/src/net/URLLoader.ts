@@ -101,8 +101,11 @@ module d5power {
                     case "json":
                         this._dataformat = URLLoader.DATAFORMAT_JSON;
                         break;
-                    default:
+                    case 'bin':
                         this._dataformat = URLLoader.DATAFORMAT_BINARY;
+                        break;
+                    default:
+                        this._dataformat = URLLoader.DATAFORMAT_JSON;
                         break;
                 }
             }

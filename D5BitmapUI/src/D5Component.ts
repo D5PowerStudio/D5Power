@@ -409,9 +409,6 @@ module d5power
                             list.push(uiObj);
                         }
                     }
-
-                    
-                    container.addChild(uiObj);
                 }
 
                 if(list.length)
@@ -682,6 +679,7 @@ module d5power
                     if(container) container[com.name] = com;
                     break;
             }
+            com && container.addChild(com);
             com.startX = value.x;
             com.startY = value.y;
             var scalex:number = Number(value.scalex);

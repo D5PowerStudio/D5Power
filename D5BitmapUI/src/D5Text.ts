@@ -342,7 +342,7 @@ module d5power
         public setIsPassword(v:boolean)
         {
             this._isPass = v ? 1 : 0;
-            this._textField.displayAsPassword = v;
+            if(this._textField.text!=this._placeholder) this._textField.displayAsPassword = v;
         }
 
         public get isPassword():boolean
