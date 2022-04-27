@@ -179,6 +179,8 @@ module d5power
         {
             var copy:D5Text = new D5Text();
             this.copyFormat(copy,this.text);
+            // 针对静态文本，在复制的过程中复制文本内容
+            if(this._textField.type != egret.TextFieldType.INPUT) copy.text = this._textField.text;
             return copy;
         }
         

@@ -166,13 +166,18 @@ module d5power {
     			
     			switch(this._align)
                 {
-                    case D5Text.CENTER:
-                    this._box.x = -this._w >> 1;
-                    break;
-                    case D5Text.RIGHT:
-                    this._box.x = -this._w-this._perWidth;
-                    break;
+                    case D5Text.LEFT:
+					this._box.x = 0;
+					break;
+				case D5Text.CENTER:
+					this._box.x = -this._w  >> 1;
+					break;
+				case D5Text.RIGHT:
+					this._box.x = -this._w ;
+					break;
                 }
+
+				
 			}
 			
 			this._allowPoint = v.indexOf('.')!=-1 && this._hasPoint;

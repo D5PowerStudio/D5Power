@@ -533,7 +533,7 @@ module d5power
                     com.x = value.x;
                     com.y = value.y;
                     if(value.rotation!=0) com.rotation = value.rotation;
-                    if(value.zoom) com.scaleX = com.scaleY = value.zoom;
+                    com.setSize(value.width,value.height);
                     if(value.round!=0) (<d5power.D5Bitmap>com).round = value.round;
                     if(container) container[com.name] = com;
                     break;
@@ -645,9 +645,11 @@ module d5power
                     com.name = value.name;
                     com.x = value.x;
                     com.y = value.y;
+                    (<D5Shape>com).setWorkMode(value.workMode);
+                    (<D5Shape>com).pointString = value.pointString;
                     (<D5Shape>com).drawAlpha = value.fillAlpha==null ? 1 : value.fillAlpha;
                     (<D5Shape>com).lineAlpha = value.tickNessAlpha==null ? 1 : value.tickNessAlpha;
-                    (<D5Shape>com).setWorkMode(value.workMode);
+                    
                     (<D5Shape>com).setFillColor(value.fillColor);
                     (<D5Shape>com).setTickNess(value.tickNess);
                     (<D5Shape>com).setColor(value.color);
@@ -655,10 +657,11 @@ module d5power
                     (<D5Shape>com).setOffY(value.offY);
                     (<D5Shape>com).setSize(value.width,value.height);
                     (<D5Shape>com).setRadius(value.radius);
+                    
                     (<D5Shape>com).round = value.round;
                     (<D5Shape>com).rotation = value.rotation;
                     (<D5Shape>com).maskName = value.maskName;
-                    (<D5Shape>com).pointString = value.pointString;
+                    
                     if(container) container[com.name] = com;
                     break;
                 case "D5Loop":
@@ -762,7 +765,7 @@ module d5power
 			{
 				// 舞台对齐
 				this.x = Math.floor(this._relx*(this.parent.width));
-				this.y = Math.floor(this._rely*(this.parent.height));
+				this.y = Math.floor(this._rely*(this.parent.height)-this.height);
 			}else{
 				var target:D5Component = <D5Component> (e.type==egret.Event.ACTIVATE ? this.parent.getChildByName(this._margin_target) : e.currentTarget);
 				if(target)
