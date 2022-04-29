@@ -203,6 +203,12 @@ module d5power
             }
 
         }
+
+        protected get canStatic():boolean
+        {
+            return false;
+        }
+
         public dispose():void
         {
             if(this.a)

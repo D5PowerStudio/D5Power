@@ -63,6 +63,11 @@ module d5power
             return this._icon==null ? false : this._icon.visible;
         }
 
+        protected get canStatic():boolean
+        {
+            return false;
+        }
+
         public clone():D5Button
         {
             var c:D5Button = new D5Button();
@@ -207,9 +212,14 @@ module d5power
             
             this.touchEnabled = true;
             this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.btnDown,this);
-            this.addEventListener(egret.TouchEvent.TOUCH_END,this.btnUp,this);
             this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.btnClick,this);
             this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,this.btnOutSide,this);
+
+            if(D5Style.mouseSupport)
+            {
+                this.addEventListener(mouse.MouseEvent.MOUSE_OVER,this.onOver,this);
+                this.addEventListener(mouse.MouseEvent.MOUSE_OUT,this.btnOutSide,this);
+            }
             
             if(this._icon) this.flyIcon();
         }
@@ -238,7 +248,7 @@ module d5power
             this.sound = sound;
         }
 
-        private btnDown(evt:egret.TouchEvent):void
+        private onOver(evt:mouse.MouseEvent):void
         {
             if(this.type == 2) {
                 if(this._sheet == null) {
@@ -253,6 +263,26 @@ module d5power
                 }
                 else {
                     this.a.texture = this._sheet.getTexture('1');
+                }
+            }
+            this.invalidate();
+        }
+
+        private btnDown(evt:egret.TouchEvent):void
+        {
+            if(this.type == 2) {
+                if(this._sheet == null) {
+                    this.a.texture = this.data.getResource(2);
+                }
+                else {
+                    this.a.texture = this._sheet.getTexture('2');
+                }
+            } else {
+                if(this._sheet == null) {
+                    this.a.texture = this.data.getResource(2);
+                }
+                else {
+                    this.a.texture = this._sheet.getTexture('2');
                 }
             }
             this.invalidate();

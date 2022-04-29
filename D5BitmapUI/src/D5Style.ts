@@ -54,6 +54,23 @@ module d5power {
 		 * 默认字体
 		 */
 		public static default_txt_font_family = '微软雅黑';
+
+		private static _mouseSupport:boolean;
+		/**
+		 * 鼠标模式
+		 * @param v 
+		 */
+		public static openMouseSupport(v:egret.Stage)
+		{
+			if(!v) return;
+			mouse.enable(v);
+			this._mouseSupport = true;
+		}
+
+		public static get mouseSupport():boolean
+		{
+			return this._mouseSupport;
+		}
 		
 		public constructor(){
 		}

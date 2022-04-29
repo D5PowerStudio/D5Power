@@ -306,6 +306,43 @@ module d5power
             
             //this.parent.setChildIndex(this,0);
         }
+
+        /**
+         * 该对象是否能够被静态化处理
+         * 对于交互组件，如按钮，输入文字等，返回false
+         * 此属性用于确认在自动进行静态化处理是是否将本目标纳入静态化
+         */
+        protected get canStatic():boolean
+        {
+            return true;
+        }
+
+        /**
+         * 自动静态化处理
+         */
+        public autoStatic():void
+        {
+            var arr:Array<egret.DisplayObject> = [];
+            var _root:egret.DisplayObjectContainer = this.parent;
+			for(var i:number=_root.numChildren-1;i>=0;i--)
+			{
+                var obj:any = _root.getChildAt(i);
+                if(!obj.canStatic) continue;
+				if(obj!=this)
+				{
+					obj.x = obj.x-this.x;
+                    obj.y = obj.y-this.y;
+                    arr.push(obj);
+				}
+			}
+			
+			for(i=arr.length-1;i>=0;i--)
+			{
+				this.addChild(arr[i]);
+            }
+
+            this.cacheAsBitmap = true;
+        }
         
         public setSkin(name:string):void
         {
@@ -364,10 +401,13 @@ module d5power
         {
             return this._nowName;
         }
+        // @ts-ignore
         public get width():number
         {
             return this._w;
         }
+
+        // @ts-ignore
         public get height():number
         {
             return this._h;

@@ -38,8 +38,8 @@ module d5power
         public static TOP:number = 0;
         public static MIDDLE:number = 1;
         public static BOTTOM:number = 2;
-        public static AUTO_PADDINGX:number = 2;
-        public static AUTO_PADDINGY:number = 5;
+        public static AUTO_PADDINGX:number = 0;
+        public static AUTO_PADDINGY:number = 0;
         /**
          * 绑定属性
          */
@@ -502,6 +502,17 @@ module d5power
             return this._textField.bold;
         }
 
+        public set type(v:number)
+        {
+            if(v == 1)
+            {
+                this._textField.type = egret.TextFieldType.INPUT;
+                
+            }else{
+                this._textField.type = egret.TextFieldType.DYNAMIC;
+            }
+        }
+
         /**
          * 设置文本的输入类型（是否允许输入）1,允许输入；0，不允许
          */
@@ -547,6 +558,37 @@ module d5power
 		public set textColor(u:number)
         {
 			this._textField.textColor = u;
+        }
+
+        public autoStatic():void
+        {
+            var arr:Array<egret.DisplayObject> = [];
+            var _root:egret.DisplayObjectContainer = this.parent;
+			for(var i:number=_root.numChildren-1;i>=0;i--)
+			{
+                var obj:any = _root.getChildAt(i);
+                if(obj instanceof D5Text && !obj.type && obj!=this)
+				{
+					obj.x = obj.x-this.x;
+                    obj.y = obj.y-this.y;
+                    arr.push(obj);
+				}
+			}
+			
+			for(i=arr.length-1;i>=0;i--)
+			{
+				this.addChild(arr[i]);
+            }
+            
+            var rect:egret.Rectangle = this.getBounds();
+            this._w = rect.width;
+            this._h = rect.height;
+            this.cacheAsBitmap = true;
+        }
+
+        protected get canStatic():boolean
+        {
+            return false;
         }
         
         public clear(): void 

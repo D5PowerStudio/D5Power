@@ -66,8 +66,6 @@ module d5power {
 
         private _points:Array<string>;
 
-        private _shape:egret.Shape;
-
         private _maskName:string = '';
 
         private _waitTime:number;
@@ -89,12 +87,6 @@ module d5power {
         public constructor(autoInit:boolean=true)
         {
             super();
-            if(autoInit)
-            {
-                this._shape = new egret.Shape();
-                this.addChild(this._shape);
-            }
-            
         }
 
         private _staticTex:egret.RenderTexture;
@@ -199,42 +191,41 @@ module d5power {
 
         public draw():void
         {
-            if(!this._shape) return;
-            this._shape.graphics.clear();
+            this.graphics.clear();
             const rk = Math.PI/180;
 
-            this._fillColor>=0 &&  this._shape.graphics.beginFill(this._fillColor,this.drawAlpha);
-            this._tickNess>=0 && this._shape.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
+            this._fillColor>=0 &&  this.graphics.beginFill(this._fillColor,this.drawAlpha);
+            this._tickNess>=0 && this.graphics.lineStyle(this._tickNess, this._color,this.lineAlpha);
 
             switch(this._workMode)
             {
                 case D5Shape.RECT:
                     if (this._round_0 == this._round_1 && this._round_1==this._round_2 && this._round_2==this._round_3){
-                        this._shape.graphics.drawRoundRect(this._offX, this._offY, this._w, this._h,this._round_0);
+                        this.graphics.drawRoundRect(this._offX, this._offY, this._w, this._h,this._round_0);
                     }else if(this._round_0!=0 || this._round_1!=0 || this._round_2!=0 || this._round_3!=0)
 					{
                         var p:egret.Point = new egret.Point(this._offX,this._offY);
-                        this._shape.graphics.moveTo(p.x, p.y);
-                        this._shape.graphics.drawArc(p.x + this._round_0, p.y + this._round_0, this._round_0, 180*rk,270*rk);
+                        this.graphics.moveTo(p.x, p.y);
+                        this.graphics.drawArc(p.x + this._round_0, p.y + this._round_0, this._round_0, 180*rk,270*rk);
                         p.x += this._w - this._round_1;
-                        this._shape.graphics.lineTo(p.x, p.y);
-                        this._shape.graphics.drawArc(p.x, p.y + this._round_1, this._round_1, -90*rk, 0);
+                        this.graphics.lineTo(p.x, p.y);
+                        this.graphics.drawArc(p.x, p.y + this._round_1, this._round_1, -90*rk, 0);
                         p.x += this._round_1;
                         p.y += this._h - this._round_3;
-                        this._shape.graphics.lineTo(p.x, p.y);
-                        this._shape.graphics.drawArc(p.x - this._round_3, p.y, this._round_3, 0, 90*rk);
+                        this.graphics.lineTo(p.x, p.y);
+                        this.graphics.drawArc(p.x - this._round_3, p.y, this._round_3, 0, 90*rk);
                         p.x -= this._w - this._round_2;
                         p.y += this._round_3;
-                        this._shape.graphics.lineTo(p.x, p.y);
-                        this._shape.graphics.drawArc(p.x, p.y - this._round_2, this._round_2, 90 * rk, 180 * rk);
+                        this.graphics.lineTo(p.x, p.y);
+                        this.graphics.drawArc(p.x, p.y - this._round_2, this._round_2, 90 * rk, 180 * rk);
 					}else{
-						this._shape.graphics.drawRect(this._offX,this._offY,this._w,this._h);
+						this.graphics.drawRect(this._offX,this._offY,this._w,this._h);
 					}
-                    this._shape.graphics.endFill();
+                    this.graphics.endFill();
                     break;
                 case D5Shape.CIRCLE:
-                    this._shape.graphics.drawCircle(this._offX,this._offY,this._radius);
-                    this._shape.graphics.endFill();
+                    this.graphics.drawCircle(this._offX,this._offY,this._radius);
+                    this.graphics.endFill();
                     break;
                 case D5Shape.CUSTOM:
 					var temp:Array<string>;
@@ -247,14 +238,14 @@ module d5power {
 						tempY = parseInt(temp[1]);
 						if(i==0)
 						{
-							this._shape.graphics.moveTo(tempX,tempY);
+							this.graphics.moveTo(tempX,tempY);
 						}
 						else
 						{
-							this._shape.graphics.lineTo(tempX,tempY);
+							this.graphics.lineTo(tempX,tempY);
 						}
 					}
-                    this._shape.graphics.endFill();
+                    this.graphics.endFill();
                     break;
             }
             super.draw();
@@ -374,6 +365,7 @@ module d5power {
                 obj.invalidate();
             }else{
                 var obj:D5Shape = new D5Shape(false);
+                obj.setSize(this._staticTex.textureWidth,this._staticTex.textureHeight);
                 obj.addChild(new egret.Bitmap(this._staticTex));
             }
             
@@ -425,11 +417,7 @@ module d5power {
         }
         public dispose():void
         {
-            if(this._shape)
-            {
-                if(this._shape.parent)this._shape.parent.removeChild(this._shape);
-                this._shape = null;
-            }
+            this.graphics.clear();
         }
 
 
