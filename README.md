@@ -2,7 +2,34 @@
     <img src="./docs/logo.png"/>
 </p>
 
-# D5Power
-D5Power是一款基于[Egret Engine](http://www.egret.com)开发的游戏框架。包含了RPG游戏所必须的基本元素：地图、角色、任务、道具以及剧情控制。同时，D5Power也提供了创建这些元素所必须的工具，如界面编辑器、地图编辑器、角色编辑器、任务编辑器等，可以帮助你快速的搭建RPG的游戏框架，创建游戏原型。
+# What is D5Power
 
-D5Power is a opensource game UI framework based on [Egret Engine](http://www.egret.com),it also include some tools for game development,such as item manager,2d mapeditor,mission editor,game story writer etc.
+D5Power is a opensource framework base on TypeScript and Egret Engine. It include a basic support library D5SDK, a Bitmap based UI framework D5BitmapUI,and a Game framework D5.It also include a free UIEditor which can help you build your user interface fast.D5Power can be used for h5 app and game development.
+
+There are some software build by D5Power
+
+Project I : Coming soon
+
+Project II: Coming soon
+
+Porject III: Coming soon
+
+Porject IV : Coming soon
+
+Porject V: Coming soon
+
+# How can I use it
+
+- First,you need download below software.
+
+I.VSCode
+II.D5Power Editor
+
+- Create Project
+
+Open D5Power Editor,Create a new project 
+
+- Design your UI
+
+
+... coming soon
