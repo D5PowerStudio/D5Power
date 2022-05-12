@@ -182,7 +182,7 @@ module d5power {
 				this.removeEventListener(egret.Event.ENTER_FRAME,this.waitMasker,this);
 				return;
 			}
-			if(this.parent && this.parent.getChildByName(this._maskName)!=null)
+			if(this.parent && this._maskName!='' && this._maskName && this.parent.getChildByName(this._maskName)!=null)
 			{
 				this.parent.getChildByName(this._maskName).mask = this;
 				this.removeEventListener(egret.Event.ENTER_FRAME,this.waitMasker,this);

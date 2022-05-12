@@ -413,54 +413,55 @@ module d5power
             return this._h;
         }
 
-        public static getComponentByURL(res:string,container:egret.DisplayObjectContainer,onPre:Function=null):void
+        public static getComponentByJSON(res:string,obj:any,container:egret.DisplayObjectContainer,onPre:Function=null):void
         {
-            var onLoaded:Function = function(obj:any)
+            var arr:Array<any> = obj.uiList;
+            var length:number = arr.length;
+            var comObj:any;
+            var uiObj:D5Component;
+            var src:string;
+            var list:Array<any>=[];
+            container['_realWidth'] = parseInt(obj.width);
+            container['_realHeight'] = parseInt(obj.height);
+            container['_flyX'] = obj.flyx;
+            container['_flyY'] = obj.flyy;
+            if(container['drawBg'] && <string>obj.bgImg!='')
             {
-                var arr:Array<any> = obj.uiList;
-                var length:number = arr.length;
-                var comObj:any;
-                var uiObj:D5Component;
-                var src:string;
-                var list:Array<any>=[];
-                container['_realWidth'] = parseInt(obj.width);
-                container['_realHeight'] = parseInt(obj.height);
-                container['_flyX'] = obj.flyx;
-                container['_flyY'] = obj.flyy;
-                if(container['drawBg'] && <string>obj.bgImg!='')
+                container['drawBg'](obj.bgImg);
+            }
+            
+            for(var i:number = 0;i < length;i++)
+            {
+                comObj = arr[i];
+                uiObj = D5Component.getCompoentByJson(comObj,container);
+                src = comObj.file;
+                if(src && D5UIResourceData.getData(src)==null)
                 {
-                    container['drawBg'](obj.bgImg);
-                }
-                
-                for(var i:number = 0;i < length;i++)
-                {
-                    comObj = arr[i];
-                    uiObj = D5Component.getCompoentByJson(comObj,container);
-                    src = comObj.file;
+                    uiObj._belone = res;
+                    list.push(uiObj);
+                }else{
+                    src = comObj.src;
                     if(src && D5UIResourceData.getData(src)==null)
                     {
                         uiObj._belone = res;
                         list.push(uiObj);
-                    }else{
-                        src = comObj.src;
-                        if(src && D5UIResourceData.getData(src)==null)
-                        {
-                            uiObj._belone = res;
-                            list.push(uiObj);
-                        }
                     }
                 }
-
-                if(list.length)
-                {
-                    D5Component._preloadList[res]=[list,onPre,container];
-                }else{
-                    if(onPre) onPre.apply(container,[0]);
-                }
-                
             }
-            
-            RES.getResByUrl(res,onLoaded,null,RES.ResourceItem.TYPE_JSON);
+
+            if(list.length)
+            {
+                D5Component._preloadList[res]=[list,onPre,container];
+            }else{
+                if(onPre) onPre.apply(container,[0]);
+            }
+        }
+
+        public static getComponentByURL(res:string,container:egret.DisplayObjectContainer,onPre:Function=null):void
+        {
+            RES.getResByUrl(res,function(obj:any){
+                D5Component.getComponentByJSON(res,obj,container,onPre);
+            },null,RES.ResourceItem.TYPE_JSON);
         }
 
         protected loadResource(name:string,callback:Function,thisobj:any):void

@@ -11,6 +11,8 @@
 		"libs/mouse.d.ts",
 		"src/ui/IProBindingContainer.ts",
 		"src/ui/IProBindingSupport.ts",
+		"src/comps/Menu.ts",
+		"src/comps/MenuDown.ts",
 		"src/ResLibParser.ts",
 		"src/D5Template.ts",
 		"src/D5Component.ts",
