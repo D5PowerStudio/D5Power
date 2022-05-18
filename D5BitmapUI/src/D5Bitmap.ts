@@ -87,6 +87,7 @@ module d5power
             if(data==null)
             {
                 trace("[D5Bitmap]No Resource "+name);
+                egret.ImageLoader.crossOrigin = "anonymous";
                 var texture:egret.Texture = RES.getRes(name);
                 if(texture)
                 {
@@ -177,9 +178,10 @@ module d5power
                 data = D5Bitmap._defaultTexture;
             }
             this.bit.texture = data;
+
             if(!isNaN(this._isLoopFill) && this._isLoopFill) this.loop = true; 
             if(isNaN(this._w) || isNaN(this._h)) this.setSize(this.bit.$getWidth(),this.bit.$getHeight());
-            //this.invalidate();
+            this.invalidate();
 
             if(this._onComplate!=null)
             {
