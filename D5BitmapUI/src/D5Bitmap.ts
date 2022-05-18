@@ -230,21 +230,13 @@ module d5power
 			box.addChild(masker);
 			this.bit.mask = masker;
             this.addChild(box);
-
-            var that:D5Bitmap = this;
-            var autoRenderRound:Function = function(e:egret.Event):void
-            {
-                b.drawToTexture(box);
-                that.bit.texture = null;
-                that.bit.mask = null;
-                that.removeChild(box);
-                box.removeChildren();
-                box = null;
-                that.bit = new egret.Bitmap(b);
-                that.addChildAt(that.bit,0);
-            }
-
-			this.once(egret.Event.ENTER_FRAME,autoRenderRound,this);
+            b.drawToTexture(box);
+            this.bit.texture = null;
+            this.bit.mask = null;
+            this.removeChild(box);
+            box.removeChildren();
+            box = null;
+            this.bit.texture = b;
 		}
 
         public dispose():void
