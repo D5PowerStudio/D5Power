@@ -99,7 +99,6 @@ module d5power
                 if(comp['clone'])
                 {
                     let n_comp:any = (<any>comp).clone();
-                    n_comp.setSize(comp.width,comp.height);
                     n_comp.x = comp.x;
                     n_comp.y = comp.y;
                     instance.addChild(n_comp);
@@ -148,7 +147,6 @@ module d5power
                             }
                         }
                     }
-                    n_comp.setSize(comp.width,comp.height);
                     if(this._root==comp)
                     {
                         root = n_comp;

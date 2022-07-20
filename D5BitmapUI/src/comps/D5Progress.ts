@@ -1,6 +1,6 @@
 namespace d5power
 {
-    export class D5ProgressBar extends D5Component
+    export class D5Progress extends D5Component
     {
         private _bg:D5Component;
         private _bar:D5Component;
@@ -115,13 +115,13 @@ namespace d5power
             }
         }
 
-        public clone():D5ProgressBar
+        public clone():D5Progress
         {
             if(!this._bg['clone'] || !this._bar['clone']) return;
-            var newbar:D5ProgressBar = new D5ProgressBar;
+            var newbar:D5Progress = new D5Progress;
             var bg:D5Component = this._bg['clone']();
             var bar:D5Component = this._bar['clone']();
-            var label:D5Component = this._label['clone'] ? this._label['clone']() : null;
+            var label:D5Component = this._label && this._label['clone'] ? this._label['clone']() : null;
 
             bg.x = this._bg.x;
             bg.y = this._bg.y;
@@ -142,6 +142,9 @@ namespace d5power
                 newbar._label = label;
             }
 
+            newbar._fullSize = this._bar.width;
+            newbar._offset = this._bg.width - this._bar.width;
+            newbar._value = 100;
             
             return newbar;
         }
