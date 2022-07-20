@@ -9,10 +9,6 @@
         "libs/res.d.ts",
 		"libs/d5sdk.d.ts",
 		"libs/mouse.d.ts",
-		"src/ui/IProBindingContainer.ts",
-		"src/ui/IProBindingSupport.ts",
-		"src/comps/Menu.ts",
-		"src/comps/MenuDown.ts",
 		"src/ResLibParser.ts",
 		"src/D5Template.ts",
 		"src/D5Component.ts",
@@ -40,6 +36,11 @@
 		"src/D5VBox.ts",
 		"src/D5Window.ts",
 		"src/D5Music.ts",
-		"src/ListCell.ts"
+		"src/ListCell.ts",
+		"src/ui/IProBindingContainer.ts",
+		"src/ui/IProBindingSupport.ts",
+		"src/comps/Menu.ts",
+		"src/comps/MenuDown.ts",
+		"src/comps/D5Progress.ts"
     ]
 }
