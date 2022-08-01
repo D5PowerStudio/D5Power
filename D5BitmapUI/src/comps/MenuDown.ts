@@ -10,12 +10,17 @@ namespace d5power
 		protected _uiSrc:string;
 		protected _lineStyle:string;
 		protected _arrowStyle:string;
+		private _scrollView:egret.ScrollView;
 		
 		public _realWidth:number=200;
 		public _realHeight:number=200;
-		public _flyX:Number=0;
-		public _flyY:Number=0;
-		public bg:D5Window;
+		public _flyX:number=0;
+		public _flyY:number=0;
+		/**
+		 * 开始滚动的最大条数
+		 */
+		public beginScroll:number=10;
+		public bg:D5Shape;
  
 		
 		
@@ -23,6 +28,11 @@ namespace d5power
 		private _son:MenuDown;
 		private _conf:Array<any>;
 		private _thisobj:any;
+
+		/**
+		 * 标准样式配置，包含bg属性，即下拉菜单的背景颜色，line属性，下拉菜单的边线颜色
+		 */
+		public static style:any = {bg:0x296c8c,bga:1,line:0x296c8c,linea:1}
 		
 		public constructor(thisobj:any,lineStyle:string=null,arrowStyle:string = null,fixedWidth:number=200)
 		{
@@ -30,7 +40,7 @@ namespace d5power
 			this._thisobj = thisobj;
 			this._list = new D5List();
 			this._list.y = 3;
-			this._list.setFormat(fixedWidth,28,-1,0x296c8c);
+			this._list.setFormat(fixedWidth,28,-1,MenuDown.style.bg);
             //this._list.addEventListener(egret.Event.CHANGE,this.onHover,this);
 			this._list.addEventListener(egret.Event.CHANGE,this.onClick,this);
 
@@ -55,10 +65,10 @@ namespace d5power
 		{
 			if(!this.hitTestPoint(e.stageX,e.stageY,true))
 			{
-				this.parent.removeChild(this);
+				this.hidden();
 			}
 		}
-        
+
         private onPre(count:number):void
         {
             if(count==0) this.once(egret.Event.ENTER_FRAME,this.onCreate,this);
@@ -69,19 +79,54 @@ namespace d5power
 			return this._conf;
 		}
 		
-		public setup(conf:Array<any>):void
+		public setup(conf:Array<any>,thisobj:any=null):void
 		{
 			this._conf = conf;
+			if(thisobj!=null) this._thisobj = thisobj;
 			if(this.bg)
 			{
+				this._list.cacheAsBitmap = false;
 				this._list.removeAllStuff();
 				for(var i:number=0,j:number=conf.length;i<j;i++)
 				{
 					this._list.addStuff(conf[i][0],conf[i][1]);
 				}
 				this.bg.x = -4;
-				this.bg.setSize(this._list.blockW+this._list.x*2+12,this._list.blockH*this._list.count+this._list.y*2+10);
+				this._list.cacheAsBitmap = true;
+
+				this.bg.setTickNess(1);
+				this.bg.setFillColor(MenuDown.style.bg);
+				this.bg.setColor(MenuDown.style.line);
+				this.bg.lineAlpha = MenuDown.style.linea;
+				this.bg.drawAlpha = MenuDown.style.bga;
+
+				this.bg.setSize(this._list.blockW + this._list.x * 2 + 12, this._list.blockH * this._list.count + this._list.y * 2 + 10);
+                this.addChild(this._list);
+				/*
+				if(j>this.beginScroll*1.2)
+				{
+					if(!this._scrollView)
+					{
+						this._scrollView = new egret.ScrollView;
+					}
+					this._scrollView.setContent(this._list);
+					this._scrollView.width = this._list.blockW;
+					this._scrollView.height = this._list.blockH*this.beginScroll;
+					this._scrollView.x = this._list.x;
+					this._scrollView.y = this._list.y;
+					this.bg.setSize(this._list.blockW + this._list.x * 2 + 12, this._list.blockH * this.beginScroll + this._list.y * 2 + 10);
+                    this.addChild(this._scrollView);
+					
+                }else{
+                    
+                }
+				*/
 			}
+		}
+
+		protected hidden():void
+		{
+			this.parent && this.parent.removeChild(this);
 		}
 		
 		/**
@@ -107,7 +152,6 @@ namespace d5power
 		 */
 		private onCreate():void
 		{
-			this.addChild(this._list);
 			if(this._conf) this.setup(this._conf);
 		}
 		private _hovered:D5HoverText;
@@ -153,7 +197,7 @@ namespace d5power
 					}
 				}
 			}
-			this.dispose();
+			this.hidden();
 		}
 	}
 }

@@ -128,7 +128,7 @@ module d5power {
 				this._h = Math.max(this._h, child.height);
 			}
 			this._w += this._padding * (this.numChildren - 1);
-			this.dispatchEvent(new egret.Event(egret.Event.RESIZE));
+			super.draw();
 		}
 		
 		/**

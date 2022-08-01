@@ -828,13 +828,19 @@ module d5power
             
         }
 
+        private _waitRender:boolean;
         protected invalidate():void
         {
-            this.once(egret.Event.ENTER_FRAME, this.draw,this);
+            if(!this._waitRender)
+            {
+                this._waitRender = true;
+                this.once(egret.Event.ENTER_FRAME, this.draw,this);
+            }
         }
 
         public draw():void
         {
+            this._waitRender = false;
             this.invalidateSize();
             this.dispatchEvent(new egret.Event(egret.Event.RESIZE));
         }

@@ -9,6 +9,7 @@
         "libs/res.d.ts",
 		"libs/d5sdk.d.ts",
 		"libs/mouse.d.ts",
+		"libs/game.d.ts",
 		"src/ui/IProBindingContainer.ts",
 		"src/ui/IProBindingSupport.ts",
 		"src/comps/Menu.ts",

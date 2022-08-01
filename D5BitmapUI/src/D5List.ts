@@ -113,9 +113,17 @@ module d5power{
 		
 		public dispose():void{
 			if(this.parent)this.parent.removeChild(this);
-			this.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this);
+			this.removeEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
 			this.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.onClick,this);
 			this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAdd,this);
+		}
+
+		private _beginX:number;
+		private _beginY:number;
+		private onBegin(e:egret.TouchEvent):void
+		{
+			this._beginX = e.stageX;
+			this._beginY = e.stageY;
 		}
 		
 		public addStuff(lable:any,data:any):void{
@@ -197,7 +205,7 @@ module d5power{
 			this._content = new D5VBox();
 			this._content.x = this._content.y = 4;
 			this.addChild(this._content);
-			this.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onMove,this);
+			this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
 			this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onClick,this);
 //			addEventListener(Event.ADDED_TO_STAGE,onAdd);
 		}
@@ -219,6 +227,8 @@ module d5power{
 			
 		}
 		private onClick(e:egret.TouchEvent):void{
+			if(e.stageX!=this._beginX || e.stageY!=this._beginY) return;
+			
 			var t:egret.DisplayObjectContainer = this.getUnderMouse(e.stageX,e.stageY);
 			if(t){
 				this._selected = t;

@@ -120,7 +120,7 @@ module d5power {
 			}
 			
 			this._h += this._padding * (this.numChildren - 1);
-			this.dispatchEvent(new egret.Event(egret.Event.RESIZE));
+			super.draw();
 		}
 		
 		/**
