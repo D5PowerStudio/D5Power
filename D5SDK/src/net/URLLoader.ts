@@ -124,7 +124,7 @@ module d5power {
             this._xhr.open("GET", this._url, true);
             this._xhr.addEventListener("progress", (e) => this.onProgress(e), false);
             this._xhr.addEventListener("readystatechange", (e) => this.onReadyStateChange(e), false);
-            this._xhr.addEventListener("error", (e) => this.onError(e), false);
+            this._xhr.addEventListener("loadend", (e) => this.onError(e), false);
            
             if (this.dataformat == URLLoader.DATAFORMAT_BITMAP) {
                 this._xhr.responseType = "blob";
@@ -229,16 +229,16 @@ module d5power {
             }
         }
 
-        private onProgress(event:ProgressEvent):void {
+        private onProgress(event:any):void {
             //console.log("progress event```");
         }
 
-        private onError(event:ErrorEvent):void {
-            if (this.onLoadError) {
+        private onError(event:any):void {
+            if ((<any>event.target).status==404 && this.onLoadError) {
                 this.onLoadError(this);
+                console.log("loaderror, url: ", this._url);
+                console.log("load error", event);
             }
-            console.log("loaderror, url: ", this._url);
-            console.log("load error", event);
         }
 
 

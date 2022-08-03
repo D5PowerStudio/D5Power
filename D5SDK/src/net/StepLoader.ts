@@ -30,24 +30,13 @@ module d5power
 				trace('[StepLoader] All data load complated.');
 				return;
 			}
-			var conf:D5LoadData = arr.pop();
+			var conf:D5LoadData = arr[StepLoader._nowLoadingIndex];
 			
 
 			var data:any = loader.data;
 			if(conf.inpool && data!=null) StepLoader._pool[conf.url] = data;
 			
 			trace("[stepLoader]","开始处理"+conf.url);
-			if(conf.callback != null)
-			{
-				try
-				{
-					conf.callback.apply(conf.thisobj,[data]);
-				}catch(e){
-					trace("[StepLoader] resource onload callback fail" + conf.url);
-					trace(e.stack);
-				}
-			}
-
 			var finder:D5LoadData;
 			// 当加载完一个资源后，循环检查加载队列中是否还有其他同地址的加载请求，一并处理
 			for(var id:number = arr.length-1;id>=0;id--)
@@ -65,7 +54,7 @@ module d5power
 							trace(e.stack);
 						}
 					}
-					arr.splice(id);
+					arr.splice(id,1);
 				}
 			}
 		
@@ -76,14 +65,17 @@ module d5power
 		private static onError(e:Event):void
 		{
 			var arr:Array<D5LoadData> = StepLoader._waitList;
-			var data:D5LoadData = arr.pop();
+			var data:D5LoadData = arr[StepLoader._nowLoadingIndex];
 			// 当加载完一个资源后，循环检查加载队列中是否还有其他同地址的加载请求，一并处理
-			
 			var conf:D5LoadData;
 			for(var id:number = arr.length-1;id>=0;id--)
 			{
 				conf = arr[id];
-				if(conf.url == data.url) arr.splice(1);
+				if(conf.url == data.url)
+				{
+					conf.callback.apply(conf.thisobj, [null]);
+					arr.splice(id,1);
+				}
 			}
 			
 			StepLoader._isLoading = '';
@@ -92,6 +84,7 @@ module d5power
 		
 		protected static onProgress():void{}
 		
+		private static _nowLoadingIndex:number;
 		protected static loadNext():void
 		{
 			if(StepLoader._isLoading!='') return;
@@ -100,7 +93,8 @@ module d5power
 			
 			if(StepLoader._waitList.length)
 			{
-				var conf:D5LoadData = StepLoader._waitList[StepLoader._waitList.length-1];
+				StepLoader._nowLoadingIndex = StepLoader._waitList.length-1;
+				var conf:D5LoadData = StepLoader._waitList[StepLoader._nowLoadingIndex];
 				StepLoader._loader.dataformat = null;
 				StepLoader._loader.load(conf.url);
 				StepLoader._isLoading = conf.url;
