@@ -30,9 +30,11 @@
 module d5power{
 
 	export class D5List extends D5Component{
-		private _list:Array<egret.DisplayObjectContainer>;
+		private _list:Array<egret.DisplayObject>;
 		private _content:D5VBox;
-		private _selected:egret.DisplayObjectContainer;
+		private _selected:egret.DisplayObject;
+		private _lineStyle:number = 0xffffff;
+		private _leftPadding:number = 0;
 		
 		public _blockW:number = 0;
 		public _blockH:number = 0;
@@ -49,14 +51,25 @@ module d5power{
 
 		public constructor(){
 			super();
+			this._line_count = 0;
 			this.setupListener();
 		}
-		
+
 		public drawBackground(background:number,alpha:number=1,line:number=0):void{
 			this.graphics.beginFill(background,alpha);
 			this.graphics.lineStyle(1,line);
 			this.graphics.drawRect(0,0,this._blockW,this.height);
 			this.graphics.endFill();
+		}
+
+		public set lineStyle(color:number)
+		{
+			this._lineStyle = color;
+		}
+
+		public set leftPadding(v:number)
+		{
+			this._leftPadding = v;
 		}
 		
 		/**
@@ -126,12 +139,20 @@ module d5power{
 			this._beginY = e.stageY;
 		}
 		
+		private _line_count:number;
 		public addStuff(lable:any,data:any):void{
-			var lab:egret.DisplayObjectContainer;
+			var lab:egret.DisplayObject;
 			
 			if(lable instanceof egret.DisplayObjectContainer){
 				lab = <egret.DisplayObjectContainer><any> lable;
 				lab.name = data.toString();		
+			}else if(lable=='' || lable==null){
+				var line:egret.Shape = new egret.Shape();
+				lab = line;
+				line.graphics.lineStyle(1,this._lineStyle);
+				line.graphics.moveTo(this._leftPadding,0);
+				line.graphics.lineTo(this._blockW-this._leftPadding,0);
+				this._line_count++;
 			}else{
 				if(!(typeof(lable) == "string")) lable = lable.toString();
 				
@@ -143,6 +164,7 @@ module d5power{
 					(<D5HoverText><any> lab).setHover(this._hoverColor,this._hoverAlpha);
 					(<D5HoverText><any> lab).autoGrow();
 				}
+				lab.x = this._leftPadding;
 				
 				(<D5HoverText><any> lab).setData(data);
 				
@@ -153,7 +175,7 @@ module d5power{
 		
 		public removeStuffByIndex(index:number = 0):void{
 			if(index>=this._list.length) return;
-			var lab:egret.DisplayObjectContainer = this._list[index];
+			var lab:egret.DisplayObject = this._list[index];
 			if(this._content.contains(lab)) this._content.removeChild(lab);
 			this._list.splice(index,1);
 		}
@@ -161,16 +183,17 @@ module d5power{
 		public removeAllStuff():void{
 			while(this._list.length) this.removeStuffByIndex(0);
 			this._selected = null;
+			this._line_count = 0;
 		}
 		
-		public getIndex(obj:egret.DisplayObjectContainer):number
+		public getIndex(obj:egret.DisplayObject):number
 		{
 			return this._list.indexOf(obj);
 		}
 		
 		public get height():number{
 			var p:number = (<D5VBox><any> (this._content)).padding;
-			return this._list.length>0 ? this._list.length*(this._list[0].height+p)-p+this._content.y*2 : 0;
+			return this._list.length>0 ? this._list.length*(this._list[0].height+p)+this._content.y*2-this._line_count*this._list[0].height : 0;
 		}
 		
 		/**
@@ -205,13 +228,14 @@ module d5power{
 			this._content = new D5VBox();
 			this._content.x = this._content.y = 4;
 			this.addChild(this._content);
+			this.addEventListener(mouse.MouseEvent.MOUSE_OVER,this.onMove,this);
 			this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onBegin,this);
 			this.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onClick,this);
 //			addEventListener(Event.ADDED_TO_STAGE,onAdd);
 		}
 		
 		private onMove(e:egret.TouchEvent):void{
-			var t:egret.DisplayObjectContainer = this.getUnderMouse(e.stageX,e.stageY);
+			var t:egret.DisplayObject = this.getUnderMouse(e.stageX,e.stageY);
 			if(t==null) return;
 			
 			
@@ -229,7 +253,7 @@ module d5power{
 		private onClick(e:egret.TouchEvent):void{
 			if(e.stageX!=this._beginX || e.stageY!=this._beginY) return;
 			
-			var t:egret.DisplayObjectContainer = this.getUnderMouse(e.stageX,e.stageY);
+			var t:egret.DisplayObject = this.getUnderMouse(e.stageX,e.stageY);
 			if(t){
 				this._selected = t;
 				this.dispatchEvent(new egret.Event(egret.Event.CHANGE));
@@ -251,10 +275,10 @@ module d5power{
 			}
 		}
 		
-		private getUnderMouse(px:number,py:number = 0):egret.DisplayObjectContainer{
+		private getUnderMouse(px:number,py:number = 0):egret.DisplayObject{
 			var length:number = this._list.length;
 			for(var i:number = 0;i < length;i++){
-				var t:egret.DisplayObjectContainer = this._list[i];
+				var t:egret.DisplayObject = this._list[i];
 				if(t.hitTestPoint(px,py)){
 					return t;
 				}
@@ -272,7 +296,7 @@ module d5power{
 		
 		private flushFormatDoing(t:D5HoverText):void
 		{
-		    t.setSize(this._blockW-this._content.x*2,this._blockH);
+		    t.setSize(this._blockW-this._content.x*2 - this._leftPadding,this._blockH);
 			t.setTextColor(this._textColor);
 			t.setHover(this._hoverColor,this._hoverAlpha);
 			t.setFontSize(this._fontSize);

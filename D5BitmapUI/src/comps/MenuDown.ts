@@ -30,17 +30,19 @@ namespace d5power
 		private _thisobj:any;
 
 		/**
-		 * 标准样式配置，包含bg属性，即下拉菜单的背景颜色，line属性，下拉菜单的边线颜色
+		 * 标准样式配置，包含bg:下拉菜单的背景颜色，line:下拉菜单的边线颜色,bga:背景透明度,linea:边线透明度,color:文字颜色,hover:鼠标经过背景，hovera:鼠标经过透明度,left:左侧边距
 		 */
-		public static style:any = {bg:0x296c8c,bga:1,line:0x296c8c,linea:1}
+		public static style:any = {bg:0x296c8c,bga:1,hover:0x296c8c,hovera:1,line:0x296c8c,linea:1,color:0xffffff,left:5}
 		
 		public constructor(thisobj:any,lineStyle:string=null,arrowStyle:string = null,fixedWidth:number=200)
 		{
 			super();
 			this._thisobj = thisobj;
 			this._list = new D5List();
+			this._list.leftPadding = MenuDown.style.left;
+			this._list.lineStyle = MenuDown.style.line;
 			this._list.y = 3;
-			this._list.setFormat(fixedWidth,28,-1,MenuDown.style.bg);
+			this._list.setFormat(fixedWidth,28,MenuDown.style.color,MenuDown.style.hover,MenuDown.style.hovera);
             //this._list.addEventListener(egret.Event.CHANGE,this.onHover,this);
 			this._list.addEventListener(egret.Event.CHANGE,this.onClick,this);
 
@@ -92,7 +94,6 @@ namespace d5power
 					this._list.addStuff(conf[i][0],conf[i][1]);
 				}
 				this.bg.x = -4;
-				this._list.cacheAsBitmap = true;
 
 				this.bg.setTickNess(1);
 				this.bg.setFillColor(MenuDown.style.bg);
@@ -100,7 +101,7 @@ namespace d5power
 				this.bg.lineAlpha = MenuDown.style.linea;
 				this.bg.drawAlpha = MenuDown.style.bga;
 
-				this.bg.setSize(this._list.blockW + this._list.x * 2 + 12, this._list.blockH * this._list.count + this._list.y * 2 + 10);
+				this.bg.setSize(this._list.blockW + this._list.x * 2 + 12, this._list.height + this._list.y * 2);
                 this.addChild(this._list);
 				/*
 				if(j>this.beginScroll*1.2)
@@ -122,6 +123,7 @@ namespace d5power
                 }
 				*/
 			}
+			this._conf = null;
 		}
 
 		protected hidden():void

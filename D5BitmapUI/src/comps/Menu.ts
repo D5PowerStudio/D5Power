@@ -104,11 +104,11 @@ namespace d5power
 					btn = this.btn_file;
 				}else{
 					btn = this.btn_file.clone();
-					btn.x = this.btn_file.x+i*(this.btn_file.width+5);
-					btn.y = this.btn_file.y;
-					btn.text = conf[i][0];
 					this.addChild(btn);
 				}
+				btn.x = this.btn_file.x+i*(this.btn_file.width+5);
+				btn.y = this.btn_file.y;
+				btn.text = conf[i][0];
 				btn.touchEnabled = true;
                 btn.addEventListener(mouse.MouseEvent.MOUSE_OVER,this.onMouseOver,this);
 				if(conf[i][1] instanceof Array)

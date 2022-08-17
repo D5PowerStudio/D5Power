@@ -56,14 +56,14 @@ namespace d5power
             this._value = value;
             if(value==0)
             {
-                this._bar.visible = false;
-                this._label && (this._label.visible=false);
+                this._bar.parent && this.removeChild(this._bar);
+                this._label && this._label.parent && this.removeChild(this._label);
             }else{
-                this._bar.visible = true;
+                !this._bar.parent && this.addChild(this._bar);
                 this._bar.setSize(Math.ceil(this._fullSize*(value/100)),this._bar.height);
                 if(this._label)
                 {
-                    this._label.visible=true;
+                    !this._label.parent && this.addChild(this._label);
                     if(this._label instanceof D5Text)
                     {
                         (<D5Text>this._label).text = value+'%';
