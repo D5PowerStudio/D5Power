@@ -251,6 +251,7 @@ module d5power{
 			
 		}
 		private onClick(e:egret.TouchEvent):void{
+			e.stopImmediatePropagation();
 			if(e.stageX!=this._beginX || e.stageY!=this._beginY) return;
 			
 			var t:egret.DisplayObject = this.getUnderMouse(e.stageX,e.stageY);

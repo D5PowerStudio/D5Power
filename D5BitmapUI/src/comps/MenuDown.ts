@@ -65,6 +65,7 @@ namespace d5power
 
 		private onStageDown(e:egret.TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			if(!this.hitTestPoint(e.stageX,e.stageY,true))
 			{
 				this.hidden();
@@ -182,6 +183,7 @@ namespace d5power
 		
 		private onClick(e:Event):void
 		{
+			e.stopImmediatePropagation();
 			if(this._list.value instanceof Function) 
 			{
 				try

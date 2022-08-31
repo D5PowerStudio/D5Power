@@ -332,6 +332,10 @@ module d5power
             }
         }
 
+        public canPass(px: number, py: number): boolean {
+            return true;
+        }
+
         public get width():number {
             return this._mapWidth;
         }

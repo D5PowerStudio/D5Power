@@ -12,5 +12,11 @@ module d5power
         getScreenPostion(wx:number,wy:number):egret.Point;
         render();
         setContainer(container:egret.DisplayObjectContainer);
+        /**
+         * 地图上某点是否可以通过
+         * @param px 地图上的像素坐标x
+         * @param py 地图上的像素坐标y
+         */
+        canPass(px:number,py:number):boolean;
     }
 }

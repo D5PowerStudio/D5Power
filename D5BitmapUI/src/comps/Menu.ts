@@ -145,6 +145,7 @@ namespace d5power
 		
 		private onDownMenu(e:egret.TouchEvent):void
 		{
+			e.stopImmediatePropagation();
 			var target:D5Button = e.currentTarget as D5Button;
 			if(this._downMenu)
 			{
