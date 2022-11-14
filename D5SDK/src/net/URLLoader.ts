@@ -39,6 +39,8 @@ module d5power {
          * 默认方式
          */
         public static DATAFORMAT_TEXT:string = "text";
+
+        public static DATAFORMAT_XML:string = "xml";
         /**
          * 以音频的方式接收加载的数据
          */
@@ -94,6 +96,9 @@ module d5power {
                     case ".jpg":
                         this._dataformat = URLLoader.DATAFORMAT_BITMAP;
                         break;
+                    case '.xml':
+                        this._dataformat = URLLoader.DATAFORMAT_XML;
+                        break;
                     case "glsl":
                     case ".php":
                         this._dataformat = URLLoader.DATAFORMAT_TEXT;
@@ -128,10 +133,10 @@ module d5power {
            
             if (this.dataformat == URLLoader.DATAFORMAT_BITMAP) {
                 this._xhr.responseType = "blob";
-            } else if (this.dataformat != URLLoader.DATAFORMAT_TEXT && this.dataformat!=URLLoader.DATAFORMAT_JSON) {
-                this._xhr.responseType = "arraybuffer";
-            }else{
+            }else if(this.dataformat == URLLoader.DATAFORMAT_TEXT || this.dataformat==URLLoader.DATAFORMAT_XML || this.dataformat==URLLoader.DATAFORMAT_JSON){
                 this._xhr.responseType = "";
+            }else{
+                this._xhr.responseType = "arraybuffer";
             }
             this._xhr.send();
         }
@@ -189,6 +194,9 @@ module d5power {
                     break;
                 case URLLoader.DATAFORMAT_TEXT:
                     this._data = this._xhr.responseText;
+                    break;
+                case URLLoader.DATAFORMAT_XML:
+                    this._data = XML.parse(this._xhr.responseText);
                     break;
                 case URLLoader.DATAFORMAT_JSON:
                     var json:any;

@@ -16,6 +16,7 @@
 		"src/IUserInfoDisplayer.ts",
 		"src/UVData.ts",
 		"src/ByteArray.ts",
+		"src/XML.ts",
 		"src/D5UIResourceData.ts",
 		"src/net/D5LoadData.ts",
 		"src/net/StepLoader.ts",
