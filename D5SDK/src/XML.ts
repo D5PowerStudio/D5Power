@@ -88,6 +88,10 @@ namespace d5power {
          */
         public children:XMLNode[] = [];
         /**
+         * 解析完以后的部分
+         */
+        public nodes:any = {}
+        /**
          * @private
          * 节点完整名称。例如节点 <s:Button/> 的 name 为：s:Button
          */
@@ -155,11 +159,12 @@ namespace d5power {
      */
     function parseNode(node:Node, parent:XML):XML {
         //@ts-ignore
-        if(node.localName=="parsererror"){
+        let local_name = node.localName
+        if(local_name =="parsererror"){
             throw new Error(node.textContent);
         }
         //@ts-ignore
-        let xml = new XML(node.localName, parent, node["prefix"], node.namespaceURI, node.nodeName);
+        let xml = new XML(local_name, parent, node["prefix"], node.namespaceURI, node.nodeName);
         //@ts-ignore
         let nodeAttributes = node.attributes;
         let attributes = xml.attributes;
@@ -187,7 +192,11 @@ namespace d5power {
                 let text = childNode.textContent.trim();
                 if(length==1)
                 {
-                    if(text) xml.value = text;
+                    if(text)
+                    {
+                        xml.value = text
+                        parent && (parent.nodes[local_name] = text);
+                    }
                 }else{
                     if(text) childXML = new XMLText(text, xml);
                 }

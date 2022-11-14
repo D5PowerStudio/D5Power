@@ -187,24 +187,25 @@ module d5power
 
         private setup():void
         {
-            if(this._factory) this._factory.dispose();
+
             if(this._monitor)
             {
                 this._monitor.parent.removeChild(this._monitor);
                 (<dragonBones.EgretArmatureDisplay><any>this._monitor).dispose();
             }
 
-            this._factory = new dragonBones.EgretFactory();  
-            this._factory.addDragonBonesData(dragonBones.DataParser.parseDragonBonesData(this._data));  
-            this._factory.addTextureAtlasData(this._factory.parseTextureAtlasData(this._texture_data,this._texture));
+            this._factory.parseDragonBonesData(this._data);
+            this._factory.parseTextureAtlasData(this._texture_data,this._texture);
             
             this._bone = this._factory.buildArmature("armatureName");
             this._bone.animation.timeScale = this._speedK;
             this._monitor = this._bone.display;
+
             if(this._texture_data.scale)
             {
                 this._monitor.scaleX = this._monitor.scaleY = this._texture_data.scale;
             }
+            
             this.setPos(this._pos.x,this._pos.y);
             this.faceAngle = this._faceAngle;
             

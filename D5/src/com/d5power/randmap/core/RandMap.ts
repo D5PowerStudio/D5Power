@@ -142,7 +142,7 @@ module d5power{
 		 */
 		public getFloorTypeByPx(px: number, py: number): number {
 			px = Math.floor(px / RandMapConf.map_scale_x);
-			py = this.baseMap._bitmapHeight - Math.floor(py / RandMapConf.map_scale_y);
+			py = this.baseMap.textureHeight - Math.floor(py / RandMapConf.map_scale_y);
 			return this.getFloorType(px, py);
 		}
 

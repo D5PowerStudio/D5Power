@@ -109,7 +109,44 @@ module d5power
 				this.give.push(block);
 			}
         }
-        
+
+		public fromXML(xml:XML):void{
+			this.type = xml.nodes.type;
+			this.name = xml.nodes.name;
+			this.info = xml.nodes.info;
+			this.npc_id = xml.nodes.say;
+			this.npc_id = xml.nodes.npc;
+			this.uncompDialog = xml.nodes.uncomp;
+			//this.complate_script = data.complateScript;
+			//this.complate_script = this.complate_script==null || this.complate_script=='null' ? '' : this.complate_script;
+			
+			var block:ThreeBase;
+			
+			if(this.need==null)
+			{
+				this.need = [];
+				this.give = [];
+			}
+            
+			for(var i:number=0,j:number = xml.children.length;i<j;i++)
+			{
+				var node:any = xml.children[i];
+				if(node.name=='need')
+				{
+					block = new ThreeBase();
+					block.type = node.attributes.type;
+					block.key = node.attributes.value;
+					block.count = node.attributes.num;
+					this.need.push(block);
+				}else if(node.name=="give"){
+					block = new ThreeBase();
+					block.type = node.attributes.type;
+					block.key = node.attributes.value;
+					block.count = node.attributes.num;
+					this.give.push(block);
+				}
+			}
+		}
 		
 		public get needstring():string
 		{

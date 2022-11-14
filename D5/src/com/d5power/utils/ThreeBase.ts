@@ -45,6 +45,22 @@ module d5power
          * 三元数据的数据量
          */
         public count:number;
+
+        /**
+         * 三元数据的数据根
+         */
+        public get value():string
+        {
+            return this.key;
+        }
+
+        /**
+         * 三元数据的数据根
+         */
+        public get num():number
+        {
+            return this.count;
+        }
         
     }
 }
