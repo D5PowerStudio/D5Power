@@ -23,9 +23,13 @@ namespace d5power
         }
         
         private _target_value:number;
-        public processTo(value:number):void
+        private _show_label:string;
+        private _ext:string;
+        public processTo(value:number,label:string=null,ext:string=null):void
         {
             if(this._value==value) return;
+            this._show_label = label;
+            this._ext = ext;
             this._bar.delayResize = false;
             this._target_value = value;
             this._label && this._label.parent && this.removeChild(this._label);
@@ -43,17 +47,20 @@ namespace d5power
                 this.removeEventListener(egret.Event.ENTER_FRAME,this.render,this);
             }else{
                 this._value+=(this._target_value-this._value)*.2;
+                this._value = Number(this._value.toFixed(2));
                 this.process(this._value);
             }
         }
 
-
         private _value:number;
-        public process(value:number):void
+        public process(value:number,label:string=null,ext:string='%'):void
         {
             if(value>100) value=100;
             if(value<0) value=0;
             this._value = value;
+            this._show_label = label;
+            this._ext = ext;
+
             if(value==0)
             {
                 this._bar.parent && this.removeChild(this._bar);
@@ -66,9 +73,9 @@ namespace d5power
                     !this._label.parent && this.addChild(this._label);
                     if(this._label instanceof D5Text)
                     {
-                        (<D5Text>this._label).text = value+'%';
+                        (<D5Text>this._label).text = (this._show_label ? this._show_label : value) + this._ext;
                     }else if(this._label instanceof D5BitmapNumber){
-                        (<D5BitmapNumber>this._label).setValue(value+'%');
+                        (<D5BitmapNumber>this._label).setValue(value+'');
                     }
                     this._label.x = this._bar.width>this._label.width ? (this._bar.width-this._label.width)*.5+this._bar.x : this._bar.x;
                 }
@@ -87,6 +94,7 @@ namespace d5power
             this._value = 100;
             
             this._bg.parent && this._bg.parent.addChild(this);
+            bar.delayResize = false;
             this.addChild(this._bg);
             this.addChild(this._bar);
             this._label ? this.flyPos(bg,bar,label) : this.flyPos(bg,bar);

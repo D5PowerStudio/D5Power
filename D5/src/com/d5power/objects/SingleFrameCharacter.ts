@@ -45,6 +45,16 @@ module d5power
             this._offY = -data.textureHeight;
             (<egret.Bitmap>this._monitor).texture = data;
         }
+
+        protected get offX():number
+        {
+            return this._offX;
+        }
+
+        protected get offY():number
+        {
+            return this._offY;
+        }
     }
 
     

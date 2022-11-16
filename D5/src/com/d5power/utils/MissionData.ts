@@ -73,7 +73,7 @@ module d5power
 			this.type = data.type;
 			this.name = data.name;
 			this.info = data.info;
-			this.npc_id = data.say;
+			this.npc_said = data.say;
 			this.npc_id = data.npc;
 			this.uncompDialog = data.uncomp;
 			this.complate_script = data.complateScript;
@@ -114,7 +114,7 @@ module d5power
 			this.type = xml.nodes.type;
 			this.name = xml.nodes.name;
 			this.info = xml.nodes.info;
-			this.npc_id = xml.nodes.say;
+			this.npc_said = xml.nodes.say;
 			this.npc_id = xml.nodes.npc;
 			this.uncompDialog = xml.nodes.uncomp;
 			//this.complate_script = data.complateScript;
@@ -134,15 +134,15 @@ module d5power
 				if(node.name=='need')
 				{
 					block = new ThreeBase();
-					block.type = node.attributes.type;
+					block.type = Math.floor(node.attributes.type);
 					block.key = node.attributes.value;
-					block.count = node.attributes.num;
+					block.count = Math.floor(node.attributes.num);
 					this.need.push(block);
 				}else if(node.name=="give"){
 					block = new ThreeBase();
-					block.type = node.attributes.type;
+					block.type = Math.floor(node.attributes.type);
 					block.key = node.attributes.value;
-					block.count = node.attributes.num;
+					block.count = Math.floor(node.attributes.num);
 					this.give.push(block);
 				}
 			}
