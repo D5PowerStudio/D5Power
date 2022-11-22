@@ -7,6 +7,8 @@
     "files": [
         "libs/egret.d.ts",
         "libs/res.d.ts",
+		"libs/game.d.ts",
+		"src/MD5.ts",
 		"src/D5EffectSpriteSheet.ts",
         "src/D5Power.ts",
 		"src/D5SpriteSheet.ts",
@@ -19,6 +21,9 @@
 		"src/D5UIResourceData.ts",
 		"src/net/D5LoadData.ts",
 		"src/net/StepLoader.ts",
-		"src/net/URLLoader.ts"
+		"src/net/URLLoader.ts",
+		"src/net/GGCallData.ts",
+		"src/net/GGLoader.ts"
+		
     ]
 }
