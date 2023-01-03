@@ -66,10 +66,10 @@ module d5power {
          * 如果为空且文件后缀不为内置支持的集中文件类型的话.将以文本格式进行加载解析
          */
         constructor(url:string = null, dataformat:string = null) {
+            if (dataformat) {
+                this.dataformat = dataformat;
+            }
             if (url) {
-                if (dataformat) {
-                    this.dataformat = dataformat;
-                }
                 this.load(url);
             }
         }
@@ -101,6 +101,9 @@ module d5power {
                         break;
                     case "glsl":
                     case ".php":
+                    case ".js":
+                    case ".ts":
+                    case ".txt":
                         this._dataformat = URLLoader.DATAFORMAT_TEXT;
                         break;
                     case "json":
@@ -110,7 +113,7 @@ module d5power {
                         this._dataformat = URLLoader.DATAFORMAT_BINARY;
                         break;
                     default:
-                        this._dataformat = URLLoader.DATAFORMAT_JSON;
+                        this._dataformat = URLLoader.DATAFORMAT_BINARY;
                         break;
                 }
             }
