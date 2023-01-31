@@ -124,7 +124,7 @@ module d5power {
 				child.x = xpos;
 				xpos += child.width;
 				xpos += this._padding;
-				this._w += child.width;
+				this._w = xpos;
 				this._h = Math.max(this._h, child.height);
 			}
 			this._w += this._padding * (this.numChildren - 1);
