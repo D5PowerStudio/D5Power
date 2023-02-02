@@ -272,10 +272,10 @@ module d5power
         {
             if(this.type == 2) {
                 if(this._sheet == null) {
-                    this.a.texture = this.data.getResource(2);
+                    this.a.texture = this.data.getResource(1);
                 }
                 else {
-                    this.a.texture = this._sheet.getTexture('2');
+                    this.a.texture = this._sheet.getTexture('1');
                 }
             } else {
                 if(this._sheet == null) {
