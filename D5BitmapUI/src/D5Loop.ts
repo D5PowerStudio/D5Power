@@ -2,6 +2,9 @@ module d5power
 {
     export class D5Loop extends D5Component
     {
+        public static ALIGN_RIGHT:number = 1;
+        public static ALIGN_DOWN:number = 2;
+
         private _workmode:number;
         private _cutsize1:number;
         private _cutsize2:number;
@@ -9,6 +12,11 @@ module d5power
         private _partI:egret.Bitmap;
         private _partII:egret.Bitmap;
         private _partIII:egret.Bitmap;
+
+        /**
+         * 固定定位
+         */
+        public pin_position:number;
         
         public constructor(mode:number,cutsize1:number,cutsize2:number)
         {
@@ -16,6 +24,27 @@ module d5power
             this._workmode = mode;
             this._cutsize1 = cutsize1;
             this._cutsize2 = cutsize2;
+        }
+
+        public setSize(w: number, h: number): void {
+            if(!isNaN(this.pin_position))
+            {
+                var nowx:number = this.x + this.width;
+                var nowy:number = this.y + this.height;
+            }
+            super.setSize(w,h);
+            if(!isNaN(this.pin_position))
+            {
+                switch(this.pin_position)
+                {
+                    case D5Loop.ALIGN_DOWN:
+                        this.y = nowy - this.height
+                        break;
+                    case D5Loop.ALIGN_RIGHT:
+                        this.x = nowx - this.width;
+                        break;
+                }
+            }
         }
 
         public clone():D5Loop
