@@ -44,6 +44,11 @@ module d5power
 
         private _minH:number;
 
+        /**
+         * 固定定位
+         */
+        public pin_position:number;
+
         public constructor()
         {
             super();
@@ -169,6 +174,27 @@ module d5power
             this.autoCache();
             super.draw();
 
+        }
+
+        public setSize(w: number, h: number): void {
+            if(!isNaN(this.pin_position))
+            {
+                var nowx:number = this.x + this.width;
+                var nowy:number = this.y + this.height;
+            }
+            super.setSize(w,h);
+            if(!isNaN(this.pin_position))
+            {
+                switch(this.pin_position)
+                {
+                    case D5Loop.ALIGN_DOWN:
+                        this.y = nowy - this.height
+                        break;
+                    case D5Loop.ALIGN_RIGHT:
+                        this.x = nowx - this.width;
+                        break;
+                }
+            }
         }
 
         public _setSize(w:number,h:number):void
