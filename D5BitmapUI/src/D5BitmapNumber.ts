@@ -241,6 +241,18 @@ module d5power {
         		    this._box = null;
             }
 		}
+
+        public clone():D5Component
+		{
+			var b:D5BitmapNumber = new D5BitmapNumber();
+			
+			b._perWidth = this._perWidth;
+			b._hasPoint = this._hasPoint;
+			b._string_map = this._string_map;
+            b.data = this.data;
+			b.setAlign(this._align);
+			return b;
+		}
 		
 		
 		private autoAddRender(e:egret.Event):void

@@ -55,21 +55,60 @@ module d5power
         {
             this.onComplate(data);
         }
+
+        public clone():D5Component
+		{
+			var w:D5Window = new D5Window();
+            w.lt = new egret.Bitmap();
+            w.lt.texture = this.lt.texture;
+
+            w.t = new egret.Bitmap();
+            w.t.texture = this.t.texture;
+            w.t.fillMode = egret.BitmapFillMode.REPEAT;
+
+            w.rt = new egret.Bitmap();
+            w.rt.texture = this.rt.texture;
+
+            w.l = new egret.Bitmap();
+            w.l.texture = this.l.texture;
+            w.l.fillMode = egret.BitmapFillMode.REPEAT;
+
+            w.m = new egret.Bitmap();
+            w.m.texture = this.m.texture;
+            w.m.fillMode = egret.BitmapFillMode.REPEAT;
+
+            w.r = new egret.Bitmap();
+            w.r.texture = this.r.texture;
+
+            w.lb = new egret.Bitmap();
+            w.lb.texture = this.lb.texture;
+
+            w.b = new egret.Bitmap();
+            w.b.texture = this.b.texture;
+            w.b.fillMode = egret.BitmapFillMode.REPEAT;
+
+            w.rb = new egret.Bitmap();
+            w.rb.texture = this.rb.texture;
+
+			w.setSize(this._w,this._h);
+            w.invalidate();
+			return w;
+		}
         
         protected onComplate(data:egret.Texture):void
         {
-             var sheet:egret.SpriteSheet = new egret.SpriteSheet(data);
-             sheet.createTexture('0',0,0,this.x1,this.y1);
-             sheet.createTexture('1',this.x1,0,this.x2 - this.x1,this.y1);
-             sheet.createTexture('2',this.x2,0,data.textureWidth - this.x2,this.y1);
-             sheet.createTexture('3',0,this.y1,this.x1,this.y2 - this.y1);
-             sheet.createTexture('4',this.x1,this.y1,this.x2 - this.x1,this.y2 - this.y1);
-             sheet.createTexture('5',this.x2,this.y1,data.textureWidth - this.x2,this.y2 - this.y1);
-             sheet.createTexture('6',0,this.y2,this.x1,data.textureHeight - this.y2);
-             sheet.createTexture('7',this.x1,this.y2,this.x2 - this.x1,data.textureHeight - this.y2);
-             sheet.createTexture('8',this.x2,this.y2,data.textureWidth - this.x2,data.textureHeight - this.y2);
+            var sheet:egret.SpriteSheet = new egret.SpriteSheet(data);
+            sheet.createTexture('0',0,0,this.x1,this.y1);
+            sheet.createTexture('1',this.x1,0,this.x2 - this.x1,this.y1);
+            sheet.createTexture('2',this.x2,0,data.textureWidth - this.x2,this.y1);
+            sheet.createTexture('3',0,this.y1,this.x1,this.y2 - this.y1);
+            sheet.createTexture('4',this.x1,this.y1,this.x2 - this.x1,this.y2 - this.y1);
+            sheet.createTexture('5',this.x2,this.y1,data.textureWidth - this.x2,this.y2 - this.y1);
+            sheet.createTexture('6',0,this.y2,this.x1,data.textureHeight - this.y2);
+            sheet.createTexture('7',this.x1,this.y2,this.x2 - this.x1,data.textureHeight - this.y2);
+            sheet.createTexture('8',this.x2,this.y2,data.textureWidth - this.x2,data.textureHeight - this.y2);
              
-             this.lt = new egret.Bitmap();
+            this.lt = new egret.Bitmap();
             this.lt.texture = sheet.getTexture('0');
 
             this.t = new egret.Bitmap();

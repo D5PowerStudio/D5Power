@@ -143,6 +143,7 @@ module d5power
             b.anchorOffsetX = this.anchorOffsetX;
             b.anchorOffsetY = this.anchorOffsetY;
             b.round = this._round;
+            b.rotation = this.rotation;
             return b;
         }
 
