@@ -265,6 +265,8 @@ module d5power
             if (this._textField == null){
                 return;
             }
+            if(t==null) t = '';
+            if(t=='' && this._placeholder!='') t = this._placeholder;
             this._textField.text = t;
         }
         
