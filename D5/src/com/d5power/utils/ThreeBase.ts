@@ -38,16 +38,16 @@ module d5power
          */
         public type:number;
         /**
-         * 三元数据的数据根
+         * 三元数据的数据根 - 键值
          */
         public key:string;
         /**
-         * 三元数据的数据量
+         * 三元数据的数据量 - 数量
          */
         public count:number;
 
         /**
-         * 三元数据的数据根
+         * 三元数据的数据根 - 键值
          */
         public get value():string
         {
@@ -55,7 +55,7 @@ module d5power
         }
 
         /**
-         * 三元数据的数据根
+         * 三元数据的数据根 - 数量
          */
         public get num():number
         {

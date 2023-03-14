@@ -14,6 +14,11 @@ module d5power
 		 * 自定义条件检测
 		 */
 		custormCheck(data:ThreeBase):boolean
+        /**
+         * 自定义条件进度
+         * @param data 
+         */
+        custormProcess(data:ThreeBase):string;
 		/**
 		 * 是否具备某个条件的独立检查器
 		 */ 

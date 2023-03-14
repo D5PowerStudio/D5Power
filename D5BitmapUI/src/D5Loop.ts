@@ -56,6 +56,7 @@ module d5power
             loop._partI = new egret.Bitmap(this._partI.texture);
             loop._partII = new egret.Bitmap(this._partII.texture);
             loop._partIII = new egret.Bitmap(this._partIII.texture);
+            loop._nowName = this._nowName;
             loop.setSize(this._w,this._h);
             return loop;
         }

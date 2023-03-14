@@ -117,47 +117,23 @@ module d5power
         
         /**
          * 获取一个克隆皮肤
-         * @param contianer 容器
-         * @param offX 坐标
-         * @param offY 坐标
-         * @param conf 扩展配置，格式{原始皮肤组件名:{重定义属性:重定义值}}，例：{name:'btn_help',img_temp:{setSkin:"resource/assets/ui/icon_gan.png"},txt_temp:{setText:"Help"}},
          */
-        public getInstance(contianer:egret.DisplayObjectContainer,offX:number,offY:number,conf:any=null):D5Component
+        public getInstance():egret.Sprite
         {
-            var root:D5Component;
-            var arr:Array<D5Component> = [];
+            var instance:any = new egret.Sprite();
             for(var i:number=0,j:number=this._skin.length;i<j;i++)
             {
                 let comp:D5Component = this._skin[i];
                 if(comp['clone'])
                 {
                     let n_comp:any = (<any>comp).clone();
-                    arr.push(<D5Component>n_comp);
-                    n_comp.x = comp.x+offX;
-                    n_comp.y = comp.y+offY;
-                    (<D5Component>n_comp).cloneFrom = comp;
-                    if(conf && conf[comp.name])
-                    {
-                        let obj:any = conf[comp.name];
-                        for(var k in obj)
-                        {
-                            if(n_comp[k])
-                            {
-                                n_comp[k] instanceof Function ? n_comp[k](obj[k]) : (n_comp[k] = obj[k]);
-                            }
-                        }
-                    }
-                    if(this._root==comp)
-                    {
-                        root = n_comp;
-                        if(conf && conf.name) contianer[conf.name] = root;
-                    }
-                    contianer.addChild(n_comp);
+                    n_comp.x = comp.x;
+                    n_comp.y = comp.y;
+                    instance.addChild(n_comp);
                 }
             }
 
-            if(conf && conf.name) this._map[conf.name] = arr;
-            return root;
+            return instance;
         }
 
         /**

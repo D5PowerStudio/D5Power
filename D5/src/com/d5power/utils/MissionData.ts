@@ -186,41 +186,14 @@ module d5power
 		 */ 
 		public check(checker:IMissionManager):boolean
 		{		
-			this.iscomplate=true;
+			this.iscomplate = true;
 			if(this.need!=null)
 			{
 				for(var k in this.need)
 				{
                     var need:ThreeBase = this.need[k];
-					switch(need.type)
-					{
-						case MissionNR.N_ITEM_NEED:
-						case MissionNR.N_ITEM_TACKED:
-							this.iscomplate = this.iscomplate && checker.hasItemNum(<number><any>need.key)>=need.count;
-							break;
-						case MissionNR.N_MONEY:
-						case MissionNR.N_MONEY_KEEP:
-							this.iscomplate = this.iscomplate && checker.hasMoney(<number><any>need.key);
-							break;
-						case MissionNR.N_MARK:
-							this.iscomplate = this.iscomplate && checker.hasMark(<number><any>need.key);
-							break;
-						case MissionNR.N_MONSTER_KILLED:
-							this.iscomplate = this.iscomplate && checker.killMonseterNum(<number><any>need.key)>=need.count;
-							break;
-						case MissionNR.N_PLAYER_PROP:
-							this.iscomplate = this.iscomplate && checker.userPro(need.key,need.count);
-							break;
-						case MissionNR.N_MISSION:
-							this.iscomplate = this.iscomplate && checker.hasMission(<number><any>need.key);
-							break;
-						case MissionNR.N_TALK_NPC:
-							this.iscomplate = this.iscomplate && checker.hasTalkedWith(<number><any>need.key);
-							break;
-						default:
-							if(checker.hasChecker(need.type)) this.iscomplate = this.iscomplate && checker.custormCheck(need);
-							break;
-					}
+                    this.iscomplate = this.iscomplate && MissionNR.check(need,checker);
+                    if(!this.isComplate) break;
 				}
 			}
 			return this.iscomplate;

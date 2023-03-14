@@ -137,6 +137,57 @@ module d5power {
 		
 		public constructor(){
 		}
+
+
+        public static check(target:ThreeBase,checker:IMissionManager):boolean
+        {
+            switch(target.type)
+            {
+                case MissionNR.N_ITEM_NEED:
+                case MissionNR.N_ITEM_TACKED:
+                    return checker.hasItemNum(<number><any>target.key)>=target.count;
+                case MissionNR.N_MONEY:
+                case MissionNR.N_MONEY_KEEP:
+                    return checker.hasMoney(<number><any>target.key);
+                case MissionNR.N_MARK:
+                    return checker.hasMark(<number><any>target.key);
+                case MissionNR.N_MONSTER_KILLED:
+                    return checker.killMonseterNum(<number><any>target.key)>=target.count;
+                case MissionNR.N_PLAYER_PROP:
+                    return checker.userPro(target.key,target.count);
+                case MissionNR.N_MISSION:
+                    return checker.hasMission(<number><any>target.key);
+                case MissionNR.N_TALK_NPC:
+                    return checker.hasTalkedWith(<number><any>target.key);
+                default:
+                    return checker.custormCheck(target);
+            }
+        }
+
+        public static getProcess(target:ThreeBase,checker:IMissionManager):string
+        {
+            switch(target.type)
+            {
+                case MissionNR.N_ITEM_NEED:
+                case MissionNR.N_ITEM_TACKED:
+                    return checker.hasItemNum(<number><any>target.key)+'/'+target.count;
+                case MissionNR.N_MONEY:
+                case MissionNR.N_MONEY_KEEP:
+                    return checker.hasMoney(<number><any>target.key) +'/'+ target.key;
+                case MissionNR.N_MARK:
+                    return (checker.hasMark(<number><any>target.key)?1:0) + '/1';
+                case MissionNR.N_MONSTER_KILLED:
+                    return checker.killMonseterNum(<number><any>target.key)+'/'+target.count;
+                case MissionNR.N_PLAYER_PROP:
+                    return (checker.userPro(target.key,target.count)?1:0) + '/' + target.count;
+                case MissionNR.N_MISSION:
+                    return (checker.hasMission(<number><any>target.key)?1:0)  + '/1';
+                case MissionNR.N_TALK_NPC:
+                    return (checker.hasTalkedWith(<number><any>target.key)?1:0)  + '/1';
+                default:
+                    return checker.custormProcess(target);
+            }
+        }
 		
 		/**
 		 * 增加用户处理配置
