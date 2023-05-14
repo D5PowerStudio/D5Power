@@ -738,6 +738,15 @@ module d5power
                     if(container) container[com.name] = com;
                     break;
             }
+            if(com && container && container['uiContainer'])
+            {
+                try
+                {
+                    container['uiContainer'][com.name] = com;
+                }catch(e){
+
+                }
+            }
             com && container.addChild(com);
             com.startX = value.x;
             com.startY = value.y;
@@ -809,6 +818,7 @@ module d5power
 				this.addEventListener(egret.Event.REMOVED_FROM_STAGE,cancleWait,this);
             }
         }
+        
 
         protected autoFllowPos(e:egret.Event=null):void
         {
