@@ -130,13 +130,36 @@ module d5power
 
             if(this._workmode == 0)
             {
-                this._partII.x = this._partI.width;
-                this._partII.width = this._w - this._partI.width - this._partIII.width;
-                this._partIII.x = this._partII.x+this._partII.width;
+                let minW=this._partI.texture.textureWidth+this._partII.texture.textureWidth+this._partIII.texture.textureWidth;
+                if(this._w<minW)
+                {
+                    this._partII.x = this._partI.width;
+                    this._partII.width = this._partII.texture.textureWidth;
+                    this._partIII.x = this._partII.x+this._partII.width;
+                    this.scaleX = this._w/minW;
+                    this._w = minW*this.scaleX;
+                }else{
+                    this._partII.x = this._partI.width;
+                    this._partII.width = this._w - this._partI.width - this._partIII.width;
+                    this._partIII.x = this._partII.x+this._partII.width;
+                }
+                
             }else{
-                this._partII.y = this._partI.height;
-                this._partII.height = this._h - this._partI.height - this._partIII.height;
-                this._partIII.y = this._partII.y+this._partII.height;
+                let minH=this._partI.texture.textureHeight+this._partII.texture.textureHeight+this._partIII.texture.textureHeight;
+                if(this._h<minH)
+                {
+                    this._partII.y = this._partI.height;
+                    this._partII.height = this._partII.texture.textureHeight;
+                    this._partIII.y = this._partII.y + this._partII.height;
+                    this.scaleY = this._h/minH;
+                    this._h = this._h*this.scaleY;
+                }else{
+                    this._partII.y = this._partI.height;
+                    this._partII.height = this._h - this._partI.height - this._partIII.height;
+                    this._partIII.y = this._partII.y+this._partII.height;
+                    this.scaleY = 1;
+                }
+                
             }
 
             super.draw();

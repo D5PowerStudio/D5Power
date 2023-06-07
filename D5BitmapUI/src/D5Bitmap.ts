@@ -127,6 +127,7 @@ module d5power
         public setSrc(url:string):void
         {
             this._url = url;
+            this._nowName = url;
             if(url==null)
             {
                 this.bit.texture = null;
@@ -153,6 +154,8 @@ module d5power
          */
         public loadUrl(url:string):void
         {
+            if(this._nowName == url) return;
+            this._nowName = url;
             var that:D5Bitmap = this;
             var loader:egret.ImageLoader = new egret.ImageLoader();
             loader.crossOrigin = 'anonymous';

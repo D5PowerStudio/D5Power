@@ -30,7 +30,6 @@ namespace d5power
             if(this._value==value) return;
             this._show_label = label;
             this._ext = ext;
-            this._bar.delayResize = false;
             this._target_value = value;
             this._label && this._label.parent && this.removeChild(this._label);
             this.addEventListener(egret.Event.ENTER_FRAME,this.render,this);
@@ -43,7 +42,6 @@ namespace d5power
                 
                 this._label && this.addChild(this._label);
                 this.process(this._target_value);
-                this._bar.delayResize = true;
                 this.removeEventListener(egret.Event.ENTER_FRAME,this.render,this);
             }else{
                 this._value+=(this._target_value-this._value)*.2;
@@ -94,7 +92,6 @@ namespace d5power
             this._value = 100;
             
             this._bg.parent && this._bg.parent.addChild(this);
-            bar.delayResize = false;
             this.addChild(this._bg);
             this.addChild(this._bar);
             this._label ? this.flyPos(bg,bar,label) : this.flyPos(bg,bar);

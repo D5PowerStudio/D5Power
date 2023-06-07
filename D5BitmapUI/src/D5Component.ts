@@ -367,14 +367,8 @@ module d5power
             this.invalidate();
         }
 
-        private _sizeTime:number;
-        private _resizeID:number;
-        /**
-         * 是否在更改尺寸的时候延迟渲染。默认为true，在一些需要高速渲染的情况下，请设置为false
-         * when this property is true,it will be render untill resize function never be called. 
-         * set to false if you need render this object immediately
-         */
-        public delayResize:boolean=true;
+        private _drawLock:boolean;
+
         /**
          * 修改尺寸，本API进行了延迟优化，如需要立即修改尺寸，请使用_setSize
          * @param w 
@@ -386,27 +380,7 @@ module d5power
             var that:D5Component = this;
             this._w = w;
             this._h = h;
-            if(!this.delayResize)
-            {
-                this._sizeTime = t - 2000;
-                this._resizeID = 0;
-            }
-            if(isNaN(this._resizeID))
-            {
-                this.visible=false;
-                this._sizeTime = t;
-                this._resizeID = setTimeout(function(){ that.setSize(w,h) },200);
-            }else if(t-this._sizeTime<200){
-                clearTimeout(this._resizeID);
-                this._sizeTime = t;
-                this._resizeID = setTimeout(function(){ that.setSize(w,h) },200);
-            }else{
-                this.visible=true;
-                this.delayResize ? this._setSize(w,h) : this.draw();
-                this._resizeID = NaN;
-                this._sizeTime = NaN;
-            }
-            
+            !this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME,()=>{this.draw()},this);
         }
         public get nowName():string
         {
