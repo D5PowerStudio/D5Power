@@ -115,7 +115,7 @@ module d5power
         
         public draw():void
         {
-            if(this._partI==null)
+            if(this._partI==null || this._partI.texture==null)
             {
                 return;
             }else{

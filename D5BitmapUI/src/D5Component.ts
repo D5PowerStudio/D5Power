@@ -380,7 +380,7 @@ module d5power
             var that:D5Component = this;
             this._w = w;
             this._h = h;
-            !this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME,()=>{this.draw()},this);
+            !this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME,()=>{that.draw();that._drawLock=false},this);
         }
         public get nowName():string
         {
