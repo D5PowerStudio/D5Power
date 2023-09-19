@@ -67,7 +67,7 @@ module d5power {
 		public setMode(values:number):void
         {
 			this._align = values;
-			this.redraw();
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 		}
 		
 		public setX(value:number):void
@@ -80,13 +80,13 @@ module d5power {
 		public setPaddingx(num:number = 0):void
         {
 			this._paddingx = num;
-			this.redraw();
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 		}
 		
 		public setPaddingy(num:number = 0):void
         {
 			this._paddingy = num;
-			this.redraw();
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 		}
 		
 		public getPaddingx():number
@@ -105,7 +105,7 @@ module d5power {
 		public setMaxWidth(w:number = 0):void
         {
 			this._maxWidth = w;
-			this.redraw();
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 		}
 		
 		public get maxWidth():number{
@@ -132,26 +132,24 @@ module d5power {
 		private _lastModTime:number;
 		public addChild(child:egret.DisplayObject):egret.DisplayObject{
 			var obj:egret.DisplayObject = super.addChild(child);
-			obj.addEventListener(egret.Event.RESIZE,this.redraw,this);
+			obj.addEventListener(egret.Event.RESIZE,this.draw,this);
 			this._lastModTime = egret.getTimer();
-			if(!this.hasEventListener(egret.Event.ENTER_FRAME)) this.addEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 			
 			return obj;
 		}
 		
 		public removeChild(child:egret.DisplayObject):egret.DisplayObject{
 			var obj:egret.DisplayObject = super.removeChild(child);
-			obj.removeEventListener(egret.Event.RESIZE,this.redraw,this);
+			obj.removeEventListener(egret.Event.RESIZE,this.draw,this);
 			this._lastModTime = egret.getTimer();
-			if(!this.hasEventListener(egret.Event.ENTER_FRAME)) this.addEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+			!this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME, ()=>{ this.draw(); this._drawLock = false; }, this);
 
 			return obj;
 		}
 		
-		private redraw(e:Event=null):void{
-			var t:number = egret.getTimer();
-			if(t-this._lastModTime<100) return;
-			this.removeEventListener(egret.Event.ENTER_FRAME,this.redraw,this);
+		public draw(e:Event=null):void
+		{
 
 			this._usedWidth = 0;
 			this._usedHeight = 0;

@@ -367,7 +367,7 @@ module d5power
             this.invalidate();
         }
 
-        private _drawLock:boolean;
+        protected _drawLock:boolean;
 
         /**
          * 修改尺寸，本API进行了延迟优化，如需要立即修改尺寸，请使用_setSize
@@ -377,10 +377,9 @@ module d5power
         public setSize(w:number,h:number):void
         {
             var t:number = egret.getTimer();
-            var that:D5Component = this;
             this._w = w;
             this._h = h;
-            !this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME,()=>{that.draw();that._drawLock=false},this);
+            !this._drawLock && (this._drawLock = true) && this.once(egret.Event.ENTER_FRAME,()=>{this.draw();this._drawLock=false},this);
         }
         public get nowName():string
         {
@@ -616,8 +615,6 @@ module d5power
                     com.setSize(value.width,value.height);
                     (<D5Text>com)._binding = value.binding;
                     (<D5Text>com).placeholder = value.placeholder;
-                    // for fix autoSize in above code.
-                    com.setSize(value.width,value.height);
                     if(container) container[com.name] = com;
                     if(container && <IProBindingContainer><any>container && (<D5Text>com)._binding!='') (<IProBindingContainer><any>container).addBinder(<D5Text>com);
                     break;

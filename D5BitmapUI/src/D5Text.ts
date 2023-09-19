@@ -168,8 +168,8 @@ module d5power
         }
         public invalidateSize(): void
         {
-            this._w = this._maxWidth==0 || this._textField.multiline==false ? this._textField.textWidth+6 : this._maxWidth;
-            this._h = this._textField.textHeight+10;
+           //this._w = this._maxWidth==0 || this._textField.multiline==false ? this._textField.textWidth+6 : this._maxWidth;
+            //this._h = this._textField.textHeight+10;
 //            console.log("[d5text]"+this._textField.textHeight+"|"+this._textField.height);
             this.setWidth(this._w);
             this.setHeight(this._h);
