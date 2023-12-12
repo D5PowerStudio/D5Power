@@ -41,7 +41,7 @@ module d5power
 
         public typeLoop:number = 0;
 
-        public static setup(path:string,callback:Function,thisobj:any):void
+        public static setup(path:string,callback:Function,thisobj:any,version:string=''):void
         {
             var texture:egret.Texture;
             var onBitmap:Function = function(data:egret.Texture):void
@@ -52,7 +52,7 @@ module d5power
                 }else{
                     texture = data;
                     var store_data:any = StepLoader.me.getResByUrl(path+'uiresource.json');
-                    store_data ? onJson(store_data) : RES.getResByUrl(path+'uiresource.json',onJson,this,RES.ResourceItem.TYPE_JSON);
+                    store_data ? onJson(store_data) : RES.getResByUrl(path+'uiresource.json?ver='+version,onJson,this,RES.ResourceItem.TYPE_JSON);
                 }
             }
 
@@ -68,7 +68,7 @@ module d5power
             }
 
             var store_data:any = StepLoader.me.getResByUrl(path+'uiresource.png');
-            store_data ? onBitmap(store_data) : RES.getResByUrl(path+'uiresource.png',onBitmap,this,RES.ResourceItem.TYPE_IMAGE);
+            store_data ? onBitmap(store_data) : RES.getResByUrl(path+'uiresource.png?ver='+version,onBitmap,this,RES.ResourceItem.TYPE_IMAGE);
 
         }
 

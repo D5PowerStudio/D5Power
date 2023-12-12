@@ -119,14 +119,21 @@ module d5power {
 			this._w = 0;
 			this._h = 0;
 			var xpos:number = 0;
+			var needAgain:boolean;
 			for(var i:number = 0; i < this.numChildren; i++){
 				var child:egret.DisplayObject = this.getChildAt(i);
 				child.x = xpos;
 				xpos += child.width;
 				xpos += this._padding;
+				if(child.x==xpos)
+				{
+					needAgain = true;
+				}
 				this._w = xpos;
 				this._h = Math.max(this._h, child.height);
 			}
+
+			needAgain && this.once(egret.Event.ENTER_FRAME,this.draw,this);
 			this._w += this._padding * (this.numChildren - 1);
 			super.draw();
 		}

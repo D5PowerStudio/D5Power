@@ -108,17 +108,21 @@ module d5power {
 			this._w = 0;
 			this._h = 0;
 			var ypos:number = 0;
-			
+			var needAgain:boolean;
 			for(var i:number = 0; i < this.numChildren; i++){
 				var child:egret.DisplayObject = this.getChildAt(i);
 				child.y = ypos;
 				ypos += child.height;
 				ypos += this._padding;
+				if(child.y==ypos)
+				{
+					needAgain = true;
+				}
 				this._h += child.height;
 				this._w = Math.max(this._w, child.width);
 				//console.info("[D5VBOX]"+child.x+"||"+child.y);
 			}
-			
+			needAgain && this.once(egret.Event.ENTER_FRAME,this.draw,this);
 			this._h += this._padding * (this.numChildren - 1);
 			super.draw();
 		}

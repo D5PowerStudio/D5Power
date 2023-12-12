@@ -156,6 +156,7 @@ module d5power {
 			var obj:egret.DisplayObject;
 			
 			var perMaxHeight:number = 0;
+			var needAgain:boolean;
 			for(var i:number = 0,j:number=this.numChildren;i<j;i++){
 				obj = this.getChildAt(i);
 				
@@ -172,7 +173,13 @@ module d5power {
 				perMaxHeight = perMaxHeight < obj.height ? obj.height : perMaxHeight;
 
 				this._usedWidth+=obj.width+this._paddingx;
+				if(obj.x==this._usedWidth)
+				{
+					needAgain = true;
+				}
 			}
+
+			needAgain && this.once(egret.Event.ENTER_FRAME,this.draw,this);
 			
 //			if(this._align==D5FlyBox.CENTER){
 //				super.x = parseInt((this._maxWidth-this._w)>>1)+this._zerox;
