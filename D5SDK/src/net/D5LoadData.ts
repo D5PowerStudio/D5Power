@@ -6,5 +6,6 @@ module d5power
 		public callback:Function;
 		public thisobj:any;
 		public inpool:boolean;
+		public format:string;
 	}
 }

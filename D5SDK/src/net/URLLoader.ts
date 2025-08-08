@@ -181,6 +181,7 @@ module d5power {
             if (this._xhr.readyState == 4) {
                 if (this._xhr.status >= 400 || this._xhr.status == 0) {
                     console.log(this._url, "load fail");
+                    this.onLoadError();
                 } else {
                     this.loadComplete();
                 }

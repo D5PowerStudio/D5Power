@@ -90,6 +90,63 @@ module d5power
             }
             if(this._postVars.length>1) this._postVars = this._postVars.substr(0,this._postVars.length-1);
         }
+
+        public get(url:string,callback:Function=null,thisobj:any=null):void
+        {
+            let loader: egret.URLLoader = new egret.URLLoader();
+            let req = new egret.URLRequest(url);
+
+            loader.once(egret.Event.COMPLETE,function(e:egret.Event):void{
+                try
+                {
+                    let obj = JSON.parse(loader.data)
+                    callback.apply(thisobj,[obj])
+                }catch(e){
+                    callback.apply(thisobj,[{code:0,data:null,msg:'解析未成功'}])
+                }
+                
+            },this);
+
+            loader.once(egret.IOErrorEvent.IO_ERROR,function(e:egret.IOErrorEvent):void{
+                callback.apply(thisobj,[{code:0,data:null,msg:'加载未成功'}])
+            },this);
+
+            loader.load(req);
+        }
+
+        public post(url:string,data: Object = null,callback: Function = null,thisObj:any = null):void
+        {
+            var loader: egret.URLLoader = new egret.URLLoader();
+            var req = new egret.URLRequest(url);
+
+            
+            var var_source = "";
+            if(data!=null)
+            {
+                for(var k in data) var_source+= "&"+k+"="+data[k];
+            }
+            var urlvar: egret.URLVariables = new egret.URLVariables(var_source);
+            req.data = urlvar;
+            req.method = egret.URLRequestMethod.POST;
+
+            loader.once(egret.Event.COMPLETE,function(e:egret.Event):void{
+                try
+                {
+                    let obj = JSON.parse(loader.data)
+                    callback.apply(thisObj,[obj])
+                }catch(e){
+                    callback.apply(thisObj,[{code:0,data:null,msg:'解析未成功'}])
+                }
+                
+            },this);
+            loader.once(egret.IOErrorEvent.IO_ERROR,function(e:egret.IOErrorEvent):void{
+                callback.apply(thisObj,[{code:0,data:null,msg:'加载未成功'}])
+            },this);
+
+            loader.load(req);
+            
+        }
+
         
         public load(cmd: number,data: Object = null,callback: Function = null,thisObj:any = null,server:string=''): void 
         {

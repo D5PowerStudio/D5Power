@@ -95,7 +95,7 @@ module d5power
 			{
 				StepLoader._nowLoadingIndex = StepLoader._waitList.length-1;
 				var conf:D5LoadData = StepLoader._waitList[StepLoader._nowLoadingIndex];
-				StepLoader._loader.dataformat = null;
+				StepLoader._loader.dataformat = conf.format ? conf.format : null;
 				StepLoader._loader.load(conf.url);
 				StepLoader._isLoading = conf.url;
 			}else{
@@ -190,7 +190,7 @@ module d5power
 		 * @param	thisobj		this
 		 * @param	isPool		是否入资源池
 		 */ 
-		public addLoad(url:string,complate:Function,thisobj:any,isPool:boolean=true):void
+		public addLoad(url:string,complate:Function,thisobj:any,isPool:boolean=true,format:string=null):void
 		{
 			if(url.substr(0,4)=='http') url = url.replace(/\\/g,'/');
 			
@@ -215,6 +215,7 @@ module d5power
 			data.inpool = isPool;
 			data.url = url;
 			data.thisobj = thisobj;
+			data.format = format;
 			StepLoader._waitList.push(data);
 			
 			StepLoader.loadNext();

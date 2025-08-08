@@ -67,6 +67,7 @@ module d5power
 		public static MOVE_DOWN:number = 3;
 		public static MOVE_UP:number = 4;
 		public static MOVE_ALPHA:number = 5;
+        public static MOVE_SCALE:number = 6;
         public static autoRelease:boolean=false;
         private static _preloadList:any = {};
 
@@ -149,18 +150,76 @@ module d5power
             if(D5Component.autoRelease) this.addEventListener(egret.Event.REMOVED_FROM_STAGE,this.dispose,this);
         }
         private static _moveList:Array<any> = [];
-		
-		public static addMoveList(target:D5Component):void
+		private static _waitList:Array<any> = [];
+        private static _lastAdd2List:number = 0;
+		public static addMoveList(target:egret.DisplayObject,callback:Function=null,thisobj:any=null):void
 		{
-			D5Component._moveList.push(target);
-			if(!D5Component.me.hasEventListener(egret.Event.ENTER_FRAME))D5Component.me.addEventListener(egret.Event.ENTER_FRAME,this.onMoveUI,this);
+			this._waitList.push({obj:target,callback:callback,thisobj:thisobj});
+			if(!this.me.hasEventListener(egret.Event.ENTER_FRAME))this.me.addEventListener(egret.Event.ENTER_FRAME,this.onMoveUI,this);
 		}
+        /**
+         * 
+         * @param target 需要实现动画的UI对象，必须拥有moveAction属性，否则无效
+         * @param callback 
+         * @param thisobj 
+         */
+        public static addMoveUI(obj:any,callback:Function=null,thisobj:any=null):void
+        {
+            if(obj.moveAction===undefined || obj.moveAction===null || !obj.parent) return;
+            switch(obj.moveAction) {
+                case undefined:
+                case null:
+                case NaN:
+                    obj['moveAction'] = D5Component.MOVE_LEFT;
+                case D5Component.MOVE_LEFT:
+                    obj.startX = obj.x;
+                    obj.startY = obj.y;
+                    obj.x = -obj.width;
+                    break;
+                case D5Component.MOVE_RIGHT:
+                    obj.startX = obj.x;
+                    obj.startY = obj.y;
+                    obj.x = obj.parent.width;
+                    break;
+                case D5Component.MOVE_UP:
+                    obj.startX = obj.x;
+                    obj.startY = obj.y;
+                    obj.y = -obj.height;
+                    break;
+                case D5Component.MOVE_DOWN:
+                    obj.startX = obj.x;
+                    obj.startY = obj.y;
+                    obj.y = obj.parent.height;
+                    break;
+                case D5Component.MOVE_ALPHA:
+                    obj.alpha = 0;
+                    break;
+                case D5Component.MOVE_SCALE:
+                    obj.scaleX = 0.0001*(Math.abs(obj.scaleX)/obj.scaleX);
+                    obj.scaleY = 0.0001*(Math.abs(obj.scaleY)/obj.scaleY);
+                    break;
+                
+            }
+            this._waitList.push({obj:obj,callback:callback,thisobj:thisobj});
+            if(!this.me.hasEventListener(egret.Event.ENTER_FRAME))this.me.addEventListener(egret.Event.ENTER_FRAME,this.onMoveUI,this);
+        }
 		private static onMoveUI(e:egret.Event):void
 		{
-			var obj:D5Component
-			for(var i:number=D5Component._moveList.length-1;i>=0;i--)
+            let t:number = egret.getTimer();
+            if(this._waitList.length && (this._lastAdd2List==0 || t-this._lastAdd2List>50))
+            {
+                this._lastAdd2List = t;
+                let node = this._waitList.shift();
+                this._moveList.push(node.obj);
+                if(node.callback!=null)
+                {
+                    node.callback.apply(node.thisobj);
+                }
+            }
+			var obj:any
+			for(var i:number=this._moveList.length-1;i>=0;i--)
 			{
-				obj = D5Component._moveList[i];
+				obj = this._moveList[i];
 //				if((obj.x==obj.startX && obj.y==obj.startY &&obj.moveAction != D5Component.MOVE_ALPHA)||(obj.alpha==1&&obj.moveAction == D5Component.MOVE_ALPHA))
 //				{
 //					D5Component._moveList.splice(i,1);
@@ -186,15 +245,15 @@ module d5power
 						break;
 					case D5Component.MOVE_UP:
 						obj.y+= (obj.startY - obj.y)/5;
-                        if(Math.ceil(obj.y) >= obj.startY) 
+                        if(Math.abs(obj.y-obj.startY) <= 0.001) 
                         {
                             obj.y = obj.startY;
                             D5Component._moveList.splice(i,1);
                         }
 						break;
 					case D5Component.MOVE_DOWN:
-						obj.y-=  (obj.y - obj.startY)/5;
-                        if(Math.floor(obj.y) <= obj.startY) 
+						obj.y+= (obj.startY - obj.y)/5;
+                        if(Math.abs(obj.y-obj.startY) <= 0.001) 
                         {
                             obj.y = obj.startY;
                             D5Component._moveList.splice(i,1);
@@ -208,6 +267,17 @@ module d5power
                             D5Component._moveList.splice(i,1);
                         }
 						break;
+                    case D5Component.MOVE_SCALE:
+                        let targetScale:number = Math.abs(obj.scaleX)/obj.scaleX;
+                        obj.scaleX+=(targetScale-obj.scaleX)/5;
+                        if(Math.abs(targetScale-obj.scaleX)<0.01)
+                        {
+                            obj.scaleX = targetScale;
+                            D5Component._moveList.splice(i,1);
+                        }
+                        obj.scaleY = Math.abs(obj.scaleX);
+                        break;
+
 				}
 			}
 			if(D5Component._moveList.length==0)D5Component.me.removeEventListener(egret.Event.ENTER_FRAME,this.onMoveUI,this);
@@ -601,7 +671,7 @@ module d5power
                     com = new d5power.D5Text(value.textValue=='文字' ? '' : value.textValue,value.fontColor,-1,value.filterColor,value.fontSize);
                     com.name = value.name;
                     com.x = value.x;
-                    com.y = value.y;
+                    com.y = value.y  + Math.floor(value.fontSize*(value.fontSize>32 ? .1 : .2));
                     
                     (<D5Text>com).setType(value.type);
                     (<D5Text>com).setTextAlign(value.alignType);
@@ -668,8 +738,8 @@ module d5power
                     com.name = value.name;
                     com.x = value.x;
                     com.y = value.y;
-                    (<D5Shape>com).setWorkMode(value.workMode);
                     (<D5Shape>com).pointString = value.pointString;
+                    (<D5Shape>com).setWorkMode(value.workMode);
                     (<D5Shape>com).drawAlpha = value.fillAlpha==null ? 1 : value.fillAlpha;
                     (<D5Shape>com).lineAlpha = value.tickNessAlpha==null ? 1 : value.tickNessAlpha;
                     

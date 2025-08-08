@@ -46,23 +46,31 @@ module d5power {
             if(this._bindingList==null) this._bindingList = new Array<any>();
             this._bindingList.push(obj);
         }
-        public setup(url:String):void
+        public setup(url:string):void
         {
             this.removeChildren();
-            RES.getResByUrl(this._uiSrc,this.LoadComplete,this);
+            this._uiSrc = url;
+            d5power.D5Component.getComponentByURL(this._uiSrc,this,this.onPre);
         }
-        private LoadComplete(data:any):void
+
+        private onPre(count:number):void
         {
-            if(data) {
-                d5power.D5Component.getComponentByURL(data,this);
-            }
-            if(this.stage)
+            if(count==0) this.once(egret.Event.ENTER_FRAME,this.onCreate,this);
+        }
+
+        private onCreate():void
+        {
+         	this.graphics.clear();
+			if(this.stage)
             {
                 this.flyPos();
-            }else{
+            }else
+			{
                 this.addEventListener(egret.Event.ADDED_TO_STAGE,this.flyPos,this);
             }
+            this.dispatchEvent(new egret.Event(egret.Event.COMPLETE))
         }
+
         public dispose():void
         {
             this.stage.removeEventListener(egret.Event.RESIZE,this.autoFly,this);
@@ -110,11 +118,12 @@ module d5power {
                 }
             }
         }
+        // @ts-ignore
         public get width():number
         {
             return this._realWidth;
         }
-
+         // @ts-ignore
         public get height():number
         {
             return this._realHeight;
